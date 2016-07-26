@@ -23,7 +23,6 @@ public class AmapLocationSource implements LocationSource, AMapLocationListener
     private Context oriCon;
     private LocationSource.OnLocationChangedListener mListener;
     private AMapLocationClient mlocationClient;
-    private AMapLocationClientOption mLocationOption;
 
     /**
      * 初始化位置更新
@@ -58,8 +57,9 @@ public class AmapLocationSource implements LocationSource, AMapLocationListener
         if (mlocationClient == null)
         {
             mlocationClient = new AMapLocationClient(this.oriCon);
-            mLocationOption = new AMapLocationClientOption();
+            AMapLocationClientOption mLocationOption = new AMapLocationClientOption();
             mlocationClient.setLocationListener(this);
+
             mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
             mLocationOption.setInterval(5000);
 

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@android:style/Theme.NoTitleBar.Fullscreen"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bgpic1"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="org.gis4.xfb.hurricanehelp.activity.SplashActivity">
+
+    <TextView
+        android:id="@+id/AppName_CHN"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textColor="@android:color/black"
+        android:textSize="46sp"
+        android:textStyle="bold"
+        android:layout_marginTop="154dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:id="@+id/AppName_ENG"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hurricane Help"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/AppName_CHN"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:id="@+id/BriefIntro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="办你所想"
+        android:textColor="@android:color/black"
+        android:textStyle="italic"
+        android:textSize="20sp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="158dp"/>
+
+</RelativeLayout>

@@ -1,8 +1,13 @@
 package org.gis4.xfb.hurricanehelp.test;
 
-/**
- * Created by Tony on 2016/7/26.
- */
+import com.amap.api.maps2d.AMapOptions;
+import com.amap.api.maps2d.model.CameraPosition;
+
+
 public class test
 {
+    public void Amap()
+    {
+        AMapOptions aOptions = new AMapOptions();
+    }
 }

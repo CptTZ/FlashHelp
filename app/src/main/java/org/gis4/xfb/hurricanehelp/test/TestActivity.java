@@ -1,34 +1,26 @@
-package org.gis4.xfb.hurricanehelp;
+package org.gis4.xfb.hurricanehelp.test;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.amap.api.location.AMapLocationClient;
-import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.AMapOptions;
-import com.amap.api.maps2d.AMapUtils;
-import com.amap.api.maps2d.LocationSource;
 import com.amap.api.maps2d.MapView;
 import com.amap.api.maps2d.UiSettings;
 import com.amap.api.maps2d.model.BitmapDescriptorFactory;
 import com.amap.api.maps2d.model.MyLocationStyle;
 
+import org.gis4.xfb.hurricanehelp.R;
 import org.gis4.xfb.hurricanehelp.location.AmapLocationSource;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class TestActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener
@@ -36,21 +28,12 @@ public class TestActivity extends AppCompatActivity
     private AMap aMap;
     private AmapLocationSource locationSource;
 
-    @BindView(R.id.toolbar)
-    public Toolbar toolbar;
     @BindView(R.id.drawer_layout)
     public DrawerLayout drawer;
     @BindView(R.id.nav_view)
     public NavigationView navigationView;
     @BindView(R.id.map)
     public MapView mMapView;
-
-    @OnClick(R.id.fab)
-    public void onClick(View view)
-    {
-        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -60,19 +43,8 @@ public class TestActivity extends AppCompatActivity
         ButterKnife.bind(this);
         mMapView.onCreate(savedInstanceState);
 
-        setUpDrawerandAction();
-        setUpMap();
-    }
-
-    private void setUpDrawerandAction()
-    {
-        setSupportActionBar(toolbar);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
         navigationView.setNavigationItemSelectedListener(this);
+        setUpMap();
     }
 
     private void setUpMap()

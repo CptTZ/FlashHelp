@@ -7,32 +7,21 @@ import com.amap.api.location.*;
 
 /**
  * 定位信息类 目前使用高德定位
- * @deprecated 请使用AmapLocationSource更新地图位置
+ *
  * @author TonyZ
+ * @deprecated 请使用AmapLocationSource更新地图位置
  */
 public class LocationManager
 {
     private AMapLocationClient mLocationClient;
     private AMapLocation myLocation;
 
-    // 单例模式
-    private static LocationManager instance;
-
-    public static synchronized LocationManager getInstance(Context c)
-    {
-        if (instance == null)
-        {
-            instance = new LocationManager(c);
-        }
-        return instance;
-    }
-
     /**
      * 初始化定位系统
      *
      * @param c getApplicationContext()
      */
-    private LocationManager(Context c)
+    public LocationManager(Context c)
     {
         mLocationClient = new AMapLocationClient(c);
         mLocationClient.setLocationOption(GetOptions());
@@ -44,10 +33,11 @@ public class LocationManager
                 if (aMapLocation != null)
                 {
                     if (aMapLocation.getErrorCode() != 0)
-                        Log.e("AmapError", "location Error, ErrCode:" + aMapLocation.getErrorCode() + ", errInfo:" + aMapLocation.getErrorInfo());
-                    else
                     {
-                        // 获取位置没有问题的逻辑
+                        myLocation = mLocationClient.getLastKnownLocation();
+                        Log.e("AmapError", "eLocation, ErrCode:" + aMapLocation.getErrorCode() + ", errInfo:" + aMapLocation.getErrorInfo());
+                    } else
+                    {
                         myLocation = aMapLocation;
                         return;
                     }
