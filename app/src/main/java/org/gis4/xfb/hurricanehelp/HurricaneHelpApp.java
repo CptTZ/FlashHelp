@@ -16,6 +16,7 @@ public class HurricaneHelpApp extends Application
         AVAnalytics.enableCrashReport(this, false);
 
         //gittest 张宜弛大傻逼
+        //test2 张宜弛是基佬
     }
 
 }
