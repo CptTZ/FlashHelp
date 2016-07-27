@@ -14,5 +14,5 @@ import org.gis4.xfb.hurricanehelp.location.LocationManager;
 public class BaseActivity extends AppCompatActivity
 {
     protected LocationManager locationOld;
-
+    protected AmapLocationSource locationSource;
 }

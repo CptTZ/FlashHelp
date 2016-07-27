@@ -25,6 +25,7 @@ public class LocationManager
     {
         mLocationClient = new AMapLocationClient(c);
         mLocationClient.setLocationOption(GetOptions());
+        myLocation = mLocationClient.getLastKnownLocation();
         mLocationClient.setLocationListener(new AMapLocationListener()
         {
             @Override
@@ -33,16 +34,10 @@ public class LocationManager
                 if (aMapLocation != null)
                 {
                     if (aMapLocation.getErrorCode() != 0)
-                    {
-                        myLocation = mLocationClient.getLastKnownLocation();
                         Log.e("AmapError", "eLocation, ErrCode:" + aMapLocation.getErrorCode() + ", errInfo:" + aMapLocation.getErrorInfo());
-                    } else
-                    {
+                    else
                         myLocation = aMapLocation;
-                        return;
-                    }
                 }
-                myLocation = mLocationClient.getLastKnownLocation();
             }
         });
         StartUpdateLocation();
@@ -76,6 +71,7 @@ public class LocationManager
      */
     public void DestoryLocation()
     {
+        if (mLocationClient.isStarted() == false) return;
         StopUpateLocation();
         mLocationClient.onDestroy();
     }

@@ -1,5 +1,6 @@
 package org.gis4.xfb.hurricanehelp.activity;
 
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -51,7 +52,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         if (super.locationOld.getLocation() == null)
             text = "无有效位置，无法发布！";
         else
-            text = "发布活动中，您的位置：" + super.locationOld.getLocation().getStreet();
+            text = "发布活动中，您的位置：" + super.locationOld.getLocation().getAddress();
 
         Toast.makeText(MainActivity.this, text, Toast.LENGTH_SHORT).show();
     }
@@ -60,7 +61,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        super.locationOld = new LocationManager(this);
+        super.locationOld = new LocationManager(this.getApplicationContext());
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
@@ -73,10 +74,9 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         mSize = getResources().getDimensionPixelSize(R.dimen.xfb_tab_size);
         mVP.setOffscreenPageLimit(VIEW_CAPACITY);
         FragmentAdapter adapter = new FragmentAdapter(getSupportFragmentManager());
-
-        mVP.setAdapter(new FragmentAdapter(getSupportFragmentManager()));
-
+        mVP.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+
         mAPSTS.setViewPager(mVP);
         mAPSTS.setOnPageChangeListener(this);
         mVP.setCurrentItem(VIEW_INDEX);
@@ -91,7 +91,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     {
         if (keyCode == KeyEvent.KEYCODE_BACK)
         {
-            // 1s内再次按下即退出
+            // 1.5s内再次按下即退出
             if ((System.currentTimeMillis() - mExitTime) > 1500)
             {
                 Toast.makeText(this, "再按一次返回键退出程序", Toast.LENGTH_SHORT).show();
@@ -119,6 +119,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     protected void onPause()
     {
         super.onPause();
+        super.locationOld.StopUpateLocation();
     }
 
     @Override

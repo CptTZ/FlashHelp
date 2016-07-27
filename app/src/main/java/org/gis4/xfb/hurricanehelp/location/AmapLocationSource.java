@@ -8,6 +8,8 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps2d.LocationSource;
+import com.amap.api.maps2d.model.CameraPosition;
+import com.amap.api.maps2d.model.LatLng;
 
 /**
  * 位置更新类，参考高德
@@ -18,14 +20,22 @@ public class AmapLocationSource implements LocationSource, AMapLocationListener
     /**
      * 更新位置
      */
-    public AMapLocation location;
+    private AMapLocation location;
 
     private Context oriCon;
     private LocationSource.OnLocationChangedListener mListener;
     private AMapLocationClient mlocationClient;
 
+    public CameraPosition getLocCam(float level)
+    {
+        return new CameraPosition(
+                new LatLng(this.location.getLatitude(), this.location.getLongitude()),
+                level, 0f, 0f);
+    }
+
     /**
      * 初始化位置更新
+     *
      * @param c 界面上下文
      */
     public AmapLocationSource(Context c)
