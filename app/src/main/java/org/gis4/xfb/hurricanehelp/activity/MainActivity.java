@@ -312,7 +312,8 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                 switch (index)
                 {
                     case VIEW_INDEX:
-                        return R.mipmap.tabbar_home_selected;
+                        //我把“tabbar_home_selected”换成了“tabbar_home_highlighted”，selected可以删了。
+                        return R.mipmap.tabbar_home_highlighted;
                     case VIEW_TASK:
                         return R.mipmap.tabbar_message_center_highlighted;
                     case VIEW_ACTIVITIES:

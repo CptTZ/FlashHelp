@@ -15,3 +15,4 @@ Brand new Client with everything changed
 4. New package name
 5. Still managed by Git(hub)
 6. Git好烦啊
+7. 测试2
