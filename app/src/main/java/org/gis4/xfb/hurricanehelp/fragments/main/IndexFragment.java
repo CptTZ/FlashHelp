@@ -18,12 +18,13 @@ import com.amap.api.maps2d.model.BitmapDescriptorFactory;
 import com.amap.api.maps2d.model.MyLocationStyle;
 
 import org.gis4.xfb.hurricanehelp.R;
+import org.gis4.xfb.hurricanehelp.fragments.BaseFragment;
 import org.gis4.xfb.hurricanehelp.location.AmapLocationSource;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class IndexFragment extends Fragment
+public class IndexFragment extends BaseFragment
 {
     public static IndexFragment instance()
     {
@@ -32,7 +33,6 @@ public class IndexFragment extends Fragment
     }
 
     private AMap aMap;
-    private AmapLocationSource locationSource;
 
     @BindView(R.id.indexMap)
     public MapView mMapView;
@@ -42,7 +42,6 @@ public class IndexFragment extends Fragment
     {
         super.onPause();
         mMapView.onPause();
-        locationSource.stopLocation();
     }
 
     @Override
@@ -50,14 +49,12 @@ public class IndexFragment extends Fragment
     {
         super.onResume();
         mMapView.onResume();
-        locationSource.startLocation();
     }
 
     @Override
     public void onDestroy()
     {
         super.onDestroy();
-        locationSource.deactivate();
         mMapView.onDestroy();
     }
 
@@ -82,14 +79,13 @@ public class IndexFragment extends Fragment
         }
 
         UiSettings ui = aMap.getUiSettings();
-        this.locationSource = new AmapLocationSource(this.getContext());
         MyLocationStyle myLocationStyle = new MyLocationStyle();
         myLocationStyle.myLocationIcon(BitmapDescriptorFactory.fromResource(R.drawable.location_marker));
         myLocationStyle.strokeColor(Color.WHITE);
         myLocationStyle.radiusFillColor(Color.argb(50, 0, 0, 180));
         myLocationStyle.strokeWidth(1.0f);
         aMap.setMyLocationStyle(myLocationStyle);
-        aMap.setLocationSource(this.locationSource);
+        aMap.setLocationSource(super.locationSource);
         aMap.setMyLocationEnabled(true);
         aMap.setTrafficEnabled(true);
 

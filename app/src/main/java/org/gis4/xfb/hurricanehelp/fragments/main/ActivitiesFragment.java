@@ -8,11 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.gis4.xfb.hurricanehelp.R;
+import org.gis4.xfb.hurricanehelp.fragments.BaseFragment;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ActivitiesFragment extends Fragment
+public class ActivitiesFragment extends BaseFragment
 {
     public static ActivitiesFragment instance()
     {
