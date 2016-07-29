@@ -35,8 +35,20 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name="com.avos.avoscloud.feedback.ThreadActivity">
+        <activity android:name="com.avos.sns.SNSWebActivity"/>
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:noHistory="true"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+            </intent-filter>
         </activity>
+        <activity android:name="com.avos.avoscloud.feedback.ThreadActivity"/>
+
         <activity android:name=".activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -45,6 +57,15 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.MainActivity">
+        </activity>
+        <activity
+            android:name=".activity.RegistActivity"
+            android:label="@string/title_activity_regist"
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.gis4.xfb.hurricanehelp.activity.MainActivity"/>
         </activity>
     </application>
 

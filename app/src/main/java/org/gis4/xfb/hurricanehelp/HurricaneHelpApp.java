@@ -21,21 +21,6 @@ public class HurricaneHelpApp extends Application
         AVOSCloud.initialize(this, "LGhLGudXgoF9oTXHTr1an03Y-gzGzoHsz", "z4Dou3Q1LNlmG176tECNBxQh");
         AVAnalytics.setAnalyticsEnabled(true);
         AVAnalytics.enableCrashReport(this, false);
-        AVInstallation.getCurrentInstallation().saveInBackground(new SaveCallback()
-        {
-            @Override
-            public void done(AVException e)
-            {
-                if (e == null)
-                {
-                    String installationId = AVInstallation.getCurrentInstallation().getInstallationId();
-                    // 关联  installationId 到用户表等操作……
-                } else
-                {
-                    Log.e("LeanCloud", "错误," + e.getLocalizedMessage());
-                }
-            }
-        });
         PushService.setDefaultPushCallback(this, SplashActivity.class);
     }
 

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<lib.homhomlib.design.SlidingLayout
+    android:id="@+id/slidingLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="org.gis4.xfb.hurricanehelp.activity.RegistActivity"
+    app:background_view="@layout/reg_bg"
+    app:sliding_mode="top"
+    app:sliding_pointer_mode="more">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff"
+        android:padding="10dp">
+
+        <EditText
+            android:id="@+id/editText_register_userName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/login_input_user_name">
+        </EditText>
+
+        <EditText
+            android:id="@+id/editText_register_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/editText_register_userName"
+            android:layout_below="@+id/editText_register_userName"
+            android:ems="10"
+            android:hint="@string/register_input_user_email"
+            android:inputType="textEmailAddress">
+        </EditText>
+
+        <EditText
+            android:id="@+id/editText_register_userPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/editText_register_email"
+            android:layout_below="@+id/editText_register_email"
+            android:ems="10"
+            android:hint="@string/login_input_user_password"
+            android:inputType="textPassword">
+        </EditText>
+
+        <EditText
+            android:id="@+id/editText_register_userPassword_again"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/editText_register_userPassword"
+            android:layout_below="@+id/editText_register_userPassword"
+            android:ems="10"
+            android:hint="@string/register_input_user_password_again"
+            android:inputType="textPassword">
+        </EditText>
+
+        <Button
+            android:id="@+id/button_i_need_register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/editText_register_userPassword_again"
+            android:layout_below="@+id/editText_register_userPassword_again"
+            android:text="@string/login_button_register"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_alignLeft="@id/button_i_need_register"
+            android:layout_below="@id/button_i_need_register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/button_reg_with_qq"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/login_button_register_qq"/>
+
+            <Button
+                android:id="@+id/button_reg_with_weibo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/login_button_register_weibo"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</lib.homhomlib.design.SlidingLayout>

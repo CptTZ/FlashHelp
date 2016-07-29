@@ -1,6 +1,5 @@
 package org.gis4.xfb.hurricanehelp.fragments.main;
 
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,29 +9,40 @@ import android.view.ViewGroup;
 import org.gis4.xfb.hurricanehelp.R;
 import org.gis4.xfb.hurricanehelp.fragments.BaseFragment;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class TaskFragment extends BaseFragment
 {
     public static TaskFragment instance()
     {
-        TaskFragment view = new TaskFragment();
-        return view;
+        return new TaskFragment();
     }
 
-    public TaskFragment()
+    @OnClick(R.id.button_i_need_register)
+    public void Show()
     {
-        // Required empty public constructor
+        super.showError("FUCK");
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_task, container, false);
+        View view;
+        if (super.getUserId().isEmpty())
+        {
+            view = inflater.inflate(R.layout.fragment_me_reg, container, false);
+            super.hasLogined = false;
+        } else
+        {
+            view = inflater.inflate(R.layout.fragment_task, container, false);
+            super.hasLogined = true;
+        }
+
+        ButterKnife.bind(this, view);
+
+        return view;
     }
 
 }

@@ -11,4 +11,5 @@
 
     <dimen name="button_drawable_padding">360dip</dimen>
     <dimen name="home_bar_icon_margins">15dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>

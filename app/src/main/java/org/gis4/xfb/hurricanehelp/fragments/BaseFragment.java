@@ -2,12 +2,16 @@ package org.gis4.xfb.hurricanehelp.fragments;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.widget.Toast;
 
 import com.avos.avoscloud.AVUser;
 
+import org.gis4.xfb.hurricanehelp.R;
+import org.gis4.xfb.hurricanehelp.activity.RegistActivity;
 import org.gis4.xfb.hurricanehelp.location.AmapLocationSource;
 
 /**
@@ -16,6 +20,7 @@ import org.gis4.xfb.hurricanehelp.location.AmapLocationSource;
 public class BaseFragment extends Fragment
 {
     protected BaseFragment baseF;
+    protected boolean hasLogined;
 
     /**
      * 定位信息
@@ -79,6 +84,17 @@ public class BaseFragment extends Fragment
     {
         super.onDestroy();
         locationSource.deactivate();
+    }
+
+    /**
+     * 显示注册界面
+     */
+    public void showRegisterActivity()
+    {
+        startActivity(new Intent(this.baseF.getContext(), RegistActivity.class));
+        this.baseF.getActivity().overridePendingTransition(R.anim.splash_slidein,
+                R.anim.splash_slideout);
+        Toast.makeText(this.baseF.getContext(), "开始注册...", Toast.LENGTH_SHORT).show();
     }
 
 }
