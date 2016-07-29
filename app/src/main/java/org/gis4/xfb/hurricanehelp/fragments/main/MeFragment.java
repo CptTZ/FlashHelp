@@ -1,9 +1,6 @@
 package org.gis4.xfb.hurricanehelp.fragments.main;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,15 +15,19 @@ public class MeFragment extends BaseFragment
 
     public static MeFragment instance()
     {
-        MeFragment view = new MeFragment();
-        return view;
+        return new MeFragment();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
-        View view = inflater.inflate(R.layout.fragment_me, container, false);
+        View view;
+        if (super.getUserId().isEmpty())
+            view = inflater.inflate(R.layout.fragment_me_reg, container, false);
+        else
+            view = inflater.inflate(R.layout.fragment_me_norm, container, false);
+
         ButterKnife.bind(this, view);
 
         return view;

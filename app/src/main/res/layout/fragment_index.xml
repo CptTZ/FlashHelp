@@ -9,4 +9,83 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"/>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="right|bottom"
+        android:paddingBottom="15dp">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            >
+
+            <Button
+                android:id="@+id/buttonL"
+                android:layout_width="40dip"
+                android:layout_height="40dip"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text="@string/left_arrow"
+                android:background="@android:drawable/btn_default"
+                android:textColor="#000000"/>
+
+            <Button
+                android:id="@+id/buttonU"
+                android:layout_width="40dip"
+                android:layout_height="40dip"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/buttonL"
+                android:text="@string/up_arrow"
+                android:background="@android:drawable/btn_default"
+                android:textColor="#000000"/>
+
+            <Button
+                android:id="@+id/buttonD"
+                android:layout_width="40dip"
+                android:layout_height="40dip"
+                android:layout_below="@+id/buttonU"
+                android:layout_toRightOf="@+id/buttonL"
+                android:text="@string/down_arrow"
+                android:background="@android:drawable/btn_default"
+                android:textColor="#000000"/>
+
+            <Button
+                android:id="@+id/buttonR"
+                android:layout_width="40dip"
+                android:layout_height="40dip"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/buttonD"
+                android:text="@string/right_arrow"
+                android:background="@android:drawable/btn_default"
+                android:textColor="#000000"/>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_gravity="right"
+            android:orientation="vertical"
+            android:paddingTop="10dp">
+
+            <Button
+                android:id="@+id/buttonIn"
+                android:layout_width="40dip"
+                android:layout_height="40dip"
+                android:text="@string/zoom_in"
+                android:background="@android:drawable/btn_default"
+                android:textColor="#000000"/>
+
+            <Button
+                android:id="@+id/buttonOut"
+                android:layout_width="40dip"
+                android:layout_height="40dip"
+                android:text="@string/zoom_out"
+                android:background="@android:drawable/btn_default"
+                android:textColor="#000000"/>
+        </LinearLayout>
+    </LinearLayout>
+
 </FrameLayout>

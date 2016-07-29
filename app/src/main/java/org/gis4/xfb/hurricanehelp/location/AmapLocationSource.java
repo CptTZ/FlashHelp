@@ -28,9 +28,15 @@ public class AmapLocationSource implements LocationSource, AMapLocationListener
 
     public CameraPosition getLocCam(float level)
     {
-        return new CameraPosition(
-                new LatLng(this.location.getLatitude(), this.location.getLongitude()),
-                level, 0f, 0f);
+        if (this.location == null)
+        {
+            return null;
+        } else
+        {
+            return new CameraPosition(
+                    new LatLng(this.location.getLatitude(), this.location.getLongitude()),
+                    level, 0f, 0f);
+        }
     }
 
     /**
