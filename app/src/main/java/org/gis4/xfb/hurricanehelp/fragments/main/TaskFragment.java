@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import org.gis4.xfb.hurricanehelp.R;
 import org.gis4.xfb.hurricanehelp.fragments.BaseFragment;
@@ -19,12 +20,6 @@ public class TaskFragment extends BaseFragment
         return new TaskFragment();
     }
 
-    @OnClick(R.id.button_i_need_register)
-    public void Show()
-    {
-        super.showError("FUCK");
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
@@ -34,6 +29,14 @@ public class TaskFragment extends BaseFragment
         {
             view = inflater.inflate(R.layout.fragment_me_reg, container, false);
             super.hasLogined = false;
+            view.findViewById(R.id.button_i_need_register).setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View view)
+                {
+                    baseF.showError("FUCK");
+                }
+            });
         } else
         {
             view = inflater.inflate(R.layout.fragment_task, container, false);

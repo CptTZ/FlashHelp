@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVInstallation;
 import com.avos.avoscloud.SaveCallback;
+import com.avos.avoscloud.feedback.FeedbackAgent;
 
 import org.gis4.xfb.hurricanehelp.R;
 import org.gis4.xfb.hurricanehelp.location.AmapLocationSource;
@@ -39,6 +40,9 @@ public class SplashActivity extends Activity
         ButterKnife.bind(this);
         hasRunnedS = false;
         hasRunnedE = false;
+
+        FeedbackAgent agent = new FeedbackAgent(this);
+        agent.sync();
 
         Animation fadeIn = AnimationUtils.loadAnimation(this, R.anim.splash_fadein);
         Animation.AnimationListener animationListener = new Animation.AnimationListener()

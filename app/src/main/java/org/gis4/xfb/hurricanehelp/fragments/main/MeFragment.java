@@ -20,12 +20,6 @@ public class MeFragment extends BaseFragment
         return new MeFragment();
     }
 
-    @OnClick(R.id.button_i_need_register)
-    public void Show()
-    {
-        super.showRegisterActivity();
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
@@ -34,6 +28,14 @@ public class MeFragment extends BaseFragment
         if (super.getUserId().isEmpty())
         {
             view = inflater.inflate(R.layout.fragment_me_reg, container, false);
+            view.findViewById(R.id.button_i_need_register).setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View view)
+                {
+                    baseF.showRegisterActivity();
+                }
+            });
             super.hasLogined = false;
         } else
         {
