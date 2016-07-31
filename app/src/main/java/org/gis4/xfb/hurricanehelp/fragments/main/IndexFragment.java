@@ -7,8 +7,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.AMapOptions;
@@ -81,31 +85,10 @@ public class IndexFragment extends BaseFragment
     }
 
     @Override
-    public void onPause()
+    public void onCreate(Bundle savedInstanceState)
     {
-        super.onPause();
-        mMapView.onPause();
-    }
-
-    @Override
-    public void onResume()
-    {
-        super.onResume();
-        mMapView.onResume();
-    }
-
-    @Override
-    public void onDestroy()
-    {
-        super.onDestroy();
-        mMapView.onDestroy();
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState)
-    {
-        super.onSaveInstanceState(outState);
-        mMapView.onSaveInstanceState(outState);
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -153,6 +136,52 @@ public class IndexFragment extends BaseFragment
                 locChgFirst = false;
             }
         });
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        inflater.inflate(R.menu.fragment_index, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case R.id.nav_camera:
+                Toast.makeText(getActivity(), "FragmentMenuItem1", Toast.LENGTH_SHORT).show();
+                break;
+        }
+        return true;
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        mMapView.onPause();
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        mMapView.onResume();
+    }
+
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+        mMapView.onDestroy();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+        mMapView.onSaveInstanceState(outState);
     }
 
     private void changeCamera(CameraUpdate update, AMap.CancelableCallback callback)
