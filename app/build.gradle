@@ -46,5 +46,4 @@ dependencies {
     compile 'cn.leancloud.android:avoscloud-feedback:v3.+@aar'
     compile 'cn.leancloud.android:avoscloud-sns:v3.+@aar'
     compile 'cn.leancloud.android:qq-sdk:1.6.1-leancloud'
-    compile files('libs/androrm.jar')
 }

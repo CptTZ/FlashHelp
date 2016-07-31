@@ -11,10 +11,6 @@ import com.avos.avoscloud.AVOSCloud;
 import com.avos.avoscloud.PushService;
 import com.avos.avoscloud.SaveCallback;
 
-import com.orm.androrm.DatabaseAdapter;
-import com.orm.androrm.Model;
-
-import org.gis4.xfb.hurricanehelp.LogQuickSearchData.LogQuickSearch;
 import org.gis4.xfb.hurricanehelp.activity.SplashActivity;
 
 import java.util.ArrayList;
@@ -24,8 +20,6 @@ import org.gis4.xfb.hurricanehelp.R;
 
 public class HurricaneHelpApp extends Application
 {
-    private static HurricaneHelpApp appContext;
-
     @Override
     public void onCreate()
     {
@@ -34,22 +28,6 @@ public class HurricaneHelpApp extends Application
         AVAnalytics.setAnalyticsEnabled(true);
         AVAnalytics.enableCrashReport(this, false);
         PushService.setDefaultPushCallback(this, SplashActivity.class);
-
-        initializeDatabase();
-    }
-
-    public static Context context() {
-        return appContext;
-    }
-
-    //actionbar搜索框
-    private void initializeDatabase() {
-        List<Class<? extends Model>> models = new ArrayList<>(0);
-        models.add(LogQuickSearch.class);
-        String dbName = this.getResources().getString(R.string.database_name);
-        DatabaseAdapter.setDatabaseName(dbName);
-        DatabaseAdapter adapter = new DatabaseAdapter(appContext);
-        adapter.setModels(models);
     }
 
 }
