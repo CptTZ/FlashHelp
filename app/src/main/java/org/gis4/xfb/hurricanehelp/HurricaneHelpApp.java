@@ -20,6 +20,8 @@ import org.gis4.xfb.hurricanehelp.R;
 
 public class HurricaneHelpApp extends Application
 {
+    private static HurricaneHelpApp appContext;
+
     @Override
     public void onCreate()
     {
@@ -28,6 +30,10 @@ public class HurricaneHelpApp extends Application
         AVAnalytics.setAnalyticsEnabled(true);
         AVAnalytics.enableCrashReport(this, false);
         PushService.setDefaultPushCallback(this, SplashActivity.class);
+    }
+
+    public static Context context() {
+        return appContext;
     }
 
 }
