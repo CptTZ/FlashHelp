@@ -26,6 +26,9 @@ public class BaseActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         this.baseActivity = this;
+
+        //隐藏actionbar，用toolbar代替
+        getSupportActionBar().hide();
     }
 
     public void showError(String msg)

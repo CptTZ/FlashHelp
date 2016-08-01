@@ -1,6 +1,5 @@
 package org.gis4.xfb.hurricanehelp.activity;
 
-import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -8,8 +7,16 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.view.menu.MenuBuilder;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -17,6 +24,7 @@ import com.lhh.apst.library.AdvancedPagerSlidingTabStrip;
 import com.lhh.apst.library.Margins;
 
 import org.gis4.xfb.hurricanehelp.R;
+import org.gis4.xfb.hurricanehelp.data.initiateSearch;
 import org.gis4.xfb.hurricanehelp.fragments.main.*;
 import org.gis4.xfb.hurricanehelp.location.LocationManager;
 
@@ -39,6 +47,14 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     private TaskFragment mSecondFragment = null;
     private MeFragment mThirdFragment = null;
     private ActivitiesFragment mFourthFragment = null;
+
+    private  Toolbar toolbar;
+    private RelativeLayout view_search;
+    private CardView card_search;
+    private ListView listView, listContainer;
+    private View line_divider;
+    private EditText edit_text_search;
+    private ImageView image_search_back;
 
     @BindView(R.id.tabs)
     AdvancedPagerSlidingTabStrip mAPSTS;
@@ -64,6 +80,16 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         super.locationOld = new LocationManager(this.getApplicationContext());
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        toolbar=(Toolbar) findViewById(R.id.toolbar);
+        view_search = (RelativeLayout) findViewById(R.id.view_search);
+        line_divider = findViewById(R.id.line_divider);
+        card_search = (CardView) findViewById(R.id.card_search);
+        edit_text_search = (EditText) findViewById(R.id.edit_text_search);
+        listView = (ListView) findViewById(R.id.listView);
+        listContainer = (ListView) findViewById(R.id.listContainer);
+        image_search_back = (ImageView) findViewById(R.id.image_search_back);
+        onPageSelected(0);
 
         InitTab();
     }
@@ -91,17 +117,24 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     {
         if (keyCode == KeyEvent.KEYCODE_BACK)
         {
-            // 1.5s内再次按下即退出
-            if ((System.currentTimeMillis() - mExitTime) > 1500)
-            {
-                Toast.makeText(this, "再按一次返回键退出程序", Toast.LENGTH_SHORT).show();
-                mExitTime = System.currentTimeMillis();
-            } else
-            {
-                super.locationOld.DestoryLocation();
-                System.runFinalization();
-                System.exit(0);
+            //如果搜索框打开了得话，按返回键先隐藏搜索框，否则按正常流程走
+            if (card_search.getVisibility() == View.VISIBLE){
+                image_search_back.callOnClick();
             }
+            else{
+                // 1.5s内再次按下即退出
+                if ((System.currentTimeMillis() - mExitTime) > 1500)
+                {
+                    Toast.makeText(this, "再按一次返回键退出程序", Toast.LENGTH_SHORT).show();
+                    mExitTime = System.currentTimeMillis();
+                } else
+                {
+                    super.locationOld.DestoryLocation();
+                    System.runFinalization();
+                    System.exit(0);
+                }
+            }
+
             return true;
         }
 
@@ -128,10 +161,76 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
 
     }
 
+    //滑动时每个ViewPager都有一个对应的position，根据poision设置不同页面的toolbar的内容
     @Override
     public void onPageSelected(int position)
     {
+        switch(position){
+            case 0:
+                InitiateToolbarTabs("首页", R.mipmap.tabbar_home_logo, R.menu.fragment_index);
+                handleSearch();
+                break;
+            case 1:
+                InitiateToolbarTabs("任务", R.mipmap.tabbar_message_center_logo, R.menu.fragment_task);
+                break;
+            case 2:
+                InitiateToolbarTabs("我的", R.mipmap.tabbar_profile_logo, R.menu.fragment_me);
+                break;
+            case 3:
+                InitiateToolbarTabs("活动", R.mipmap.tabbar_discover_logo, R.menu.fragment_activities);
+                break;
+        }
+    }
 
+    //设置toolbar的内容。
+    private void InitiateToolbarTabs(String title, int iconId, int menuId) {
+
+        toolbar.setTitle(title);
+        toolbar.setNavigationIcon(iconId);
+
+        toolbar.getMenu().clear();
+        toolbar.inflateMenu(menuId);
+    }
+
+    //处理搜索框的打开与
+    private void handleSearch(){
+        image_search_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initiateSearch.hideSearchBox(MainActivity.this, card_search, toolbar, view_search, listView, edit_text_search, line_divider);
+                listContainer.setVisibility(View.GONE);
+            }
+        });
+
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener(){
+            @Override
+            public boolean onMenuItemClick(MenuItem item){
+                int menuItem = item.getItemId();
+                switch (menuItem){
+                    case R.id.action_search:
+                        initiateSearch.showSearchBox(MainActivity.this, card_search, toolbar, view_search, listView, edit_text_search, line_divider);
+                        break;
+                    case R.id.image_search_back:
+                        initiateSearch.hideSearchBox(MainActivity.this, card_search, toolbar, view_search, listView, edit_text_search, line_divider);
+                        listContainer.setVisibility(View.GONE);
+                        break;
+                }
+
+                return false;
+            }
+        });
+
+        edit_text_search.setOnKeyListener(new View.OnKeyListener(){
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event){
+                switch (keyCode){
+                    case KeyEvent.KEYCODE_ENTER:
+                        //// TODO: 2016-8-1 实现搜索框回车事件，这边在按下回车后会被调用两次，不知道出了什么幺蛾子。加个变量能解决这个问题，但是这样不够优雅
+                        Toast.makeText(MainActivity.this, "搜索：" + edit_text_search.getText(), Toast.LENGTH_SHORT).show();
+                }
+                return false;
+            }
+        });
     }
 
     @Override
