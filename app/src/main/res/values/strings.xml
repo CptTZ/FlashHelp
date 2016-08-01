@@ -22,7 +22,7 @@
     <string name="network_error">网络错误，请检查您的网络连接</string>
 
     <string name="title_activity_regist">注册账户</string>
-    <string name="user_not_reg_yet">您目前尚未注册,无法体验本程序功能</string>
+    <string name="user_not_reg_yet">您尚未注册或登录,无法体验本程序功能</string>
 
     <string name="login_input_user_name">请输入用户名</string>
     <string name="login_input_user_password">请输入密码</string>
