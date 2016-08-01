@@ -19,6 +19,7 @@ import org.gis4.xfb.hurricanehelp.R;
 
 /**
  * Created by chi on 2016-7-31.
+ * 与搜索有关的方法
  */
 public class initiateSearch {
     public static void hideSearchBox(
@@ -70,7 +71,7 @@ public class initiateSearch {
                 view.setVisibility(View.INVISIBLE);
                 search.setVisibility(View.GONE);
             }
-            editText.setText("");
+            //editText.setText("");
 //            toolbarMain.setNavigationIcon(R.mipmap.tabbar_home_logo);
 //            toolbarMain.setTitle("Fit Health");
 //            toolbarMain.getMenu().clear();

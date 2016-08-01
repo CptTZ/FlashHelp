@@ -117,22 +117,24 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     {
         if (keyCode == KeyEvent.KEYCODE_BACK)
         {
+            //如果搜索框打开了得话，按返回键先隐藏搜索框，否则按正常流程走
             if (card_search.getVisibility() == View.VISIBLE){
-                //// TODO: 2016-8-1 此处想实现点击“image_search_back” ，未完成
-                ImageButton ib = (ImageButton) image_search_back;
+                image_search_back.callOnClick();
+            }
+            else{
+                // 1.5s内再次按下即退出
+                if ((System.currentTimeMillis() - mExitTime) > 1500)
+                {
+                    Toast.makeText(this, "再按一次返回键退出程序", Toast.LENGTH_SHORT).show();
+                    mExitTime = System.currentTimeMillis();
+                } else
+                {
+                    super.locationOld.DestoryLocation();
+                    System.runFinalization();
+                    System.exit(0);
+                }
+            }
 
-            }
-            // 1.5s内再次按下即退出
-            if ((System.currentTimeMillis() - mExitTime) > 1500)
-            {
-                Toast.makeText(this, "再按一次返回键退出程序", Toast.LENGTH_SHORT).show();
-                mExitTime = System.currentTimeMillis();
-            } else
-            {
-                super.locationOld.DestoryLocation();
-                System.runFinalization();
-                System.exit(0);
-            }
             return true;
         }
 
@@ -214,6 +216,18 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                         break;
                 }
 
+                return false;
+            }
+        });
+
+        edit_text_search.setOnKeyListener(new View.OnKeyListener(){
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event){
+                switch (keyCode){
+                    case KeyEvent.KEYCODE_ENTER:
+                        //// TODO: 2016-8-1 实现搜索框回车事件，这边在按下回车后会被调用两次，不知道出了什么幺蛾子。加个变量能解决这个问题，但是这样不够优雅
+                        Toast.makeText(MainActivity.this, "搜索：" + edit_text_search.getText(), Toast.LENGTH_SHORT).show();
+                }
                 return false;
             }
         });
