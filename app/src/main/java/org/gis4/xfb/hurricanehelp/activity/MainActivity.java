@@ -1,5 +1,6 @@
 package org.gis4.xfb.hurricanehelp.activity;
 
+import android.content.Intent;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -48,7 +49,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     private MeFragment mThirdFragment = null;
     private ActivitiesFragment mFourthFragment = null;
 
-    private  Toolbar toolbar;
+    private Toolbar toolbar;
     private RelativeLayout view_search;
     private CardView card_search;
     private ListView listView, listContainer;
@@ -71,6 +72,9 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
             text = "发布活动中，您的位置：" + super.locationOld.getLocation().getAddress();
 
         Toast.makeText(MainActivity.this, text, Toast.LENGTH_SHORT).show();
+
+        //打开发单界面
+        startActivity(new Intent(this,FadanActivity.class));
     }
 
     @Override
@@ -207,12 +211,18 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
             public boolean onMenuItemClick(MenuItem item){
                 int menuItem = item.getItemId();
                 switch (menuItem){
+                    case R.id.action_location:
+                        Toast.makeText(MainActivity.this, "定位", Toast.LENGTH_SHORT).show();
+                        break;
                     case R.id.action_search:
                         initiateSearch.showSearchBox(MainActivity.this, card_search, toolbar, view_search, listView, edit_text_search, line_divider);
                         break;
                     case R.id.image_search_back:
                         initiateSearch.hideSearchBox(MainActivity.this, card_search, toolbar, view_search, listView, edit_text_search, line_divider);
                         listContainer.setVisibility(View.GONE);
+                        break;
+                    case R.id.action_voice:
+                        Toast.makeText(MainActivity.this, "语音功能暂未完善", Toast.LENGTH_SHORT).show();
                         break;
                 }
 
