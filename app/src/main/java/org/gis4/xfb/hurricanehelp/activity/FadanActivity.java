@@ -9,22 +9,44 @@ import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.appeaser.sublimepickerlibrary.datepicker.SelectedDate;
+import com.appeaser.sublimepickerlibrary.helpers.SublimeOptions;
+import com.appeaser.sublimepickerlibrary.recurrencepicker.SublimeRecurrencePicker;
 
 import org.gis4.xfb.hurricanehelp.R;
 
 public class FadanActivity extends BaseActivity {
 
     private Toolbar toolbar;
+    private Spinner spinner;
+    private EditText editTextReceiveLocationDiscription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fadan);
 
+        spinner = (Spinner) findViewById(R.id.task_sype);
+
         toolbar=(Toolbar) findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.activity_fadan_menu);
+
         initialMenu(toolbar.getMenu());
+        initialSpinner();
+        initialActivity();
+    }
+
+    private void initialSpinner() {
+        ArrayAdapter adapter = ArrayAdapter.createFromResource(this,
+                R.array.task_sype, R.layout.spinner_item);
+
+        //adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        spinner.setAdapter(adapter);
     }
 
     private void initialMenu(Menu menu) {
@@ -58,6 +80,10 @@ public class FadanActivity extends BaseActivity {
             spanString.setSpan(new ForegroundColorSpan(Color.WHITE), 0, spanString.length(), 0); //fix the color to white
             item.setTitle(spanString);
         }
+    }
+
+    private void initialActivity(){
+
     }
 
 }

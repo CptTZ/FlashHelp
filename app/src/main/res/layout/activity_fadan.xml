@@ -11,7 +11,418 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:background="@color/colorPrimary"
+        android:theme="@style/AppTheme"
         app:titleTextColor="#ffffff"
         app:title="发布我的任务"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!--1，任务分类-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/scrollview_relativeLayout_margin"
+                android:layout_marginBottom="@dimen/scrollview_relativeLayout_margin"
+                android:layout_marginRight="@dimen/scrollview_relativeLayout_margin">
+
+                <ImageView
+                    android:id="@+id/imageview1"
+                    android:layout_width="@dimen/scrollview_image_size"
+                    android:layout_height="@dimen/scrollview_image_size"
+                    android:layout_marginLeft="@dimen/scrollview_image_margin"
+                    android:layout_marginRight="@dimen/scrollview_image_margin"
+                    android:src="@mipmap/fadan_1" />
+
+                <TextView
+                    android:id="@+id/textview1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="@dimen/scrollview_title_textsize"
+                    android:text="任务分类"
+                    android:gravity="center|left"
+                    android:layout_toRightOf="@+id/imageview1"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignBottom="@+id/imageview1" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/scrollview_linearLayout_margin"
+                    android:layout_alignLeft="@+id/textview1"
+                    android:layout_below="@+id/textview1">
+
+                    <Spinner
+                        android:id="@+id/task_sype"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:entries="@array/task_sype" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_height="@dimen/scrollview_shadow_height"
+                android:layout_width="fill_parent"
+                android:scaleType="fitXY"
+                android:src="@mipmap/scrollview_shadow"/>
+
+            <!--2，任务送达地点-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/scrollview_relativeLayout_margin"
+                android:layout_marginBottom="@dimen/scrollview_relativeLayout_margin"
+                android:layout_marginRight="@dimen/scrollview_relativeLayout_margin">
+
+                <ImageView
+                    android:id="@+id/imageview2"
+                    android:layout_width="@dimen/scrollview_image_size"
+                    android:layout_height="@dimen/scrollview_image_size"
+                    android:layout_marginLeft="@dimen/scrollview_image_margin"
+                    android:layout_marginRight="@dimen/scrollview_image_margin"
+                    android:src="@mipmap/fadan_23" />
+
+                <TextView
+                    android:id="@+id/textview2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="@dimen/scrollview_title_textsize"
+                    android:text="任务送达地点"
+                    android:gravity="center|left"
+                    android:layout_toRightOf="@+id/imageview2"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignBottom="@+id/imageview2" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/scrollview_linearLayout_margin"
+                    android:layout_alignLeft="@+id/textview2"
+                    android:layout_below="@+id/textview2">
+
+                    <EditText
+                        android:id="@+id/edittext_receive_location_discription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="输入位置描述"
+                        android:textSize="@dimen/scrollview_context_textsize"/>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:src="@mipmap/fadan_map"/>
+
+                </LinearLayout>
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_height="@dimen/scrollview_shadow_height"
+                android:layout_width="fill_parent"
+                android:scaleType="fitXY"
+                android:src="@mipmap/scrollview_shadow"/>
+
+            <!--3，任务执行地点-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/scrollview_relativeLayout_margin"
+                android:layout_marginBottom="@dimen/scrollview_relativeLayout_margin"
+                android:layout_marginRight="@dimen/scrollview_relativeLayout_margin">
+
+                <ImageView
+                    android:id="@+id/imageview3"
+                    android:layout_width="@dimen/scrollview_image_size"
+                    android:layout_height="@dimen/scrollview_image_size"
+                    android:layout_marginLeft="@dimen/scrollview_image_margin"
+                    android:layout_marginRight="@dimen/scrollview_image_margin"
+                    android:src="@mipmap/fadan_23" />
+
+                <TextView
+                    android:id="@+id/textview3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="@dimen/scrollview_title_textsize"
+                    android:text="任务执行地点"
+                    android:gravity="center|left"
+                    android:layout_toRightOf="@+id/imageview3"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignBottom="@+id/imageview3" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/scrollview_linearLayout_margin"
+                    android:layout_alignLeft="@+id/textview3"
+                    android:layout_below="@+id/textview3">
+
+                    <EditText
+                        android:id="@+id/edittext_execute_location_discription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="输入位置描述"
+                        android:textSize="@dimen/scrollview_context_textsize"/>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:src="@mipmap/fadan_map"/>
+
+                </LinearLayout>
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_height="@dimen/scrollview_shadow_height"
+                android:layout_width="fill_parent"
+                android:scaleType="fitXY"
+                android:src="@mipmap/scrollview_shadow"/>
+
+            <!--4，有效时间-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/scrollview_relativeLayout_margin"
+                android:layout_marginBottom="@dimen/scrollview_relativeLayout_margin"
+                android:layout_marginRight="@dimen/scrollview_relativeLayout_margin">
+
+                <ImageView
+                    android:id="@+id/imageview4"
+                    android:layout_width="@dimen/scrollview_image_size"
+                    android:layout_height="@dimen/scrollview_image_size"
+                    android:layout_marginLeft="@dimen/scrollview_image_margin"
+                    android:layout_marginRight="@dimen/scrollview_image_margin"
+                    android:src="@mipmap/fadan_4" />
+
+                <TextView
+                    android:id="@+id/textview4"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="@dimen/scrollview_title_textsize"
+                    android:text="有效时间"
+                    android:gravity="center|left"
+                    android:layout_toRightOf="@+id/imageview4"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignBottom="@+id/imageview4" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/scrollview_linearLayout_margin"
+                    android:layout_alignLeft="@+id/textview4"
+                    android:layout_below="@+id/textview4">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="@dimen/scrollview_linearLayout_margin"
+                        android:layout_marginBottom="@dimen/scrollview_linearLayout_margin">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="开始时间："
+                            android:textSize="@dimen/scrollview_context_textsize"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="发布任务起（点击修改）"
+                            android:textColor="@color/home_bar_text_push"
+                            android:textSize="@dimen/scrollview_context_textsize"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="@dimen/scrollview_linearLayout_margin"
+                        android:layout_marginBottom="@dimen/scrollview_linearLayout_margin">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="截至时间："
+                            android:textSize="@dimen/scrollview_context_textsize"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="发布任务后啥啥（点击修改）"
+                            android:textColor="@color/home_bar_text_push"
+                            android:textSize="@dimen/scrollview_context_textsize"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_height="@dimen/scrollview_shadow_height"
+                android:layout_width="fill_parent"
+                android:scaleType="fitXY"
+                android:src="@mipmap/scrollview_shadow"/>
+
+            <!--5，奖励-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/scrollview_relativeLayout_margin"
+                android:layout_marginBottom="@dimen/scrollview_relativeLayout_margin"
+                android:layout_marginRight="@dimen/scrollview_relativeLayout_margin">
+
+                <ImageView
+                    android:id="@+id/imageview5"
+                    android:layout_width="@dimen/scrollview_image_size"
+                    android:layout_height="@dimen/scrollview_image_size"
+                    android:layout_marginLeft="@dimen/scrollview_image_margin"
+                    android:layout_marginRight="@dimen/scrollview_image_margin"
+                    android:src="@mipmap/fadan_5" />
+
+                <TextView
+                    android:id="@+id/textview5"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="@dimen/scrollview_title_textsize"
+                    android:text="奖励"
+                    android:gravity="center|left"
+                    android:layout_toRightOf="@+id/imageview5"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignBottom="@+id/imageview5" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/scrollview_linearLayout_margin"
+                    android:layout_alignLeft="@+id/textview5"
+                    android:layout_below="@+id/textview5">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="积分值："
+                            android:textSize="@dimen/scrollview_context_textsize"/>
+                        <EditText
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/scrollview_context_textsize"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="（当前可用积分值：80）"
+                            android:textSize="@dimen/scrollview_context_textsize"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_height="@dimen/scrollview_shadow_height"
+                android:layout_width="fill_parent"
+                android:scaleType="fitXY"
+                android:src="@mipmap/scrollview_shadow"/>
+
+            <!--6，任务描述-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/scrollview_relativeLayout_margin"
+                android:layout_marginBottom="@dimen/scrollview_relativeLayout_margin"
+                android:layout_marginRight="@dimen/scrollview_relativeLayout_margin">
+
+                <ImageView
+                    android:id="@+id/imageview6"
+                    android:layout_width="@dimen/scrollview_image_size"
+                    android:layout_height="@dimen/scrollview_image_size"
+                    android:layout_marginLeft="@dimen/scrollview_image_margin"
+                    android:layout_marginRight="@dimen/scrollview_image_margin"
+                    android:src="@mipmap/fadan_6" />
+
+                <TextView
+                    android:id="@+id/textview6"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="@dimen/scrollview_title_textsize"
+                    android:text="任务描述"
+                    android:gravity="center|left"
+                    android:layout_toRightOf="@+id/imageview6"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignBottom="@+id/imageview6" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/scrollview_linearLayout_margin"
+                    android:layout_alignLeft="@+id/textview6"
+                    android:layout_below="@+id/textview6">
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="添加任务详细描述"
+                        android:textSize="@dimen/scrollview_context_textsize"/>
+
+                </LinearLayout>
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_height="@dimen/scrollview_shadow_height"
+                android:layout_width="fill_parent"
+                android:scaleType="fitXY"
+                android:src="@mipmap/scrollview_shadow"/>
+
+            <!--7，添加图片-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/scrollview_relativeLayout_margin"
+                android:layout_marginBottom="@dimen/scrollview_relativeLayout_margin"
+                android:layout_marginRight="@dimen/scrollview_relativeLayout_margin">
+
+                <ImageView
+                    android:id="@+id/imageview7"
+                    android:layout_width="@dimen/scrollview_image_size"
+                    android:layout_height="@dimen/scrollview_image_size"
+                    android:layout_marginLeft="@dimen/scrollview_image_margin"
+                    android:layout_marginRight="@dimen/scrollview_image_margin"
+                    android:src="@mipmap/fadan_7" />
+
+                <TextView
+                    android:id="@+id/textview7"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="@dimen/scrollview_title_textsize"
+                    android:text="添加图片"
+                    android:gravity="center|left"
+                    android:layout_toRightOf="@+id/imageview7"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignBottom="@+id/imageview7" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/scrollview_linearLayout_margin"
+                    android:layout_alignLeft="@+id/textview7"
+                    android:layout_below="@+id/textview7">
+
+
+                </LinearLayout>
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </RelativeLayout>

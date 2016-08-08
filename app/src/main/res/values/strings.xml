@@ -47,6 +47,4 @@
     <string name="error_register_email_repeat">邮箱已被注册，请更换邮箱</string>
     <string name="success_register_success">注册成功</string>
 
-    <string name="database_name">database_log</string>
-
 </resources>

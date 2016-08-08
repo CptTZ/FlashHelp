@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--发单页面的任务类型内的下拉框文本样式-->
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textSize="@dimen/scrollview_context_textsize"
+    android:gravity="center|left"
+    android:textColor="#000000"
+    android:padding="@dimen/scrollview_spinner_itempadding"/>

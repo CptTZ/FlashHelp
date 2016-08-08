@@ -12,5 +12,19 @@
     <dimen name="button_drawable_padding">360dip</dimen>
     <dimen name="home_bar_icon_margins">15dp</dimen>
 
+    <dimen name="scrollview_image_size">30dp</dimen>
+    <dimen name="scrollview_context_width">400dp</dimen>
+    <dimen name="scrollview_image_padding">5dp</dimen>
+    <dimen name="scrollview_title_textsize">20sp</dimen>
+    <dimen name="scrollview_context_textsize">16sp</dimen>
+    <dimen name="scrollview_relativeLayout_padding">7dp</dimen>
+    <dimen name="scrollview_text_padding">3dp</dimen>
+    <dimen name="scrollview_paddingtop_textview">10dp</dimen>
+    <dimen name="scrollview_spinner_textsize">25dp</dimen>
+    <dimen name="scrollview_image_margin">5dp</dimen>
+    <dimen name="scrollview_relativeLayout_margin">8dp</dimen>
+    <dimen name="scrollview_spinner_itempadding">5dp</dimen>
+    <dimen name="scrollview_linearLayout_margin">7dp</dimen>
+    <dimen name="scrollview_shadow_height">10dp</dimen>
 
 </resources>
