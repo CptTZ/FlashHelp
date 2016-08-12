@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.gis4.xfb.hurricanehelp.activity.FadanActivity">
+    tools:context=".activity.PublishActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -41,7 +41,7 @@
                     android:layout_height="@dimen/scrollview_image_size"
                     android:layout_marginLeft="@dimen/scrollview_image_margin"
                     android:layout_marginRight="@dimen/scrollview_image_margin"
-                    android:src="@mipmap/fadan_1" />
+                    android:src="@mipmap/publish_list_1" />
 
                 <TextView
                     android:id="@+id/textview1"
@@ -90,7 +90,7 @@
                     android:layout_height="@dimen/scrollview_image_size"
                     android:layout_marginLeft="@dimen/scrollview_image_margin"
                     android:layout_marginRight="@dimen/scrollview_image_margin"
-                    android:src="@mipmap/fadan_23" />
+                    android:src="@mipmap/publish_list_23" />
 
                 <TextView
                     android:id="@+id/textview2"
@@ -121,7 +121,7 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="120dp"
-                        android:src="@mipmap/fadan_map"/>
+                        android:src="@mipmap/publish_list_map_temp"/>
 
                 </LinearLayout>
             </RelativeLayout>
@@ -146,7 +146,7 @@
                     android:layout_height="@dimen/scrollview_image_size"
                     android:layout_marginLeft="@dimen/scrollview_image_margin"
                     android:layout_marginRight="@dimen/scrollview_image_margin"
-                    android:src="@mipmap/fadan_23" />
+                    android:src="@mipmap/publish_list_23" />
 
                 <TextView
                     android:id="@+id/textview3"
@@ -177,7 +177,7 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="120dp"
-                        android:src="@mipmap/fadan_map"/>
+                        android:src="@mipmap/publish_list_map_temp"/>
 
                 </LinearLayout>
             </RelativeLayout>
@@ -202,7 +202,7 @@
                     android:layout_height="@dimen/scrollview_image_size"
                     android:layout_marginLeft="@dimen/scrollview_image_margin"
                     android:layout_marginRight="@dimen/scrollview_image_margin"
-                    android:src="@mipmap/fadan_4" />
+                    android:src="@mipmap/publish_list_4" />
 
                 <TextView
                     android:id="@+id/textview4"
@@ -235,9 +235,10 @@
                             android:text="开始时间："
                             android:textSize="@dimen/scrollview_context_textsize"/>
                         <TextView
+                            android:id="@+id/textview_time_start"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="发布任务起（点击修改）"
+                            android:text="未设定（点击修改）"
                             android:textColor="@color/home_bar_text_push"
                             android:textSize="@dimen/scrollview_context_textsize"/>
                     </LinearLayout>
@@ -254,9 +255,10 @@
                             android:text="截至时间："
                             android:textSize="@dimen/scrollview_context_textsize"/>
                         <TextView
+                            android:id="@+id/textview_time_end"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="发布任务后啥啥（点击修改）"
+                            android:text="未设定（点击修改）"
                             android:textColor="@color/home_bar_text_push"
                             android:textSize="@dimen/scrollview_context_textsize"/>
                     </LinearLayout>
@@ -283,7 +285,7 @@
                     android:layout_height="@dimen/scrollview_image_size"
                     android:layout_marginLeft="@dimen/scrollview_image_margin"
                     android:layout_marginRight="@dimen/scrollview_image_margin"
-                    android:src="@mipmap/fadan_5" />
+                    android:src="@mipmap/publish_list_5" />
 
                 <TextView
                     android:id="@+id/textview5"
@@ -346,7 +348,7 @@
                     android:layout_height="@dimen/scrollview_image_size"
                     android:layout_marginLeft="@dimen/scrollview_image_margin"
                     android:layout_marginRight="@dimen/scrollview_image_margin"
-                    android:src="@mipmap/fadan_6" />
+                    android:src="@mipmap/publish_list_6" />
 
                 <TextView
                     android:id="@+id/textview6"
@@ -396,7 +398,7 @@
                     android:layout_height="@dimen/scrollview_image_size"
                     android:layout_marginLeft="@dimen/scrollview_image_margin"
                     android:layout_marginRight="@dimen/scrollview_image_margin"
-                    android:src="@mipmap/fadan_7" />
+                    android:src="@mipmap/publish_list_7" />
 
                 <TextView
                     android:id="@+id/textview7"

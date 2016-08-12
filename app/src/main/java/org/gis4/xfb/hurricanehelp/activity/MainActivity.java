@@ -8,14 +8,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -74,7 +72,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         Toast.makeText(MainActivity.this, text, Toast.LENGTH_SHORT).show();
 
         //打开发单界面
-        startActivity(new Intent(this,FadanActivity.class));
+        startActivity(new Intent(this,PublishActivity.class));
     }
 
     @Override

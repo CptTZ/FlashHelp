@@ -65,7 +65,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.gis4.xfb.hurricanehelp.activity.MainActivity" />
         </activity>
-        <activity android:name=".activity.FadanActivity"></activity>
+        <activity android:name=".activity.PublishActivity"
+            android:windowSoftInputMode="stateHidden">
+        </activity>
     </application>
 
 </manifest>
