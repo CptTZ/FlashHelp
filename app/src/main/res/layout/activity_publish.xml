@@ -62,11 +62,13 @@
                     android:layout_alignLeft="@+id/textview1"
                     android:layout_below="@+id/textview1">
 
-                    <Spinner
-                        android:id="@+id/task_sype"
-                        android:layout_width="wrap_content"
+                    <com.rey.material.widget.Spinner
+                        android:id="@+id/task_type"
+                        style="@style/Material.Widget.Spinner"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:entries="@array/task_sype" />
+                        app:rd_style="@style/Material.Drawable.Ripple.Wave"/>
+
                 </LinearLayout>
             </RelativeLayout>
 
@@ -315,15 +317,36 @@
                             android:layout_height="wrap_content"
                             android:text="积分值："
                             android:textSize="@dimen/scrollview_context_textsize"/>
-                        <EditText
+                        <TextView
+                            android:id="@+id/textview_my_points"
                             android:layout_width="50dp"
                             android:layout_height="wrap_content"
-                            android:textSize="@dimen/scrollview_context_textsize"/>
+                            android:textSize="@dimen/scrollview_context_textsize"
+                            android:text="   "/>
                         <TextView
+                            android:id="@+id/textview_points"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="（当前可用积分值：80）"
+                            android:text="（当前可用积分值：）"
                             android:textSize="@dimen/scrollview_context_textsize"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="@dimen/scrollview_linearLayout_margin"
+                        android:layout_marginBottom="@dimen/scrollview_linearLayout_margin">
+
+                        <com.rey.material.widget.Slider
+                            android:id="@+id/slider_points"
+                            style="@style/Material.Widget.Slider"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            app:sl_minValue="0"
+                            app:sl_maxValue="100"
+                            app:sl_value="20"/>
                     </LinearLayout>
                 </LinearLayout>
             </RelativeLayout>

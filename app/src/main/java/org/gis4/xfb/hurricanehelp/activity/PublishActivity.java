@@ -1,5 +1,6 @@
 package org.gis4.xfb.hurricanehelp.activity;
 
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
@@ -12,7 +13,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.Spinner;
+
+import com.rey.material.widget.Slider;
+import com.rey.material.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,9 +32,11 @@ public class PublishActivity extends BaseActivity {
 
     private Toolbar toolbar;
     private Spinner spinner;
-    private EditText editTextReceiveLocationDiscription;
     private TextView textViewTimeStart;
     private TextView textViewTimeEnd;
+    private TextView textviewPoints;
+    private TextView textviewMyPoints;
+    private Slider sliderPoints;
 
     private boolean textViewTimeStartSelected, textViewTimeEndSelected;
     private pickedDate startDate, endDate;
@@ -41,24 +46,28 @@ public class PublishActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_publish);
 
-        spinner = (Spinner) findViewById(R.id.task_sype);
+        spinner = (Spinner) findViewById(R.id.task_type);
+        sliderPoints = (Slider) findViewById(R.id.slider_points);
 
-        toolbar=(Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.activity_publish_menu);
 
         textViewTimeStart =(TextView) findViewById(R.id.textview_time_start);
         textViewTimeEnd =(TextView) findViewById(R.id.textview_time_end);
+        textviewMyPoints =(TextView) findViewById(R.id.textview_my_points);
+        textviewPoints =(TextView) findViewById(R.id.textview_points);
 
         initialMenu(toolbar.getMenu());
         initialSpinner();
         initialActivity();
+        initialUserInfo();
     }
 
     private void initialSpinner() {
-        ArrayAdapter adapter = ArrayAdapter.createFromResource(this,
-                R.array.task_sype, R.layout.spinner_item);
+        String[] taskSype = getResources().getStringArray(R.array.task_sype);
 
-        //adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,R.layout.row_spn, taskSype);
+        adapter.setDropDownViewResource(R.layout.row_spn_dropdown);
         spinner.setAdapter(adapter);
     }
 
@@ -144,6 +153,23 @@ public class PublishActivity extends BaseActivity {
                 pickerFrag.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
                 pickerFrag.show(getSupportFragmentManager(), "SUBLIME_PICKER");
 
+            }
+        });
+    }
+
+    //初始化界面的用户信息，例如用户积分值。
+    private void initialUserInfo()
+    {
+        int points = 80;
+
+        textviewPoints.setText("（当前可用积分值：" + String.valueOf(points) + "）");
+        sliderPoints.setValueRange(0, points, true);
+        sliderPoints.setValue(0, true);
+
+        sliderPoints.setOnPositionChangeListener(new Slider.OnPositionChangeListener() {
+            @Override
+            public void onPositionChanged(Slider view, boolean fromUser, float oldPos, float newPos, int oldValue, int newValue) {
+                textviewMyPoints.setText(String.valueOf(newValue));
             }
         });
     }

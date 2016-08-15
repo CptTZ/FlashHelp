@@ -27,4 +27,7 @@
     <dimen name="scrollview_linearLayout_margin">7dp</dimen>
     <dimen name="scrollview_shadow_height">10dp</dimen>
 
+    <dimen name="three_grid_unit">24dp</dimen>
+    <dimen name="one_and_a_half_grid_unit">12dp</dimen>
+
 </resources>
