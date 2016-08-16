@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -235,7 +236,20 @@ public class PublishActivity extends BaseActivity {
             ArrayList<String> imagePaths = (ArrayList<String>) data.getSerializableExtra(ImageSelectorActivity.REQUEST_OUTPUT);
 
             for(int n =0; n<imagePaths.size(); n++){
-                imageViewsArray[n].setImageBitmap(getLoacalBitmap(imagePaths.get(n)));
+                Bitmap bitmap = getLoacalBitmap(imagePaths.get(n));
+
+                //将图片的宽或者高压缩至300像素
+                double newWidth = 0, newHeight = 0;
+                if(bitmap.getHeight() > bitmap.getWidth()){
+                    newWidth = 300;
+                    newHeight = bitmap.getHeight() * newWidth / bitmap.getWidth();
+                }
+                else {
+                    newHeight = 300;
+                    newWidth = bitmap.getWidth() * newHeight / bitmap.getHeight();
+                }
+                Bitmap smallBitmap = zoomImage(bitmap, newWidth, newHeight);
+                imageViewsArray[n].setImageBitmap(smallBitmap);
             }
         }
     }
@@ -250,6 +264,22 @@ public class PublishActivity extends BaseActivity {
             e.printStackTrace();
             return null;
         }
+    }
+
+    //压缩图片，防止内存溢出
+    public static Bitmap zoomImage(Bitmap bgimage, double newWidth, double newHeight) {
+        // 获取这个图片的宽和高
+        float width = bgimage.getWidth();
+        float height = bgimage.getHeight();
+        // 创建操作图片用的matrix对象
+        Matrix matrix = new Matrix();
+        // 计算宽高缩放率
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        // 缩放图片动作
+        matrix.postScale(scaleWidth, scaleHeight);
+        Bitmap bitmap = Bitmap.createBitmap(bgimage, 0, 0, (int) width, (int) height, matrix, true);
+        return bitmap;
     }
 
     //时间控件相关的方法
