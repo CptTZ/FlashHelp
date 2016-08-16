@@ -322,7 +322,7 @@
                             android:layout_width="50dp"
                             android:layout_height="wrap_content"
                             android:textSize="@dimen/scrollview_context_textsize"
-                            android:text="   "/>
+                            android:text="0"/>
                         <TextView
                             android:id="@+id/textview_points"
                             android:layout_width="wrap_content"
@@ -385,7 +385,7 @@
                     android:layout_alignBottom="@+id/imageview6" />
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_marginTop="@dimen/scrollview_linearLayout_margin"
@@ -395,7 +395,7 @@
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="添加任务详细描述"
+                        android:hint="添加任务详细描述（可多行）"
                         android:textSize="@dimen/scrollview_context_textsize"/>
 
                 </LinearLayout>
@@ -442,6 +442,66 @@
                     android:layout_alignLeft="@+id/textview7"
                     android:layout_below="@+id/textview7">
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <com.rey.material.widget.Button
+                            android:id="@+id/select_or_clear_images"
+                            android:layout_width="@dimen/publish_activity_image_width"
+                            android:layout_height="@dimen/publish_activity_image_width"
+                            android:layout_margin="@dimen/publish_activity_image_margin"
+                            android:background="@mipmap/publish_activity_addimage"
+                            app:rd_enable="true"
+                            app:rd_delayClick="untilRelease"/>
+
+                        <ImageView
+                            android:id="@+id/publish_imageview1"
+                            android:layout_width="@dimen/publish_activity_image_width"
+                            android:layout_height="@dimen/publish_activity_image_width"
+                            android:layout_margin="@dimen/publish_activity_image_margin"
+                            android:scaleType="centerCrop"
+                            android:src="@mipmap/publish_activity_noimage"/>
+
+                        <ImageView
+                            android:id="@+id/publish_imageview2"
+                            android:layout_width="@dimen/publish_activity_image_width"
+                            android:layout_height="@dimen/publish_activity_image_width"
+                            android:layout_margin="@dimen/publish_activity_image_margin"
+                            android:scaleType="centerCrop"
+                            android:src="@mipmap/publish_activity_noimage"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/publish_imageview3"
+                            android:layout_width="@dimen/publish_activity_image_width"
+                            android:layout_height="@dimen/publish_activity_image_width"
+                            android:layout_margin="@dimen/publish_activity_image_margin"
+                            android:scaleType="centerCrop"
+                            android:src="@mipmap/publish_activity_noimage"/>
+
+                        <ImageView
+                            android:id="@+id/publish_imageview4"
+                            android:layout_width="@dimen/publish_activity_image_width"
+                            android:layout_height="@dimen/publish_activity_image_width"
+                            android:layout_margin="@dimen/publish_activity_image_margin"
+                            android:scaleType="centerCrop"
+                            android:src="@mipmap/publish_activity_noimage"/>
+
+                        <ImageView
+                            android:id="@+id/publish_imageview5"
+                            android:layout_width="@dimen/publish_activity_image_width"
+                            android:layout_height="@dimen/publish_activity_image_width"
+                            android:layout_margin="@dimen/publish_activity_image_margin"
+                            android:scaleType="centerCrop"
+                            android:src="@mipmap/publish_activity_noimage"/>
+                    </LinearLayout>
 
                 </LinearLayout>
             </RelativeLayout>

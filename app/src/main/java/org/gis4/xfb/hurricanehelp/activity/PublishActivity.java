@@ -1,6 +1,9 @@
 package org.gis4.xfb.hurricanehelp.activity;
 
+import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
@@ -14,18 +17,26 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 
+import com.rey.material.widget.Button;
 import com.rey.material.widget.Slider;
 import com.rey.material.widget.Spinner;
+
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.appeaser.sublimepickerlibrary.datepicker.SelectedDate;
 import com.appeaser.sublimepickerlibrary.helpers.SublimeOptions;
 import com.appeaser.sublimepickerlibrary.recurrencepicker.SublimeRecurrencePicker;
+import com.yongchun.library.view.ImageSelectorActivity;
 
 import org.gis4.xfb.hurricanehelp.R;
 import org.gis4.xfb.hurricanehelp.data.pickedDate;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class PublishActivity extends BaseActivity {
@@ -37,6 +48,10 @@ public class PublishActivity extends BaseActivity {
     private TextView textviewPoints;
     private TextView textviewMyPoints;
     private Slider sliderPoints;
+
+    private Button selectOrClearImages;
+    private boolean hasSelectImage;
+    private ImageView[] imageViewsArray;
 
     private boolean textViewTimeStartSelected, textViewTimeEndSelected;
     private pickedDate startDate, endDate;
@@ -57,10 +72,20 @@ public class PublishActivity extends BaseActivity {
         textviewMyPoints =(TextView) findViewById(R.id.textview_my_points);
         textviewPoints =(TextView) findViewById(R.id.textview_points);
 
+        selectOrClearImages =(Button) findViewById(R.id.select_or_clear_images);
+        hasSelectImage =false;
+        imageViewsArray = new ImageView[5];
+        imageViewsArray[0] =(ImageView) findViewById(R.id.publish_imageview1);
+        imageViewsArray[1] =(ImageView) findViewById(R.id.publish_imageview2);
+        imageViewsArray[2] =(ImageView) findViewById(R.id.publish_imageview3);
+        imageViewsArray[3] =(ImageView) findViewById(R.id.publish_imageview4);
+        imageViewsArray[4] =(ImageView) findViewById(R.id.publish_imageview5);
+
         initialMenu(toolbar.getMenu());
         initialSpinner();
         initialActivity();
         initialUserInfo();
+        initialImageSelect();
     }
 
     private void initialSpinner() {
@@ -158,8 +183,7 @@ public class PublishActivity extends BaseActivity {
     }
 
     //初始化界面的用户信息，例如用户积分值。
-    private void initialUserInfo()
-    {
+    private void initialUserInfo() {
         int points = 80;
 
         textviewPoints.setText("（当前可用积分值：" + String.valueOf(points) + "）");
@@ -174,6 +198,61 @@ public class PublishActivity extends BaseActivity {
         });
     }
 
+    private void initialImageSelect(){
+        selectOrClearImages.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(hasSelectImage){
+                    for(int n = 0; n<imageViewsArray.length; n++){
+                        imageViewsArray[n].setImageDrawable(getResources().getDrawable(R.mipmap.publish_activity_noimage));
+                    }
+
+                    Toast.makeText(PublishActivity.this, "清空已选", Toast.LENGTH_SHORT).show();
+                    selectOrClearImages.setBackgroundDrawable(getResources().getDrawable(R.mipmap.publish_activity_addimage));
+                    hasSelectImage = false;
+                }
+                else {
+                    //设置选择图片的参数
+                    int maxSelectNum = imageViewsArray.length;
+                    int mode = ImageSelectorActivity.MODE_MULTIPLE;
+                    boolean isShow = false;
+                    boolean isPreview = true;
+                    boolean isCrop = false;
+
+                    ImageSelectorActivity.start(PublishActivity.this, maxSelectNum, mode, isShow,isPreview,isCrop);
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode == RESULT_OK && requestCode == ImageSelectorActivity.REQUEST_IMAGE){
+            //更改添加图片的按钮为删除图片按钮
+            selectOrClearImages.setBackgroundDrawable(getResources().getDrawable(R.mipmap.publish_activity_clearallselected));
+            hasSelectImage = true;
+
+            ArrayList<String> imagePaths = (ArrayList<String>) data.getSerializableExtra(ImageSelectorActivity.REQUEST_OUTPUT);
+
+            for(int n =0; n<imagePaths.size(); n++){
+                imageViewsArray[n].setImageBitmap(getLoacalBitmap(imagePaths.get(n)));
+            }
+        }
+    }
+
+    //本地路径
+    private Bitmap getLoacalBitmap(String url) {
+        try {
+            FileInputStream fis = new FileInputStream(url);
+            return BitmapFactory.decodeStream(fis);  ///把流转化为Bitmap图片
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    //时间控件相关的方法
     SublimePickerFragment.Callback mFragmentCallback = new SublimePickerFragment.Callback() {
         @Override
         public void onCancelled() {
@@ -212,6 +291,7 @@ public class PublishActivity extends BaseActivity {
         }
     };
 
+    //获取时间设置空间的参数
     Pair<Boolean, SublimeOptions> getOptions() {
         SublimeOptions options = new SublimeOptions();
         int displayOptions = 0;

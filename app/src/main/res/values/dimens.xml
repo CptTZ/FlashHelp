@@ -29,5 +29,7 @@
 
     <dimen name="three_grid_unit">24dp</dimen>
     <dimen name="one_and_a_half_grid_unit">12dp</dimen>
+    <dimen name="publish_activity_image_width">90dp</dimen>
+    <dimen name="publish_activity_image_margin">5dp</dimen>
 
 </resources>
