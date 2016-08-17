@@ -50,6 +50,9 @@ public class PublishActivity extends BaseActivity {
     private TextView textviewMyPoints;
     private Slider sliderPoints;
 
+    private ImageView taskSendLocationImageview;
+    private ImageView taskExecuteLocationImageview;
+
     private Button selectOrClearImages;
     private boolean hasSelectImage;
     private ImageView[] imageViewsArray;
@@ -73,6 +76,9 @@ public class PublishActivity extends BaseActivity {
         textviewMyPoints =(TextView) findViewById(R.id.textview_my_points);
         textviewPoints =(TextView) findViewById(R.id.textview_points);
 
+        taskSendLocationImageview =(ImageView) findViewById(R.id.task_send_location_imageview);
+        taskExecuteLocationImageview =(ImageView) findViewById(R.id.task_execute_location_imageview);
+
         selectOrClearImages =(Button) findViewById(R.id.select_or_clear_images);
         hasSelectImage =false;
         imageViewsArray = new ImageView[5];
@@ -85,6 +91,7 @@ public class PublishActivity extends BaseActivity {
         initialMenu(toolbar.getMenu());
         initialSpinner();
         initialActivity();
+        initialLocationSelect();
         initialUserInfo();
         initialImageSelect();
     }
@@ -183,6 +190,35 @@ public class PublishActivity extends BaseActivity {
         });
     }
 
+    //初始化地点选择功能
+    private void initialLocationSelect(){
+        taskSendLocationImageview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent =new Intent(PublishActivity.this,ChooseLocationActivity.class);
+                Bundle bundle=new Bundle();
+
+                bundle.putString("title", "选择任务送达地点");
+                intent.putExtras(bundle);
+
+                startActivityForResult(intent, ChooseLocationActivity.REQUEST_SEND_LOCATION);
+            }
+        });
+
+        taskExecuteLocationImageview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent =new Intent(PublishActivity.this,ChooseLocationActivity.class);
+                Bundle bundle=new Bundle();
+
+                bundle.putString("title", "选择任务执行地点");
+                intent.putExtras(bundle);
+
+                startActivityForResult(intent, ChooseLocationActivity.REQUEST_EXECUTE_LOCATION);
+            }
+        });
+    }
+
     //初始化界面的用户信息，例如用户积分值。
     private void initialUserInfo() {
         int points = 80;
@@ -226,6 +262,7 @@ public class PublishActivity extends BaseActivity {
         });
     }
 
+    //处理别的页面返回的参数
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode == RESULT_OK && requestCode == ImageSelectorActivity.REQUEST_IMAGE){
@@ -251,6 +288,14 @@ public class PublishActivity extends BaseActivity {
                 Bitmap smallBitmap = zoomImage(bitmap, newWidth, newHeight);
                 imageViewsArray[n].setImageBitmap(smallBitmap);
             }
+        }
+
+        if(resultCode == RESULT_OK && requestCode == ChooseLocationActivity.REQUEST_SEND_LOCATION){
+            Toast.makeText(PublishActivity.this, data.getStringExtra("location"), Toast.LENGTH_SHORT).show();
+        }
+
+        if(resultCode == RESULT_OK && requestCode == ChooseLocationActivity.REQUEST_EXECUTE_LOCATION){
+            Toast.makeText(PublishActivity.this, data.getStringExtra("location"), Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -121,6 +121,7 @@
                         android:textSize="@dimen/scrollview_context_textsize"/>
 
                     <ImageView
+                        android:id="@+id/task_send_location_imageview"
                         android:layout_width="match_parent"
                         android:layout_height="120dp"
                         android:src="@mipmap/publish_list_map_temp"/>
@@ -177,6 +178,7 @@
                         android:textSize="@dimen/scrollview_context_textsize"/>
 
                     <ImageView
+                        android:id="@+id/task_execute_location_imageview"
                         android:layout_width="match_parent"
                         android:layout_height="120dp"
                         android:src="@mipmap/publish_list_map_temp"/>

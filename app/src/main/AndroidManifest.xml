@@ -23,7 +23,7 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="be8faa390c5fcd4ef53c54b14f5acdc4" />
+            android:value="eef9279301445b17372479db6a05816d" />
 
         <service android:name="com.amap.api.location.APSService" />
         <service android:name="com.avos.avoscloud.PushService" />
@@ -56,7 +56,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.MainActivity"></activity>
+        <activity android:name=".activity.MainActivity" />
         <activity
             android:name=".activity.RegistActivity"
             android:label="@string/title_activity_regist"
@@ -66,14 +66,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.gis4.xfb.hurricanehelp.activity.MainActivity" />
         </activity>
-        <activity android:name=".activity.PublishActivity"
-            android:windowSoftInputMode="stateHidden">
-        </activity>
-
-        <activity android:name="com.yongchun.library.view.ImageSelectorActivity"/>
-        <activity android:name="com.yongchun.library.view.ImagePreviewActivity"/>
-        <activity android:name="com.yongchun.library.view.ImageCropActivity"/>
-
+        <activity
+            android:name=".activity.PublishActivity"
+            android:windowSoftInputMode="stateHidden"></activity>
+        <activity android:name="com.yongchun.library.view.ImageSelectorActivity" />
+        <activity android:name="com.yongchun.library.view.ImagePreviewActivity" />
+        <activity android:name="com.yongchun.library.view.ImageCropActivity" />
+        <activity android:name=".activity.ChooseLocationActivity"></activity>
     </application>
 
 </manifest>

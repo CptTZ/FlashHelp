@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_location"
@@ -9,9 +8,9 @@
         android:title="当前位置"
         app:showAsAction="always"/>
     <item
-        android:id="@+id/action_search"
-        android:icon="@mipmap/ic_search"
+        android:id="@+id/action_ok"
+        android:icon="@mipmap/ic_ok"
         android:orderInCategory="2"
-        android:title="搜索"
+        android:title="确定"
         app:showAsAction="always"/>
 </menu>
