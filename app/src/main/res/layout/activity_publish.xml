@@ -110,11 +110,12 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_marginTop="@dimen/scrollview_linearLayout_margin"
+                    android:layout_marginRight="@dimen/scrollview_linearLayout_margin"
                     android:layout_alignLeft="@+id/textview2"
                     android:layout_below="@+id/textview2">
 
                     <EditText
-                        android:id="@+id/edittext_receive_location_discription"
+                        android:id="@+id/edittext_send_location_discription"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="输入位置描述"
@@ -123,7 +124,7 @@
                     <ImageView
                         android:id="@+id/task_send_location_imageview"
                         android:layout_width="match_parent"
-                        android:layout_height="120dp"
+                        android:layout_height="240dp"
                         android:src="@mipmap/publish_list_map_temp"/>
 
                 </LinearLayout>
@@ -167,6 +168,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_marginTop="@dimen/scrollview_linearLayout_margin"
+                    android:layout_marginRight="@dimen/scrollview_linearLayout_margin"
                     android:layout_alignLeft="@+id/textview3"
                     android:layout_below="@+id/textview3">
 
@@ -180,7 +182,7 @@
                     <ImageView
                         android:id="@+id/task_execute_location_imageview"
                         android:layout_width="match_parent"
-                        android:layout_height="120dp"
+                        android:layout_height="240dp"
                         android:src="@mipmap/publish_list_map_temp"/>
 
                 </LinearLayout>
@@ -395,6 +397,7 @@
                     android:layout_below="@+id/textview6">
 
                     <EditText
+                        android:id="@+id/task_desc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="添加任务详细描述（可多行）"

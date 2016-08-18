@@ -6,24 +6,24 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
+
+import com.amap.api.location.AMapLocation;
 
 import org.gis4.xfb.hurricanehelp.location.AmapLocationSource;
 import org.gis4.xfb.hurricanehelp.location.LocationManager;
-
 
 /**
  * Created by Tony on 2016/7/26.
  * Activity基类，存储必须变量啥的
  */
-public class BaseActivity extends AppCompatActivity
-{
+public class BaseActivity extends AppCompatActivity {
     protected LocationManager locationOld;
     protected AmapLocationSource locationSource;
     protected BaseActivity baseActivity;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.baseActivity = this;
 
@@ -42,8 +42,7 @@ public class BaseActivity extends AppCompatActivity
      * @param msg
      * @param c
      */
-    public void showError(String msg, Context c)
-    {
+    public void showError(String msg, Context c) {
         new AlertDialog.Builder(c)
                 .setTitle("错误")
                 .setMessage(msg)

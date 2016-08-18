@@ -17,6 +17,7 @@
         app:title=""/>
 
     <RelativeLayout
+        android:id="@+id/map_relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar">

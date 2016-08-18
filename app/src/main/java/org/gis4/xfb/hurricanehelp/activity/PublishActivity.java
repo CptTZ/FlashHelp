@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -33,6 +34,7 @@ import com.appeaser.sublimepickerlibrary.recurrencepicker.SublimeRecurrencePicke
 import com.yongchun.library.view.ImageSelectorActivity;
 
 import org.gis4.xfb.hurricanehelp.R;
+import org.gis4.xfb.hurricanehelp.data.XfbTask;
 import org.gis4.xfb.hurricanehelp.data.pickedDate;
 
 import java.io.FileInputStream;
@@ -41,6 +43,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class PublishActivity extends BaseActivity {
+
+    //保存数据
+    private XfbTask xfbTask;
 
     private Toolbar toolbar;
     private Spinner spinner;
@@ -52,6 +57,10 @@ public class PublishActivity extends BaseActivity {
 
     private ImageView taskSendLocationImageview;
     private ImageView taskExecuteLocationImageview;
+
+    private EditText taskDesc;
+    private EditText edittextSend;
+    private EditText edittextExecute;
 
     private Button selectOrClearImages;
     private boolean hasSelectImage;
@@ -65,6 +74,8 @@ public class PublishActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_publish);
 
+        xfbTask = new XfbTask();
+
         spinner = (Spinner) findViewById(R.id.task_type);
         sliderPoints = (Slider) findViewById(R.id.slider_points);
 
@@ -75,6 +86,10 @@ public class PublishActivity extends BaseActivity {
         textViewTimeEnd =(TextView) findViewById(R.id.textview_time_end);
         textviewMyPoints =(TextView) findViewById(R.id.textview_my_points);
         textviewPoints =(TextView) findViewById(R.id.textview_points);
+
+        taskDesc =(EditText) findViewById(R.id.task_desc);
+        edittextSend =(EditText) findViewById(R.id.edittext_send_location_discription);
+        edittextExecute=(EditText) findViewById(R.id.edittext_execute_location_discription);
 
         taskSendLocationImageview =(ImageView) findViewById(R.id.task_send_location_imageview);
         taskExecuteLocationImageview =(ImageView) findViewById(R.id.task_execute_location_imageview);
@@ -102,6 +117,13 @@ public class PublishActivity extends BaseActivity {
         ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,R.layout.row_spn, taskSype);
         adapter.setDropDownViewResource(R.layout.row_spn_dropdown);
         spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(Spinner parent, View view, int position, long id) {
+                xfbTask.setTaskType((String) spinner.getSelectedItem());
+            }
+        });
     }
 
     private void initialMenu(Menu menu) {
@@ -119,10 +141,17 @@ public class PublishActivity extends BaseActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.action_save:
-                        Toast.makeText(PublishActivity.this, "提交", Toast.LENGTH_SHORT).show();
+                        xfbTask.setDesc(taskDesc.getText().toString());
+                        xfbTask.setSenderLocationDescription(edittextSend.getText().toString());
+                        xfbTask.setHappenLocationDescription(edittextExecute.getText().toString());
+
+                        //xfbTask内的字段已经设置完毕。
+
+                        Toast.makeText(PublishActivity.this, "提交成功", Toast.LENGTH_SHORT).show();
+                        finish();
                         break;
                     case R.id.action_clear:
-                        Toast.makeText(PublishActivity.this, "重置", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PublishActivity.this, "重置(未完成)", Toast.LENGTH_SHORT).show();
                         break;
                 }
                 return false;
@@ -191,6 +220,8 @@ public class PublishActivity extends BaseActivity {
     }
 
     //初始化地点选择功能
+    //// TODO: 2016-8-18 记录所选点的位置以及缩放级别，使得第二次及之后打开选点界面时，地图显示在上一次所选的地方
+    //// TODO: 2016-8-18 问题：第一次打开发单界面时，地图那边显示什么图片？
     private void initialLocationSelect(){
         taskSendLocationImageview.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -231,6 +262,7 @@ public class PublishActivity extends BaseActivity {
             @Override
             public void onPositionChanged(Slider view, boolean fromUser, float oldPos, float newPos, int oldValue, int newValue) {
                 textviewMyPoints.setText(String.valueOf(newValue));
+                xfbTask.setRewardPoint(newValue);
             }
         });
     }
@@ -247,6 +279,10 @@ public class PublishActivity extends BaseActivity {
                     Toast.makeText(PublishActivity.this, "清空已选", Toast.LENGTH_SHORT).show();
                     selectOrClearImages.setBackgroundDrawable(getResources().getDrawable(R.mipmap.publish_activity_addimage));
                     hasSelectImage = false;
+
+                    xfbTask.setImagePaths(null);
+                    xfbTask.setLowQualityBitmaps(null);
+                    xfbTask.setHighQualityBitmaps(null);
                 }
                 else {
                     //设置选择图片的参数
@@ -271,6 +307,8 @@ public class PublishActivity extends BaseActivity {
             hasSelectImage = true;
 
             ArrayList<String> imagePaths = (ArrayList<String>) data.getSerializableExtra(ImageSelectorActivity.REQUEST_OUTPUT);
+            Bitmap[] lowQualityBitmaps = new Bitmap[imagePaths.size()];
+            Bitmap[] highQualityBitmaps = new Bitmap[imagePaths.size()];
 
             for(int n =0; n<imagePaths.size(); n++){
                 Bitmap bitmap = getLoacalBitmap(imagePaths.get(n));
@@ -287,15 +325,42 @@ public class PublishActivity extends BaseActivity {
                 }
                 Bitmap smallBitmap = zoomImage(bitmap, newWidth, newHeight);
                 imageViewsArray[n].setImageBitmap(smallBitmap);
+                lowQualityBitmaps[n] = smallBitmap;
+                highQualityBitmaps[n] = bitmap;
             }
+
+            String[] temp = new String[imagePaths.size()];
+            xfbTask.setImagePaths(imagePaths.toArray(temp));
+            xfbTask.setLowQualityBitmaps(lowQualityBitmaps);
+            xfbTask.setHighQualityBitmaps(highQualityBitmaps);
         }
 
         if(resultCode == RESULT_OK && requestCode == ChooseLocationActivity.REQUEST_SEND_LOCATION){
-            Toast.makeText(PublishActivity.this, data.getStringExtra("location"), Toast.LENGTH_SHORT).show();
+            double locationLatitude = data.getDoubleExtra("locationLatitude", 0);
+            double locationLongitude = data.getDoubleExtra("locationLongitude", 0);
+            String locationText = data.getStringExtra("locationText");
+
+            byte[] b = data.getByteArrayExtra("mapPic");
+            Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length);
+            taskSendLocationImageview.setImageDrawable(new BitmapDrawable(getResources(), bitmap));
+
+            xfbTask.setSenderLat(locationLatitude);
+            xfbTask.setSenderLng(locationLongitude);
+            xfbTask.setSenderLocation(locationText);
         }
 
         if(resultCode == RESULT_OK && requestCode == ChooseLocationActivity.REQUEST_EXECUTE_LOCATION){
-            Toast.makeText(PublishActivity.this, data.getStringExtra("location"), Toast.LENGTH_SHORT).show();
+            double locationLatitude = data.getDoubleExtra("locationLatitude", 0);
+            double locationLongitude = data.getDoubleExtra("locationLongitude", 0);
+            String locationText = data.getStringExtra("locationText");
+
+            byte[] b = data.getByteArrayExtra("mapPic");
+            Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length);
+            taskExecuteLocationImageview.setImageDrawable(new BitmapDrawable(getResources(), bitmap));
+
+            xfbTask.setHappenLat(locationLatitude);
+            xfbTask.setHappenLng(locationLongitude);
+            xfbTask.setHappenLocation(locationText);
         }
     }
 
@@ -346,6 +411,7 @@ public class PublishActivity extends BaseActivity {
                         selectedDate.getStartDate().get(Calendar.DAY_OF_MONTH),
                         hourOfDay,minute);
                 textViewTimeStart.setText(startDate.toString());
+                xfbTask.setStartTime(startDate.getDate());
             }
             if(textViewTimeEndSelected){
                 endDate = new pickedDate(
@@ -360,6 +426,7 @@ public class PublishActivity extends BaseActivity {
                 }
 
                 textViewTimeEnd.setText(endDate.toString());
+                xfbTask.setEndTime(endDate.getDate());
             }
 
             Toast.makeText(PublishActivity.this, "选择成功", Toast.LENGTH_SHORT).show();

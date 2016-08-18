@@ -2,8 +2,12 @@ package org.gis4.xfb.hurricanehelp.activity;
 
 import android.animation.AnimatorSet;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.location.Location;
+import android.net.Uri;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -18,7 +22,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.AMapOptions;
@@ -36,14 +49,20 @@ import com.amap.api.services.geocoder.GeocodeResult;
 import com.amap.api.services.geocoder.GeocodeSearch;
 import com.amap.api.services.geocoder.RegeocodeQuery;
 import com.amap.api.services.geocoder.RegeocodeResult;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.gis4.xfb.hurricanehelp.R;
+import org.gis4.xfb.hurricanehelp.data.XfbTask;
 import org.gis4.xfb.hurricanehelp.location.LocationManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-public class ChooseLocationActivity extends BaseActivity implements AMap.OnCameraChangeListener {
+public class ChooseLocationActivity extends BaseActivity implements AMap.OnCameraChangeListener,
+        LocationSource, AMapLocationListener {
 
     public static final int REQUEST_SEND_LOCATION = 201;
     public static final int REQUEST_EXECUTE_LOCATION = 202;
@@ -60,20 +79,29 @@ public class ChooseLocationActivity extends BaseActivity implements AMap.OnCamer
     private AMap aMap;
     private GeocodeSearch geocoderSearch;
 
+    private OnLocationChangedListener mListener;
+    private AMapLocationClient mlocationClient;
+    private AMapLocationClientOption mLocationOption;
+
     @BindView(R.id.selectLocationMap)
     public MapView mMapView;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_location);
 
-        imageViewPinPin =(ImageView) findViewById(R.id.pinpin_imageview);
-        imageViewPinPinShadow =(ImageView) findViewById(R.id.pinpin_shadow_imageview);
+        imageViewPinPin = (ImageView) findViewById(R.id.pinpin_imageview);
+        imageViewPinPinShadow = (ImageView) findViewById(R.id.pinpin_shadow_imageview);
 
         super.locationOld = new LocationManager(this.getApplicationContext());
-        locationTextDescription =(RelativeLayout) findViewById(R.id.location_text_description);
-        locationTextview =(TextView) findViewById(R.id.location_textview);
+        locationTextDescription = (RelativeLayout) findViewById(R.id.location_text_description);
+        locationTextview = (TextView) findViewById(R.id.location_textview);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.activity_location_select_menu);
@@ -86,9 +114,12 @@ public class ChooseLocationActivity extends BaseActivity implements AMap.OnCamer
 
         ButterKnife.bind(this);
         InitMap(savedInstanceState);
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
-    private void initialMenu(Menu menu){
+    private void initialMenu(Menu menu) {
         toolbar.setNavigationIcon(R.mipmap.ic_back_white);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -101,20 +132,25 @@ public class ChooseLocationActivity extends BaseActivity implements AMap.OnCamer
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()){
+                switch (item.getItemId()) {
                     case R.id.action_location:
-                        String text;
-                        if (super.locationOld.getLocation() == null)
-                            text = "无有效位置，无法发布！";
-                        else
-                            text = "发布活动中，您的位置：" + super.locationOld.getLocation().getAddress();
-                        Toast.makeText(ChooseLocationActivity.this, text, Toast.LENGTH_SHORT).show();
+                        //activate((OnLocationChangedListener) ChooseLocationActivity.this);
                         break;
                     case R.id.action_ok:
-                        Toast.makeText(ChooseLocationActivity.this, "确定", Toast.LENGTH_SHORT).show();
-                        //LatLng mTarget = aMap.getCameraPosition().target;
+                        //获取页面的截图，并传到上个activity显示
+                        RelativeLayout mapRelativeLayout = (RelativeLayout) findViewById(R.id.map_relativeLayout);
+                        mapRelativeLayout.setDrawingCacheEnabled(true);
+                        Bitmap bitmap = mapRelativeLayout.getDrawingCache();
+                        Bitmap bitmap1 = Bitmap.createBitmap(bitmap, 0, bitmap.getHeight()/4, bitmap.getWidth(), bitmap.getHeight()/2);
+                        LatLng mTarget = aMap.getCameraPosition().target;
+
                         Intent intent = new Intent();
-                        intent.putExtra("location","南师大");
+                        intent.putExtra("mapPic", Bitmap2Bytes(bitmap1));
+                        mapRelativeLayout.setDrawingCacheEnabled(false);
+
+                        intent.putExtra("locationText", locationTextview.getText());
+                        intent.putExtra("locationLatitude", mTarget.latitude);
+                        intent.putExtra("locationLongitude", mTarget.longitude);
                         setResult(RESULT_OK, intent);
                         finish();
                         break;
@@ -124,10 +160,15 @@ public class ChooseLocationActivity extends BaseActivity implements AMap.OnCamer
         });
     }
 
+    private byte[] Bitmap2Bytes(Bitmap bm) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        return baos.toByteArray();
+    }
+
     private void InitMap(Bundle s) {
         mMapView.onCreate(s);
-        if (aMap == null)
-        {
+        if (aMap == null) {
             aMap = mMapView.getMap();
             aMap.setOnCameraChangeListener(this);
         }
@@ -148,19 +189,18 @@ public class ChooseLocationActivity extends BaseActivity implements AMap.OnCamer
         ui.setScaleControlsEnabled(true);
         ui.setAllGesturesEnabled(true);
 
-        aMap.setOnMyLocationChangeListener(new AMap.OnMyLocationChangeListener()
-        {
+        aMap.setOnMyLocationChangeListener(new AMap.OnMyLocationChangeListener() {
             @Override
-            public void onMyLocationChange(Location location)
-            {
+            public void onMyLocationChange(Location location) {
                 if (!locChgFirst) return;
                 changeCamera(CameraUpdateFactory.zoomTo(17), null);
                 locChgFirst = false;
             }
         });
 
-        geocoderSearch = new GeocodeSearch(this);
+        formZoomLevel = aMap.getCameraPosition().zoom;
 
+        geocoderSearch = new GeocodeSearch(this);
         geocoderSearch.setOnGeocodeSearchListener(new GeocodeSearch.OnGeocodeSearchListener() {
             //逆地理编码
             @Override
@@ -181,6 +221,7 @@ public class ChooseLocationActivity extends BaseActivity implements AMap.OnCamer
 
                 locationTextDescription.setVisibility(View.VISIBLE);
             }
+
             @Override
             public void onGeocodeSearched(GeocodeResult geocodeResult, int i) {
 
@@ -189,8 +230,7 @@ public class ChooseLocationActivity extends BaseActivity implements AMap.OnCamer
     }
 
     private void changeCamera(CameraUpdate update, AMap.CancelableCallback callback) {
-        if (callback == null)
-        {
+        if (callback == null) {
             aMap.animateCamera(update);
             return;
         }
@@ -223,7 +263,7 @@ public class ChooseLocationActivity extends BaseActivity implements AMap.OnCamer
 
     @Override
     public void onCameraChange(CameraPosition cameraPosition) {
-        if(locationTextDescription.getVisibility() == View.VISIBLE){
+        if (locationTextDescription.getVisibility() == View.VISIBLE) {
             locationTextDescription.setVisibility(View.GONE);
         }
     }
@@ -233,7 +273,7 @@ public class ChooseLocationActivity extends BaseActivity implements AMap.OnCamer
     @Override
     public void onCameraChangeFinish(CameraPosition cameraPosition) {
         //pinpin的移动效果动画
-        if(formZoomLevel == aMap.getCameraPosition().zoom){
+        if (formZoomLevel == aMap.getCameraPosition().zoom) {
             Animation animationTranslate = AnimationUtils.loadAnimation(this, R.anim.pinpin_translate);
 
             animationTranslate.setAnimationListener(new Animation.AnimationListener() {
@@ -260,11 +300,53 @@ public class ChooseLocationActivity extends BaseActivity implements AMap.OnCamer
             imageViewPinPin.startAnimation(animationTranslate);
         }
 
-        if(locationTextDescription.getVisibility() == View.VISIBLE){
+        if (locationTextDescription.getVisibility() == View.VISIBLE) {
             locationTextDescription.setVisibility(View.VISIBLE);
         }
 
         formZoomLevel = aMap.getCameraPosition().zoom;
     }
 
+    @Override
+    public void activate(OnLocationChangedListener onLocationChangedListener) {
+        mListener = onLocationChangedListener;
+        if (mlocationClient == null) {
+            mlocationClient = new AMapLocationClient(this);
+            mLocationOption = new AMapLocationClientOption();
+            //设置定位监听
+            mlocationClient.setLocationListener(this);
+            //设置为高精度定位模式
+            mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+            //设置定位参数
+            mlocationClient.setLocationOption(mLocationOption);
+            // 此方法为每隔固定时间会发起一次定位请求，为了减少电量消耗或网络流量消耗，
+            // 注意设置合适的定位时间的间隔（最小间隔支持为2000ms），并且在合适时间调用stopLocation()方法来取消定位请求
+            // 在定位结束后，在合适的生命周期调用onDestroy()方法
+            // 在单次定位情况下，定位无论成功与否，都无需调用stopLocation()方法移除请求，定位sdk内部会移除
+            mlocationClient.startLocation();
+        }
+    }
+
+    @Override
+    public void deactivate() {
+        mListener = null;
+        if (mlocationClient != null) {
+            mlocationClient.stopLocation();
+            mlocationClient.onDestroy();
+        }
+        mlocationClient = null;
+    }
+
+    @Override
+    public void onLocationChanged(AMapLocation aMapLocation) {
+        if (aMapLocation != null) {
+            if (aMapLocation != null && aMapLocation.getErrorCode() == 0) {
+                CameraUpdateFactory.zoomBy(formZoomLevel, new Point((int) aMapLocation.getLatitude(),(int) aMapLocation.getLongitude()));
+                Toast.makeText(ChooseLocationActivity.this, aMapLocation.getLatitude() + "  " + aMapLocation.getLongitude(),Toast.LENGTH_SHORT).show();
+            } else {
+                String errText = "定位失败," + aMapLocation.getErrorCode()+ ": " + aMapLocation.getErrorInfo();
+                Toast.makeText(ChooseLocationActivity.this, errText,Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 }

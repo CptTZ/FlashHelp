@@ -61,8 +61,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     APSTSViewPager mVP;
 
     @OnClick(R.id.ivCenterBtn)
-    public void onClick(View v)
-    {
+    public void onClick(View v) {
         String text;
         if (super.locationOld.getLocation() == null)
             text = "无有效位置，无法发布！";
@@ -76,8 +75,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.locationOld = new LocationManager(this.getApplicationContext());
         setContentView(R.layout.activity_main);
@@ -96,8 +94,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         InitTab();
     }
 
-    private void InitTab()
-    {
+    private void InitTab() {
         Random rnd = new Random();
         mSize = getResources().getDimensionPixelSize(R.dimen.xfb_tab_size);
         mVP.setOffscreenPageLimit(VIEW_CAPACITY);
@@ -115,8 +112,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     private long mExitTime;
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)
-    {
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK)
         {
             //如果搜索框打开了得话，按返回键先隐藏搜索框，否则按正常流程走
@@ -144,29 +140,25 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     }
 
     @Override
-    protected void onDestroy()
-    {
+    protected void onDestroy() {
         super.onDestroy();
         super.locationOld.DestoryLocation();
     }
 
     @Override
-    protected void onPause()
-    {
+    protected void onPause() {
         super.onPause();
         super.locationOld.StopUpateLocation();
     }
 
     @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels)
-    {
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
     }
 
     //滑动时每个ViewPager都有一个对应的position，根据poision设置不同页面的toolbar的内容
     @Override
-    public void onPageSelected(int position)
-    {
+    public void onPageSelected(int position) {
         switch(position){
             case 0:
                 InitiateToolbarTabs("首页", R.mipmap.tabbar_home_logo, R.menu.fragment_index);
@@ -242,8 +234,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     }
 
     @Override
-    public void onPageScrollStateChanged(int state)
-    {
+    public void onPageScrollStateChanged(int state) {
 
     }
 
@@ -259,12 +250,9 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         }
 
         @Override
-        public Fragment getItem(int position)
-        {
-            if (position >= 0 && position < VIEW_CAPACITY)
-            {
-                switch (position)
-                {
+        public Fragment getItem(int position) {
+            if (position >= 0 && position < VIEW_CAPACITY) {
+                switch (position) {
                     case VIEW_INDEX:
                         if (null == mFirstFragment)
                             mFirstFragment = IndexFragment.instance();
@@ -298,12 +286,9 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         }
 
         @Override
-        public CharSequence getPageTitle(int position)
-        {
-            if (position >= 0 && position < VIEW_CAPACITY)
-            {
-                switch (position)
-                {
+        public CharSequence getPageTitle(int position) {
+            if (position >= 0 && position < VIEW_CAPACITY) {
+                switch (position) {
                     case VIEW_INDEX:
                         return "首页";
                     case VIEW_TASK:
@@ -320,12 +305,9 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         }
 
         @Override
-        public float getPageWeight(int position)
-        {
-            if (position >= 0 && position < VIEW_CAPACITY)
-            {
-                switch (position)
-                {
+        public float getPageWeight(int position) {
+            if (position >= 0 && position < VIEW_CAPACITY) {
+                switch (position) {
                     case VIEW_INDEX:
                         return 0.92f;
                     case VIEW_TASK:
@@ -342,12 +324,9 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         }
 
         @Override
-        public int[] getPageRule(int position)
-        {
-            if (position >= 0 && position < VIEW_CAPACITY)
-            {
-                switch (position)
-                {
+        public int[] getPageRule(int position) {
+            if (position >= 0 && position < VIEW_CAPACITY) {
+                switch (position) {
                     case VIEW_INDEX:
                         return new int[]{
                                 RelativeLayout.ALIGN_PARENT_LEFT};
@@ -368,8 +347,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         }
 
         @Override
-        public Margins getPageMargins(int position)
-        {
+        public Margins getPageMargins(int position) {
             if (position >= 0 && position < VIEW_CAPACITY)
             {
                 switch (position)
@@ -390,8 +368,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         }
 
         @Override
-        public Integer getPageIcon(int index)
-        {
+        public Integer getPageIcon(int index) {
             if (index >= 0 && index < VIEW_CAPACITY)
             {
                 switch (index)
@@ -412,12 +389,9 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         }
 
         @Override
-        public Integer getPageSelectIcon(int index)
-        {
-            if (index >= 0 && index < VIEW_CAPACITY)
-            {
-                switch (index)
-                {
+        public Integer getPageSelectIcon(int index) {
+            if (index >= 0 && index < VIEW_CAPACITY) {
+                switch (index) {
                     case VIEW_INDEX:
                         //我把“tabbar_home_selected”换成了“tabbar_home_highlighted”，selected可以删了。
                         return R.mipmap.tabbar_home_highlighted;
@@ -441,12 +415,9 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         }
 
         @Override
-        public int[] getTipsRule(int position)
-        {
-            if (position >= 0 && position < VIEW_CAPACITY)
-            {
-                switch (position)
-                {
+        public int[] getTipsRule(int position) {
+            if (position >= 0 && position < VIEW_CAPACITY) {
+                switch (position) {
                     case VIEW_INDEX:
                         return new int[]{
                                 RelativeLayout.ALIGN_PARENT_LEFT};
@@ -467,12 +438,9 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         }
 
         @Override
-        public Margins getTipsMargins(int position)
-        {
-            if (position >= 0 && position < VIEW_CAPACITY)
-            {
-                switch (position)
-                {
+        public Margins getTipsMargins(int position) {
+            if (position >= 0 && position < VIEW_CAPACITY) {
+                switch (position) {
                     case VIEW_INDEX:
                         return new Margins(4 * getResources().getDimensionPixelSize(R.dimen.psts_dot_m_right), 0, 0, 0);
                     default:

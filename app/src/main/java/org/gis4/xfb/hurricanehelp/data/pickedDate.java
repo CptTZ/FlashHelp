@@ -1,5 +1,7 @@
 package org.gis4.xfb.hurricanehelp.data;
 
+import java.util.Date;
+
 /**
  * Created by chi on 2016-8-12.
  */
@@ -75,5 +77,9 @@ public class pickedDate {
         if(tempDate.getMinute() > this.minute) return true;
 
         return false;
+    }
+
+    public Date getDate(){
+        return new Date(year, month, day, hour, minute);
     }
 }
