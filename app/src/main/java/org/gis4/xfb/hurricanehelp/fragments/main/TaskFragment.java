@@ -25,24 +25,26 @@ public class TaskFragment extends BaseFragment
                              Bundle savedInstanceState)
     {
         View view;
-        if (super.getUserId().isEmpty())
-        {
-            view = inflater.inflate(R.layout.fragment_me_reg, container, false);
-            super.hasLogined = false;
-            view.findViewById(R.id.button_i_need_register).setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View view)
-                {
-                    baseF.showError("FUCK");
-                }
-            });
-        } else
-        {
-            view = inflater.inflate(R.layout.fragment_task, container, false);
-            super.hasLogined = true;
-        }
+        //// TODO: 2016-8-19 先把登陆验证停掉
+//        if (super.getUserId().isEmpty())
+//        {
+//            view = inflater.inflate(R.layout.fragment_me_reg, container, false);
+//            super.hasLogined = false;
+//            view.findViewById(R.id.button_i_need_register).setOnClickListener(new View.OnClickListener()
+//            {
+//                @Override
+//                public void onClick(View view)
+//                {
+//                    baseF.showError("FUCK");
+//                }
+//            });
+//        } else
+//        {
+//            view = inflater.inflate(R.layout.fragment_task, container, false);
+//            super.hasLogined = true;
+//        }
 
+        view = inflater.inflate(R.layout.fragment_task, container, false);
         ButterKnife.bind(this, view);
 
         return view;

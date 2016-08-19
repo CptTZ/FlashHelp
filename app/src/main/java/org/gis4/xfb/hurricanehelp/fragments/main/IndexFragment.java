@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -26,6 +27,7 @@ import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.maps2d.model.MyLocationStyle;
 
 import org.gis4.xfb.hurricanehelp.R;
+import org.gis4.xfb.hurricanehelp.activity.APSTSViewPager;
 import org.gis4.xfb.hurricanehelp.fragments.BaseFragment;
 import org.gis4.xfb.hurricanehelp.location.AmapLocationSource;
 
@@ -46,44 +48,9 @@ public class IndexFragment extends BaseFragment
     private AMap aMap;
 
     //TODO: 更优雅的解决地图移动问题
+    //// TODO: 2016-8-19 已经被我优雅的解决了。
     @BindView(R.id.indexMap)
     public MapView mMapView;
-
-    @OnClick(R.id.buttonL)
-    public void Left()
-    {
-        changeCamera(CameraUpdateFactory.scrollBy(-SCROLL_BY_PX, 0), null);
-    }
-
-    @OnClick(R.id.buttonR)
-    public void Right()
-    {
-        changeCamera(CameraUpdateFactory.scrollBy(SCROLL_BY_PX, 0), null);
-    }
-
-    @OnClick(R.id.buttonU)
-    public void Up()
-    {
-        changeCamera(CameraUpdateFactory.scrollBy(0, -SCROLL_BY_PX), null);
-    }
-
-    @OnClick(R.id.buttonD)
-    public void Down()
-    {
-        changeCamera(CameraUpdateFactory.scrollBy(0, SCROLL_BY_PX), null);
-    }
-
-    @OnClick(R.id.buttonIn)
-    public void ZIn()
-    {
-        changeCamera(CameraUpdateFactory.zoomIn(), null);
-    }
-
-    @OnClick(R.id.buttonOut)
-    public void ZOut()
-    {
-        changeCamera(CameraUpdateFactory.zoomOut(), null);
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -103,8 +70,7 @@ public class IndexFragment extends BaseFragment
         return view;
     }
 
-    private void InitMap(Bundle s)
-    {
+    private void InitMap(Bundle s) {
         mMapView.onCreate(s);
         if (aMap == null)
         {
@@ -121,9 +87,9 @@ public class IndexFragment extends BaseFragment
         aMap.setLocationSource(super.locationSource);
         aMap.setMyLocationEnabled(true);
 
-        ui.setMyLocationButtonEnabled(true);
+        ui.setMyLocationButtonEnabled(false);
         ui.setLogoPosition(AMapOptions.LOGO_POSITION_BOTTOM_LEFT);
-        ui.setZoomControlsEnabled(false);
+        ui.setZoomControlsEnabled(true);
         ui.setScaleControlsEnabled(true);
         ui.setAllGesturesEnabled(false);
 
@@ -139,21 +105,65 @@ public class IndexFragment extends BaseFragment
         });
     }
 
+    private boolean isZoom = false;
+    private double dis1 = 0, dis2 = 0;//dis1:开始时两指的距离，dis2:手抬起时两指的距离
+
     @Override
     public void onStart(){
         super.onStart();
+
+        final APSTSViewPager mVP =(APSTSViewPager) getActivity().findViewById(R.id.vp_main);
+
+        aMap.setOnMapTouchListener(new AMap.OnMapTouchListener() {
+            @Override
+            public void onTouch(MotionEvent motionEvent) {
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_UP:
+                        mVP.requestDisallowInterceptTouchEvent(false);
+                        if(isZoom) {
+                            if(dis1 > dis2) {
+                                changeCamera(CameraUpdateFactory.zoomOut(), null);
+                            }
+                            else {
+                                changeCamera(CameraUpdateFactory.zoomIn(), null);
+                            }
+                        }
+                        dis1 = 0;
+                        dis2 = 0;
+                        isZoom = false;
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        //mVP.requestDisallowInterceptTouchEvent(true);
+                        if(isZoom) {
+                            dis2 = get2PointsDistance(
+                                    motionEvent.getX(0), motionEvent.getY(0),
+                                    motionEvent.getX(1), motionEvent.getY(1));
+                        }
+                        else {
+                            float changeX = (motionEvent.getX() - motionEvent.getHistoricalX(0));
+                            float changeY = (motionEvent.getY() - motionEvent.getHistoricalY(0));
+                            changeCamera(CameraUpdateFactory.scrollBy(-changeX, -changeY), null);
+                        }
+                        break;
+                    case MotionEvent.ACTION_DOWN:
+                        mVP.requestDisallowInterceptTouchEvent(true);
+                        break;
+                    case 0x00000105:
+                        mVP.requestDisallowInterceptTouchEvent(true);
+                        isZoom = true;
+                        dis1 = get2PointsDistance(
+                                motionEvent.getX(0), motionEvent.getY(0),
+                                motionEvent.getX(1), motionEvent.getY(1));
+                        break;
+                }
+            }
+        });
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        switch (item.getItemId())
-        {
-            case R.id.nav_camera:
-                Toast.makeText(getActivity(), "FragmentMenuItem1", Toast.LENGTH_SHORT).show();
-                break;
-        }
-        return true;
+    private double get2PointsDistance(float x1, float y1, float x2, float y2) {
+        float changeX = x2 - x1;
+        float changeY = y2 - y1;
+        return Math.sqrt(changeX * changeX + changeY * changeY);
     }
 
     @Override

@@ -8,6 +8,7 @@ import java.util.Date;
 /**
  * 旋风帮，基础任务
  */
+//// TODO: 2016-8-18 这个类里面还要记录发单人，也就是当前登录的用户，别忘了。
 public class XfbTask
 {
     private String title, desc, senderId, taskType;

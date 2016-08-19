@@ -98,6 +98,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         Random rnd = new Random();
         mSize = getResources().getDimensionPixelSize(R.dimen.xfb_tab_size);
         mVP.setOffscreenPageLimit(VIEW_CAPACITY);
+
         FragmentAdapter adapter = new FragmentAdapter(getSupportFragmentManager());
         mVP.setAdapter(adapter);
         adapter.notifyDataSetChanged();
@@ -241,11 +242,9 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     public class FragmentAdapter extends FragmentStatePagerAdapter implements
             AdvancedPagerSlidingTabStrip.IconTabProvider,
             AdvancedPagerSlidingTabStrip.LayoutProvider,
-            AdvancedPagerSlidingTabStrip.TipsProvider
-    {
+            AdvancedPagerSlidingTabStrip.TipsProvider {
 
-        public FragmentAdapter(FragmentManager fm)
-        {
+        public FragmentAdapter(FragmentManager fm) {
             super(fm);
         }
 
@@ -280,8 +279,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         }
 
         @Override
-        public int getCount()
-        {
+        public int getCount() {
             return VIEW_CAPACITY;
         }
 
@@ -409,8 +407,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         }
 
         @Override
-        public Rect getPageIconBounds(int position)
-        {
+        public Rect getPageIconBounds(int position) {
             return new Rect(0, 0, mSize, mSize);
         }
 
@@ -451,8 +448,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         }
 
         @Override
-        public Drawable getTipsDrawable(int position)
-        {
+        public Drawable getTipsDrawable(int position) {
             return null;
         }
     }

@@ -146,7 +146,7 @@ public class PublishActivity extends BaseActivity {
                         xfbTask.setHappenLocationDescription(edittextExecute.getText().toString());
 
                         //xfbTask内的字段已经设置完毕。
-
+                        //// TODO: 2016-8-19 从这里将xfbTask上传出去
                         Toast.makeText(PublishActivity.this, "提交成功", Toast.LENGTH_SHORT).show();
                         finish();
                         break;
