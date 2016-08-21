@@ -3,6 +3,7 @@ package org.gis4.xfb.hurricanehelp.activity;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -19,14 +20,22 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.amap.api.maps2d.AMap;
+import com.amap.api.maps2d.CameraUpdateFactory;
+import com.amap.api.maps2d.MapView;
+import com.amap.api.maps2d.model.BitmapDescriptorFactory;
+import com.amap.api.maps2d.model.LatLng;
+import com.amap.api.maps2d.model.MarkerOptions;
 import com.lhh.apst.library.AdvancedPagerSlidingTabStrip;
 import com.lhh.apst.library.Margins;
 
 import org.gis4.xfb.hurricanehelp.R;
+import org.gis4.xfb.hurricanehelp.data.XfbTask;
 import org.gis4.xfb.hurricanehelp.data.initiateSearch;
 import org.gis4.xfb.hurricanehelp.fragments.main.*;
 import org.gis4.xfb.hurricanehelp.location.LocationManager;
 
+import java.util.HashMap;
 import java.util.Random;
 
 import butterknife.BindView;
@@ -54,6 +63,13 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     private View line_divider;
     private EditText edit_text_search;
     private ImageView image_search_back;
+
+    //刷新页面时获得的数据存在着个里面。
+    private XfbTask[] taskData;
+
+    //从indexFragment里面获取到的地图,为了实现toolBar上的定位，刷新，搜索功能。
+    //因为涉及到初始化问题，只能在每次使用时赋值。
+    private AMap aMap;
 
     @BindView(R.id.tabs)
     AdvancedPagerSlidingTabStrip mAPSTS;
@@ -163,7 +179,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         switch(position){
             case 0:
                 InitiateToolbarTabs("首页", R.mipmap.tabbar_home_logo, R.menu.fragment_index);
-                handleSearch();
+                handleIndexFragment();
                 break;
             case 1:
                 InitiateToolbarTabs("任务", R.mipmap.tabbar_message_center_logo, R.menu.fragment_task);
@@ -172,7 +188,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                 InitiateToolbarTabs("我的", R.mipmap.tabbar_profile_logo, R.menu.fragment_me);
                 break;
             case 3:
-                InitiateToolbarTabs("活动", R.mipmap.tabbar_discover_logo, R.menu.fragment_activities);
+                InitiateToolbarTabs("发现", R.mipmap.tabbar_discover_logo, R.menu.fragment_activities);
                 break;
         }
     }
@@ -187,8 +203,9 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         toolbar.inflateMenu(menuId);
     }
 
-    //处理搜索框的打开与
-    private void handleSearch(){
+    //处理toolbar对indexFragment的操作
+    private void handleIndexFragment(){
+
         image_search_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -203,7 +220,9 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                 int menuItem = item.getItemId();
                 switch (menuItem){
                     case R.id.action_location:
-                        Toast.makeText(MainActivity.this, "定位", Toast.LENGTH_SHORT).show();
+                        MapView mMapView = (MapView) findViewById(R.id.indexMap);
+                        aMap = mMapView.getMap();
+                        aMap.animateCamera(CameraUpdateFactory.changeLatLng(new LatLng(32.114516, 118.91393)));
                         break;
                     case R.id.action_search:
                         initiateSearch.showSearchBox(MainActivity.this, card_search, toolbar, view_search, listView, edit_text_search, line_divider);
@@ -215,6 +234,14 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                     case R.id.action_voice:
                         Toast.makeText(MainActivity.this, "语音功能暂未完善", Toast.LENGTH_SHORT).show();
                         break;
+                    case R.id.action_refresh:
+                        MapView mMapView1;
+                        if(aMap ==null) {
+                            mMapView1 = (MapView) findViewById(R.id.indexMap);
+                            aMap = mMapView1.getMap();
+                        }
+                        aMap.clear();
+                        new Task().execute();
                 }
 
                 return false;
@@ -237,6 +264,33 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     @Override
     public void onPageScrollStateChanged(int state) {
 
+    }
+
+    private class Task extends AsyncTask<Void, Void, String> {
+        @Override
+        protected String doInBackground(Void... params) {
+            taskData = XfbTask.taskSample();
+            return String.valueOf(taskData.length);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+
+            Toast.makeText(MainActivity.this, "共刷新" + result + "条记录", Toast.LENGTH_SHORT).show();
+
+            for(int n = 0; n < taskData.length; n++) {
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions.position(new LatLng(taskData[n].getSenderLat(),taskData[n].getSenderLng()));
+                markerOptions.title(taskData[n].getDesc());
+
+                HashMap<String, Integer> imageList = XfbTask.imageList();
+                markerOptions.icon(BitmapDescriptorFactory.fromResource(imageList.get(taskData[n].getTaskType())));
+
+                aMap.addMarker(markerOptions);
+            }
+
+            super.onPostExecute(result);
+        }
     }
 
     public class FragmentAdapter extends FragmentStatePagerAdapter implements
@@ -294,7 +348,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                     case VIEW_MY:
                         return "我的";
                     case VIEW_ACTIVITIES:
-                        return "活动";
+                        return "发现";
                     default:
                         break;
                 }

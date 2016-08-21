@@ -5,6 +5,7 @@
              tools:context="org.gis4.xfb.hurricanehelp.fragments.main.TaskFragment">
 
     <TextView
+        android:id="@+id/textviewTest"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="任务"/>

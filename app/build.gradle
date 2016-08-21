@@ -29,15 +29,13 @@ android {
 }
 
 repositories {
-    flatDir {
-        dirs 'libs'
+    maven {
+        url "https://jitpack.io"
     }
 }
 
 dependencies {
     compile files('libs/AMap2DMap_2.9.0_AMapSearch_3.3.0_AMapLocation_2.6.0_20160628.jar')
-    //InboxLayout
-    compile (name:'library-release', ext:'aar')
     apt 'com.jakewharton:butterknife-compiler:8.2.1'
     compile('cn.leancloud.android:avoscloud-push:v3.+@aar') { transitive = true }
     compile 'com.android.support:appcompat-v7:23.1.1'
@@ -62,4 +60,6 @@ dependencies {
     compile 'com.isseiaoki:simplecropview:1.0.13'
     compile 'com.yongchun:com.yongchun.imageselector:1.1.0'
     compile 'com.google.android.gms:play-services-appindexing:8.1.0'
+
+    compile 'com.github.recruit-lifestyle:WaveSwipeRefreshLayout:1.6'
 }

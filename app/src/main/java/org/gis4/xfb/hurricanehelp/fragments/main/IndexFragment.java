@@ -39,13 +39,14 @@ public class IndexFragment extends BaseFragment
 {
     private static final int SCROLL_BY_PX = 100;
     private boolean locChgFirst = true;
+    private Toolbar toolBar;
 
     public static IndexFragment instance()
     {
         return new IndexFragment();
     }
 
-    private AMap aMap;
+    public AMap aMap;
 
     //TODO: 更优雅的解决地图移动问题
     //// TODO: 2016-8-19 已经被我优雅的解决了。
@@ -53,16 +54,14 @@ public class IndexFragment extends BaseFragment
     public MapView mMapView;
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
-    {
+                             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_index, container, false);
         ButterKnife.bind(this, view);
 
@@ -167,35 +166,30 @@ public class IndexFragment extends BaseFragment
     }
 
     @Override
-    public void onPause()
-    {
+    public void onPause() {
         super.onPause();
         mMapView.onPause();
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
         mMapView.onResume();
     }
 
     @Override
-    public void onDestroy()
-    {
+    public void onDestroy() {
         super.onDestroy();
         mMapView.onDestroy();
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState)
-    {
+    public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         mMapView.onSaveInstanceState(outState);
     }
 
-    private void changeCamera(CameraUpdate update, AMap.CancelableCallback callback)
-    {
+    private void changeCamera(CameraUpdate update, AMap.CancelableCallback callback) {
         if (callback == null)
         {
             aMap.animateCamera(update);

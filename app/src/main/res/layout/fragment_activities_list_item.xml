@@ -1,6 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout
+    android:id="@+id/item_relativelayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="0dp">
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/item_shadow"
+        android:layout_height="@dimen/scrollview_shadow_height"
+        android:layout_width="fill_parent"
+        android:layout_alignParentTop="true"
+        android:scaleType="fitXY"
+        android:src="@mipmap/scrollview_shadow"/>
+
+    <ImageView
+        android:id="@+id/item_task_type"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="7dp"
+        android:layout_below="@+id/item_shadow"
+        android:src="@mipmap/task_type_kuaidi"/>
+
+    <TextView
+        android:id="@+id/item_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignTop="@+id/item_task_type"
+        android:layout_toRightOf="@+id/item_task_type"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="15dp"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:gravity="center|left"
+        android:maxLines="2"
+        android:ellipsize = "end"
+        android:text="帮我去北门拿快递，急，在线等"/>
+
+    <TextView
+        android:id="@+id/item_reward_point"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_alignBottom="@+id/item_task_type"
+        android:layout_toRightOf="@+id/item_task_type"
+        android:layout_below="@+id/item_desc"
+        android:gravity="center|left"
+        android:textSize="14sp"
+        android:text="奖励积分：30"/>
+
+    <TextView
+        android:id="@+id/item_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_alignBottom="@+id/item_task_type"
+        android:layout_toRightOf="@+id/item_reward_point"
+        android:layout_below="@+id/item_desc"
+        android:gravity="center|left"
+        android:textSize="14sp"
+        android:text="距离：未定位，无法计算"/>
+
+</RelativeLayout>
