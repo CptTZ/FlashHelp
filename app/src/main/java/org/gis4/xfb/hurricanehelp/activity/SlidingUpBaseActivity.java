@@ -115,7 +115,7 @@ public abstract class SlidingUpBaseActivity<S extends Scrollable> extends BaseAc
         mHeaderBarHeight = getResources().getDimensionPixelSize(R.dimen.header_bar_height);
         mSlidingSlop = getResources().getDimensionPixelSize(R.dimen.sliding_slop);
         mActionBarSize = getActionBarSize();
-        mColorPrimary = getResources().getColor(R.color.primary);
+        mColorPrimary = getResources().getColor(R.color.colorPrimary);
         mSlidingHeaderBlueSize = getResources().getDimensionPixelSize(R.dimen.sliding_overlay_blur_size);
 
         mHeader = findViewById(R.id.header);

@@ -64,4 +64,6 @@ dependencies {
 
     compile 'com.github.recruit-lifestyle:WaveSwipeRefreshLayout:1.6'
     compile 'com.github.ksoichiro:android-observablescrollview:1.6.0'
+    compile 'com.nineoldandroids:library:2.4.0'
+    compile 'com.melnykov:floatingactionbutton:1.0.7'
 }

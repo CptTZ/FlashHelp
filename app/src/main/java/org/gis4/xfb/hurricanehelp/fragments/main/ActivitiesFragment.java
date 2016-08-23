@@ -72,6 +72,7 @@ public class ActivitiesFragment extends BaseFragment
         mListview.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
                 Toast.makeText(getActivity(), taskData[0].getDesc(), Toast.LENGTH_SHORT).show();
             }
 
