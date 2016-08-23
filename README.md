@@ -10,9 +10,7 @@ Brief Intro(Chinese Version Only)
 Brand new Client with everything changed
 ---
 1. LeanCloud libraries applyed
-2. Most dep. resolved by Maven/jcenter
-3. Javadoc for Amap(For me only)
-4. New package name
+2. Most dep. resolved by Maven/Jcenter
+3. collaboration made possible
 5. Still managed by Git(hub)
-6. Git好烦啊
-7. 测试2
+6. Crashed(due to server deletion) recovery
