@@ -2,6 +2,7 @@ package org.gis4.xfb.hurricanehelp.fragments.main;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import com.amap.api.maps2d.MapView;
 import com.amap.api.maps2d.UiSettings;
 import com.amap.api.maps2d.model.BitmapDescriptorFactory;
 import com.amap.api.maps2d.model.LatLng;
+import com.amap.api.maps2d.model.LatLngBounds;
 import com.amap.api.maps2d.model.MyLocationStyle;
 
 import org.gis4.xfb.hurricanehelp.R;
@@ -105,7 +107,7 @@ public class IndexFragment extends BaseFragment
     }
 
     private boolean isZoom = false;
-    private double dis1 = 0, dis2 = 0;//dis1:开始时两指的距离，dis2:手抬起时两指的距离
+    private LatLngBounds latLngBounds;
 
     @Override
     public void onStart(){
@@ -119,50 +121,39 @@ public class IndexFragment extends BaseFragment
                 switch (motionEvent.getAction()) {
                     case MotionEvent.ACTION_UP:
                         mVP.requestDisallowInterceptTouchEvent(false);
-                        if(isZoom) {
-                            if(dis1 > dis2) {
-                                changeCamera(CameraUpdateFactory.zoomOut(), null);
-                            }
-                            else {
-                                changeCamera(CameraUpdateFactory.zoomIn(), null);
-                            }
-                        }
-                        dis1 = 0;
-                        dis2 = 0;
                         isZoom = false;
                         break;
                     case MotionEvent.ACTION_MOVE:
-                        //mVP.requestDisallowInterceptTouchEvent(true);
                         if(isZoom) {
-                            dis2 = get2PointsDistance(
-                                    motionEvent.getX(0), motionEvent.getY(0),
-                                    motionEvent.getX(1), motionEvent.getY(1));
+                            aMap.moveCamera(
+                                    CameraUpdateFactory.newLatLngBounds(
+                                            latLngBounds,
+                                            (int) Math.abs(motionEvent.getX(0) - motionEvent.getX(1)),
+                                            (int) Math.abs(motionEvent.getY(0) - motionEvent.getY(1)), 0));
                         }
                         else {
-                            float changeX = (motionEvent.getX() - motionEvent.getHistoricalX(0));
-                            float changeY = (motionEvent.getY() - motionEvent.getHistoricalY(0));
+                            float changeX = motionEvent.getX() - motionEvent.getHistoricalX(0);
+                            float changeY = motionEvent.getY() - motionEvent.getHistoricalY(0);
                             changeCamera(CameraUpdateFactory.scrollBy(-changeX, -changeY), null);
                         }
                         break;
                     case MotionEvent.ACTION_DOWN:
                         mVP.requestDisallowInterceptTouchEvent(true);
                         break;
-                    case 0x00000105:
+                    case MotionEvent.ACTION_POINTER_2_DOWN:
                         mVP.requestDisallowInterceptTouchEvent(true);
                         isZoom = true;
-                        dis1 = get2PointsDistance(
-                                motionEvent.getX(0), motionEvent.getY(0),
-                                motionEvent.getX(1), motionEvent.getY(1));
+                        latLngBounds = new LatLngBounds(
+                                aMap.getProjection().fromScreenLocation(new Point(
+                                        (int) Math.min(motionEvent.getX(0), motionEvent.getX(1)),
+                                        (int) Math.max(motionEvent.getY(0), motionEvent.getY(1)))),
+                                aMap.getProjection().fromScreenLocation(new Point(
+                                        (int) Math.max(motionEvent.getX(0), motionEvent.getX(1)),
+                                        (int) Math.min(motionEvent.getY(0), motionEvent.getY(1)))));
                         break;
                 }
             }
         });
-    }
-
-    private double get2PointsDistance(float x1, float y1, float x2, float y2) {
-        float changeX = x2 - x1;
-        float changeY = y2 - y1;
-        return Math.sqrt(changeX * changeX + changeY * changeY);
     }
 
     @Override

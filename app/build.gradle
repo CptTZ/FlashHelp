@@ -29,6 +29,7 @@ android {
 }
 
 repositories {
+    mavenCentral()
     maven {
         url "https://jitpack.io"
     }
@@ -62,4 +63,5 @@ dependencies {
     compile 'com.google.android.gms:play-services-appindexing:8.1.0'
 
     compile 'com.github.recruit-lifestyle:WaveSwipeRefreshLayout:1.6'
+    compile 'com.github.ksoichiro:android-observablescrollview:1.6.0'
 }

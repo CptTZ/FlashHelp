@@ -66,7 +66,7 @@ public class ActivitiesFragment extends BaseFragment
         });
 
         mWaveSwipeRefreshLayout.setColorSchemeColors(Color.WHITE);
-        mWaveSwipeRefreshLayout.setWaveRGBColor(63, 81, 181);
+        mWaveSwipeRefreshLayout.setWaveRGBColor(14, 135, 234);
         mListview = (ListView) getActivity().findViewById(R.id.main_list);
 
         mListview.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
