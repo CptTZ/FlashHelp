@@ -1,33 +1,41 @@
 package org.gis4.xfb.hurricanehelp.activity;
 
+import android.content.Intent;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.amap.api.maps2d.AMap;
+import com.amap.api.maps2d.CameraUpdateFactory;
+import com.amap.api.maps2d.MapView;
+import com.amap.api.maps2d.model.BitmapDescriptorFactory;
+import com.amap.api.maps2d.model.LatLng;
+import com.amap.api.maps2d.model.MarkerOptions;
 import com.lhh.apst.library.AdvancedPagerSlidingTabStrip;
 import com.lhh.apst.library.Margins;
 
 import org.gis4.xfb.hurricanehelp.R;
+import org.gis4.xfb.hurricanehelp.data.XfbTask;
 import org.gis4.xfb.hurricanehelp.data.initiateSearch;
 import org.gis4.xfb.hurricanehelp.fragments.main.*;
 import org.gis4.xfb.hurricanehelp.location.LocationManager;
 
+import java.util.HashMap;
 import java.util.Random;
 
 import butterknife.BindView;
@@ -48,7 +56,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     private MeFragment mThirdFragment = null;
     private ActivitiesFragment mFourthFragment = null;
 
-    private  Toolbar toolbar;
+    private Toolbar toolbar;
     private RelativeLayout view_search;
     private CardView card_search;
     private ListView listView, listContainer;
@@ -56,14 +64,20 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     private EditText edit_text_search;
     private ImageView image_search_back;
 
+    //刷新页面时获得的数据存在着个里面。
+    private XfbTask[] taskData;
+
+    //从indexFragment里面获取到的地图,为了实现toolBar上的定位，刷新，搜索功能。
+    //因为涉及到初始化问题，只能在每次使用时赋值。
+    private AMap aMap;
+
     @BindView(R.id.tabs)
     AdvancedPagerSlidingTabStrip mAPSTS;
     @BindView(R.id.vp_main)
     APSTSViewPager mVP;
 
     @OnClick(R.id.ivCenterBtn)
-    public void onClick(View v)
-    {
+    public void onClick(View v) {
         String text;
         if (super.locationOld.getLocation() == null)
             text = "无有效位置，无法发布！";
@@ -71,11 +85,13 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
             text = "发布活动中，您的位置：" + super.locationOld.getLocation().getAddress();
 
         Toast.makeText(MainActivity.this, text, Toast.LENGTH_SHORT).show();
+
+        //打开发单界面
+        startActivity(new Intent(this,PublishActivity.class));
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.locationOld = new LocationManager(this.getApplicationContext());
         setContentView(R.layout.activity_main);
@@ -94,11 +110,11 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         InitTab();
     }
 
-    private void InitTab()
-    {
+    private void InitTab() {
         Random rnd = new Random();
         mSize = getResources().getDimensionPixelSize(R.dimen.xfb_tab_size);
         mVP.setOffscreenPageLimit(VIEW_CAPACITY);
+
         FragmentAdapter adapter = new FragmentAdapter(getSupportFragmentManager());
         mVP.setAdapter(adapter);
         adapter.notifyDataSetChanged();
@@ -113,8 +129,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     private long mExitTime;
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)
-    {
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK)
         {
             //如果搜索框打开了得话，按返回键先隐藏搜索框，否则按正常流程走
@@ -142,33 +157,29 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     }
 
     @Override
-    protected void onDestroy()
-    {
+    protected void onDestroy() {
         super.onDestroy();
         super.locationOld.DestoryLocation();
     }
 
     @Override
-    protected void onPause()
-    {
+    protected void onPause() {
         super.onPause();
         super.locationOld.StopUpateLocation();
     }
 
     @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels)
-    {
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
     }
 
     //滑动时每个ViewPager都有一个对应的position，根据poision设置不同页面的toolbar的内容
     @Override
-    public void onPageSelected(int position)
-    {
+    public void onPageSelected(int position) {
         switch(position){
             case 0:
                 InitiateToolbarTabs("首页", R.mipmap.tabbar_home_logo, R.menu.fragment_index);
-                handleSearch();
+                handleIndexFragment();
                 break;
             case 1:
                 InitiateToolbarTabs("任务", R.mipmap.tabbar_message_center_logo, R.menu.fragment_task);
@@ -177,7 +188,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                 InitiateToolbarTabs("我的", R.mipmap.tabbar_profile_logo, R.menu.fragment_me);
                 break;
             case 3:
-                InitiateToolbarTabs("活动", R.mipmap.tabbar_discover_logo, R.menu.fragment_activities);
+                InitiateToolbarTabs("发现", R.mipmap.tabbar_discover_logo, R.menu.fragment_activities);
                 break;
         }
     }
@@ -192,8 +203,9 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         toolbar.inflateMenu(menuId);
     }
 
-    //处理搜索框的打开与
-    private void handleSearch(){
+    //处理toolbar对indexFragment的操作
+    private void handleIndexFragment(){
+
         image_search_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -207,6 +219,11 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
             public boolean onMenuItemClick(MenuItem item){
                 int menuItem = item.getItemId();
                 switch (menuItem){
+                    case R.id.action_location:
+                        MapView mMapView = (MapView) findViewById(R.id.indexMap);
+                        aMap = mMapView.getMap();
+                        aMap.animateCamera(CameraUpdateFactory.changeLatLng(new LatLng(32.114516, 118.91393)));
+                        break;
                     case R.id.action_search:
                         initiateSearch.showSearchBox(MainActivity.this, card_search, toolbar, view_search, listView, edit_text_search, line_divider);
                         break;
@@ -214,6 +231,17 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                         initiateSearch.hideSearchBox(MainActivity.this, card_search, toolbar, view_search, listView, edit_text_search, line_divider);
                         listContainer.setVisibility(View.GONE);
                         break;
+                    case R.id.action_voice:
+                        Toast.makeText(MainActivity.this, "语音功能暂未完善", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.action_refresh:
+                        MapView mMapView1;
+                        if(aMap ==null) {
+                            mMapView1 = (MapView) findViewById(R.id.indexMap);
+                            aMap = mMapView1.getMap();
+                        }
+                        aMap.clear();
+                        new Task().execute();
                 }
 
                 return false;
@@ -234,29 +262,50 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     }
 
     @Override
-    public void onPageScrollStateChanged(int state)
-    {
+    public void onPageScrollStateChanged(int state) {
 
+    }
+
+    private class Task extends AsyncTask<Void, Void, String> {
+        @Override
+        protected String doInBackground(Void... params) {
+            taskData = XfbTask.taskSample();
+            return String.valueOf(taskData.length);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+
+            Toast.makeText(MainActivity.this, "共刷新" + result + "条记录", Toast.LENGTH_SHORT).show();
+
+            for(int n = 0; n < taskData.length; n++) {
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions.position(new LatLng(taskData[n].getSenderLat(),taskData[n].getSenderLng()));
+                markerOptions.title(taskData[n].getDesc());
+
+                HashMap<String, Integer> imageList = XfbTask.imageList();
+                markerOptions.icon(BitmapDescriptorFactory.fromResource(imageList.get(taskData[n].getTaskType())));
+
+                aMap.addMarker(markerOptions);
+            }
+
+            super.onPostExecute(result);
+        }
     }
 
     public class FragmentAdapter extends FragmentStatePagerAdapter implements
             AdvancedPagerSlidingTabStrip.IconTabProvider,
             AdvancedPagerSlidingTabStrip.LayoutProvider,
-            AdvancedPagerSlidingTabStrip.TipsProvider
-    {
+            AdvancedPagerSlidingTabStrip.TipsProvider {
 
-        public FragmentAdapter(FragmentManager fm)
-        {
+        public FragmentAdapter(FragmentManager fm) {
             super(fm);
         }
 
         @Override
-        public Fragment getItem(int position)
-        {
-            if (position >= 0 && position < VIEW_CAPACITY)
-            {
-                switch (position)
-                {
+        public Fragment getItem(int position) {
+            if (position >= 0 && position < VIEW_CAPACITY) {
+                switch (position) {
                     case VIEW_INDEX:
                         if (null == mFirstFragment)
                             mFirstFragment = IndexFragment.instance();
@@ -284,18 +333,14 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         }
 
         @Override
-        public int getCount()
-        {
+        public int getCount() {
             return VIEW_CAPACITY;
         }
 
         @Override
-        public CharSequence getPageTitle(int position)
-        {
-            if (position >= 0 && position < VIEW_CAPACITY)
-            {
-                switch (position)
-                {
+        public CharSequence getPageTitle(int position) {
+            if (position >= 0 && position < VIEW_CAPACITY) {
+                switch (position) {
                     case VIEW_INDEX:
                         return "首页";
                     case VIEW_TASK:
@@ -303,7 +348,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                     case VIEW_MY:
                         return "我的";
                     case VIEW_ACTIVITIES:
-                        return "活动";
+                        return "发现";
                     default:
                         break;
                 }
@@ -312,12 +357,9 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         }
 
         @Override
-        public float getPageWeight(int position)
-        {
-            if (position >= 0 && position < VIEW_CAPACITY)
-            {
-                switch (position)
-                {
+        public float getPageWeight(int position) {
+            if (position >= 0 && position < VIEW_CAPACITY) {
+                switch (position) {
                     case VIEW_INDEX:
                         return 0.92f;
                     case VIEW_TASK:
@@ -334,12 +376,9 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         }
 
         @Override
-        public int[] getPageRule(int position)
-        {
-            if (position >= 0 && position < VIEW_CAPACITY)
-            {
-                switch (position)
-                {
+        public int[] getPageRule(int position) {
+            if (position >= 0 && position < VIEW_CAPACITY) {
+                switch (position) {
                     case VIEW_INDEX:
                         return new int[]{
                                 RelativeLayout.ALIGN_PARENT_LEFT};
@@ -360,8 +399,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         }
 
         @Override
-        public Margins getPageMargins(int position)
-        {
+        public Margins getPageMargins(int position) {
             if (position >= 0 && position < VIEW_CAPACITY)
             {
                 switch (position)
@@ -382,8 +420,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         }
 
         @Override
-        public Integer getPageIcon(int index)
-        {
+        public Integer getPageIcon(int index) {
             if (index >= 0 && index < VIEW_CAPACITY)
             {
                 switch (index)
@@ -404,12 +441,9 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         }
 
         @Override
-        public Integer getPageSelectIcon(int index)
-        {
-            if (index >= 0 && index < VIEW_CAPACITY)
-            {
-                switch (index)
-                {
+        public Integer getPageSelectIcon(int index) {
+            if (index >= 0 && index < VIEW_CAPACITY) {
+                switch (index) {
                     case VIEW_INDEX:
                         //我把“tabbar_home_selected”换成了“tabbar_home_highlighted”，selected可以删了。
                         return R.mipmap.tabbar_home_highlighted;
@@ -427,18 +461,14 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         }
 
         @Override
-        public Rect getPageIconBounds(int position)
-        {
+        public Rect getPageIconBounds(int position) {
             return new Rect(0, 0, mSize, mSize);
         }
 
         @Override
-        public int[] getTipsRule(int position)
-        {
-            if (position >= 0 && position < VIEW_CAPACITY)
-            {
-                switch (position)
-                {
+        public int[] getTipsRule(int position) {
+            if (position >= 0 && position < VIEW_CAPACITY) {
+                switch (position) {
                     case VIEW_INDEX:
                         return new int[]{
                                 RelativeLayout.ALIGN_PARENT_LEFT};
@@ -459,12 +489,9 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         }
 
         @Override
-        public Margins getTipsMargins(int position)
-        {
-            if (position >= 0 && position < VIEW_CAPACITY)
-            {
-                switch (position)
-                {
+        public Margins getTipsMargins(int position) {
+            if (position >= 0 && position < VIEW_CAPACITY) {
+                switch (position) {
                     case VIEW_INDEX:
                         return new Margins(4 * getResources().getDimensionPixelSize(R.dimen.psts_dot_m_right), 0, 0, 0);
                     default:
@@ -475,8 +502,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         }
 
         @Override
-        public Drawable getTipsDrawable(int position)
-        {
+        public Drawable getTipsDrawable(int position) {
             return null;
         }
     }

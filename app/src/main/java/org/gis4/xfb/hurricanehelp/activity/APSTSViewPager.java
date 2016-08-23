@@ -28,7 +28,12 @@ public class APSTSViewPager extends ViewPager
         {
             return false;
         }
-        return super.onInterceptTouchEvent(event);
+        try {
+            return super.onInterceptTouchEvent(event);
+        }
+        catch (Exception e){
+            return false;
+        }
     }
 
     public void setNoFocus(boolean b)

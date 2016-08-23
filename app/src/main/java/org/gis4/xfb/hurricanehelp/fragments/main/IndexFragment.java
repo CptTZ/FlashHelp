@@ -2,6 +2,7 @@ package org.gis4.xfb.hurricanehelp.fragments.main;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -23,9 +25,11 @@ import com.amap.api.maps2d.MapView;
 import com.amap.api.maps2d.UiSettings;
 import com.amap.api.maps2d.model.BitmapDescriptorFactory;
 import com.amap.api.maps2d.model.LatLng;
+import com.amap.api.maps2d.model.LatLngBounds;
 import com.amap.api.maps2d.model.MyLocationStyle;
 
 import org.gis4.xfb.hurricanehelp.R;
+import org.gis4.xfb.hurricanehelp.activity.APSTSViewPager;
 import org.gis4.xfb.hurricanehelp.fragments.BaseFragment;
 import org.gis4.xfb.hurricanehelp.location.AmapLocationSource;
 
@@ -37,65 +41,29 @@ public class IndexFragment extends BaseFragment
 {
     private static final int SCROLL_BY_PX = 100;
     private boolean locChgFirst = true;
+    private Toolbar toolBar;
 
     public static IndexFragment instance()
     {
         return new IndexFragment();
     }
 
-    private AMap aMap;
+    public AMap aMap;
 
     //TODO: 更优雅的解决地图移动问题
+    //// TODO: 2016-8-19 已经被我优雅的解决了。
     @BindView(R.id.indexMap)
     public MapView mMapView;
 
-    @OnClick(R.id.buttonL)
-    public void Left()
-    {
-        changeCamera(CameraUpdateFactory.scrollBy(-SCROLL_BY_PX, 0), null);
-    }
-
-    @OnClick(R.id.buttonR)
-    public void Right()
-    {
-        changeCamera(CameraUpdateFactory.scrollBy(SCROLL_BY_PX, 0), null);
-    }
-
-    @OnClick(R.id.buttonU)
-    public void Up()
-    {
-        changeCamera(CameraUpdateFactory.scrollBy(0, -SCROLL_BY_PX), null);
-    }
-
-    @OnClick(R.id.buttonD)
-    public void Down()
-    {
-        changeCamera(CameraUpdateFactory.scrollBy(0, SCROLL_BY_PX), null);
-    }
-
-    @OnClick(R.id.buttonIn)
-    public void ZIn()
-    {
-        changeCamera(CameraUpdateFactory.zoomIn(), null);
-    }
-
-    @OnClick(R.id.buttonOut)
-    public void ZOut()
-    {
-        changeCamera(CameraUpdateFactory.zoomOut(), null);
-    }
-
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
-    {
+                             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_index, container, false);
         ButterKnife.bind(this, view);
 
@@ -103,8 +71,7 @@ public class IndexFragment extends BaseFragment
         return view;
     }
 
-    private void InitMap(Bundle s)
-    {
+    private void InitMap(Bundle s) {
         mMapView.onCreate(s);
         if (aMap == null)
         {
@@ -121,9 +88,9 @@ public class IndexFragment extends BaseFragment
         aMap.setLocationSource(super.locationSource);
         aMap.setMyLocationEnabled(true);
 
-        ui.setMyLocationButtonEnabled(true);
+        ui.setMyLocationButtonEnabled(false);
         ui.setLogoPosition(AMapOptions.LOGO_POSITION_BOTTOM_LEFT);
-        ui.setZoomControlsEnabled(false);
+        ui.setZoomControlsEnabled(true);
         ui.setScaleControlsEnabled(true);
         ui.setAllGesturesEnabled(false);
 
@@ -139,53 +106,81 @@ public class IndexFragment extends BaseFragment
         });
     }
 
+    private boolean isZoom = false;
+    private LatLngBounds latLngBounds;
+
     @Override
     public void onStart(){
         super.onStart();
+
+        final APSTSViewPager mVP =(APSTSViewPager) getActivity().findViewById(R.id.vp_main);
+
+        aMap.setOnMapTouchListener(new AMap.OnMapTouchListener() {
+            @Override
+            public void onTouch(MotionEvent motionEvent) {
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_UP:
+                        mVP.requestDisallowInterceptTouchEvent(false);
+                        isZoom = false;
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        if(isZoom) {
+                            aMap.moveCamera(
+                                    CameraUpdateFactory.newLatLngBounds(
+                                            latLngBounds,
+                                            (int) Math.abs(motionEvent.getX(0) - motionEvent.getX(1)),
+                                            (int) Math.abs(motionEvent.getY(0) - motionEvent.getY(1)), 0));
+                        }
+                        else {
+                            float changeX = motionEvent.getX() - motionEvent.getHistoricalX(0);
+                            float changeY = motionEvent.getY() - motionEvent.getHistoricalY(0);
+                            changeCamera(CameraUpdateFactory.scrollBy(-changeX, -changeY), null);
+                        }
+                        break;
+                    case MotionEvent.ACTION_DOWN:
+                        mVP.requestDisallowInterceptTouchEvent(true);
+                        break;
+                    case MotionEvent.ACTION_POINTER_2_DOWN:
+                        mVP.requestDisallowInterceptTouchEvent(true);
+                        isZoom = true;
+                        latLngBounds = new LatLngBounds(
+                                aMap.getProjection().fromScreenLocation(new Point(
+                                        (int) Math.min(motionEvent.getX(0), motionEvent.getX(1)),
+                                        (int) Math.max(motionEvent.getY(0), motionEvent.getY(1)))),
+                                aMap.getProjection().fromScreenLocation(new Point(
+                                        (int) Math.max(motionEvent.getX(0), motionEvent.getX(1)),
+                                        (int) Math.min(motionEvent.getY(0), motionEvent.getY(1)))));
+                        break;
+                }
+            }
+        });
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        switch (item.getItemId())
-        {
-            case R.id.nav_camera:
-                Toast.makeText(getActivity(), "FragmentMenuItem1", Toast.LENGTH_SHORT).show();
-                break;
-        }
-        return true;
-    }
-
-    @Override
-    public void onPause()
-    {
+    public void onPause() {
         super.onPause();
         mMapView.onPause();
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
         mMapView.onResume();
     }
 
     @Override
-    public void onDestroy()
-    {
+    public void onDestroy() {
         super.onDestroy();
         mMapView.onDestroy();
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState)
-    {
+    public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         mMapView.onSaveInstanceState(outState);
     }
 
-    private void changeCamera(CameraUpdate update, AMap.CancelableCallback callback)
-    {
+    private void changeCamera(CameraUpdate update, AMap.CancelableCallback callback) {
         if (callback == null)
         {
             aMap.animateCamera(update);

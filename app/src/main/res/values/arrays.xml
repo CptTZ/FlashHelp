@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="task_sype">
+        <item>拿快递</item>
+        <item>帮忙干活</item>
+        <item>其他</item>
+    </string-array>
+</resources>

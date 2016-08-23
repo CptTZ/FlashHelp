@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.PublishActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/colorPrimary"
+        android:theme="@style/AppTheme"
+        app:titleTextColor="#ffffff"
+        app:title="发布我的任务"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!--1，任务分类-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/scrollview_relativeLayout_margin"
+                android:layout_marginBottom="@dimen/scrollview_relativeLayout_margin"
+                android:layout_marginRight="@dimen/scrollview_relativeLayout_margin">
+
+                <ImageView
+                    android:id="@+id/imageview1"
+                    android:layout_width="@dimen/scrollview_image_size"
+                    android:layout_height="@dimen/scrollview_image_size"
+                    android:layout_marginLeft="@dimen/scrollview_image_margin"
+                    android:layout_marginRight="@dimen/scrollview_image_margin"
+                    android:src="@mipmap/publish_list_1" />
+
+                <TextView
+                    android:id="@+id/textview1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="@dimen/scrollview_title_textsize"
+                    android:text="任务分类"
+                    android:gravity="center|left"
+                    android:layout_toRightOf="@+id/imageview1"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignBottom="@+id/imageview1" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/scrollview_linearLayout_margin"
+                    android:layout_alignLeft="@+id/textview1"
+                    android:layout_below="@+id/textview1">
+
+                    <com.rey.material.widget.Spinner
+                        android:id="@+id/task_type"
+                        style="@style/Material.Widget.Spinner"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        app:rd_style="@style/Material.Drawable.Ripple.Wave"/>
+
+                </LinearLayout>
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_height="@dimen/scrollview_shadow_height"
+                android:layout_width="fill_parent"
+                android:scaleType="fitXY"
+                android:src="@mipmap/scrollview_shadow"/>
+
+            <!--2，任务送达地点-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/scrollview_relativeLayout_margin"
+                android:layout_marginBottom="@dimen/scrollview_relativeLayout_margin"
+                android:layout_marginRight="@dimen/scrollview_relativeLayout_margin">
+
+                <ImageView
+                    android:id="@+id/imageview2"
+                    android:layout_width="@dimen/scrollview_image_size"
+                    android:layout_height="@dimen/scrollview_image_size"
+                    android:layout_marginLeft="@dimen/scrollview_image_margin"
+                    android:layout_marginRight="@dimen/scrollview_image_margin"
+                    android:src="@mipmap/publish_list_23" />
+
+                <TextView
+                    android:id="@+id/textview2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="@dimen/scrollview_title_textsize"
+                    android:text="任务送达地点"
+                    android:gravity="center|left"
+                    android:layout_toRightOf="@+id/imageview2"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignBottom="@+id/imageview2" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/scrollview_linearLayout_margin"
+                    android:layout_marginRight="@dimen/scrollview_linearLayout_margin"
+                    android:layout_alignLeft="@+id/textview2"
+                    android:layout_below="@+id/textview2">
+
+                    <EditText
+                        android:id="@+id/edittext_send_location_discription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="输入位置描述"
+                        android:textSize="@dimen/scrollview_context_textsize"/>
+
+                    <ImageView
+                        android:id="@+id/task_send_location_imageview"
+                        android:layout_width="match_parent"
+                        android:layout_height="240dp"
+                        android:src="@mipmap/publish_list_map_temp"/>
+
+                </LinearLayout>
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_height="@dimen/scrollview_shadow_height"
+                android:layout_width="fill_parent"
+                android:scaleType="fitXY"
+                android:src="@mipmap/scrollview_shadow"/>
+
+            <!--3，任务执行地点-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/scrollview_relativeLayout_margin"
+                android:layout_marginBottom="@dimen/scrollview_relativeLayout_margin"
+                android:layout_marginRight="@dimen/scrollview_relativeLayout_margin">
+
+                <ImageView
+                    android:id="@+id/imageview3"
+                    android:layout_width="@dimen/scrollview_image_size"
+                    android:layout_height="@dimen/scrollview_image_size"
+                    android:layout_marginLeft="@dimen/scrollview_image_margin"
+                    android:layout_marginRight="@dimen/scrollview_image_margin"
+                    android:src="@mipmap/publish_list_23" />
+
+                <TextView
+                    android:id="@+id/textview3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="@dimen/scrollview_title_textsize"
+                    android:text="任务执行地点"
+                    android:gravity="center|left"
+                    android:layout_toRightOf="@+id/imageview3"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignBottom="@+id/imageview3" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/scrollview_linearLayout_margin"
+                    android:layout_marginRight="@dimen/scrollview_linearLayout_margin"
+                    android:layout_alignLeft="@+id/textview3"
+                    android:layout_below="@+id/textview3">
+
+                    <EditText
+                        android:id="@+id/edittext_execute_location_discription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="输入位置描述"
+                        android:textSize="@dimen/scrollview_context_textsize"/>
+
+                    <ImageView
+                        android:id="@+id/task_execute_location_imageview"
+                        android:layout_width="match_parent"
+                        android:layout_height="240dp"
+                        android:src="@mipmap/publish_list_map_temp"/>
+
+                </LinearLayout>
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_height="@dimen/scrollview_shadow_height"
+                android:layout_width="fill_parent"
+                android:scaleType="fitXY"
+                android:src="@mipmap/scrollview_shadow"/>
+
+            <!--4，有效时间-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/scrollview_relativeLayout_margin"
+                android:layout_marginBottom="@dimen/scrollview_relativeLayout_margin"
+                android:layout_marginRight="@dimen/scrollview_relativeLayout_margin">
+
+                <ImageView
+                    android:id="@+id/imageview4"
+                    android:layout_width="@dimen/scrollview_image_size"
+                    android:layout_height="@dimen/scrollview_image_size"
+                    android:layout_marginLeft="@dimen/scrollview_image_margin"
+                    android:layout_marginRight="@dimen/scrollview_image_margin"
+                    android:src="@mipmap/publish_list_4" />
+
+                <TextView
+                    android:id="@+id/textview4"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="@dimen/scrollview_title_textsize"
+                    android:text="有效时间"
+                    android:gravity="center|left"
+                    android:layout_toRightOf="@+id/imageview4"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignBottom="@+id/imageview4" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/scrollview_linearLayout_margin"
+                    android:layout_alignLeft="@+id/textview4"
+                    android:layout_below="@+id/textview4">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="@dimen/scrollview_linearLayout_margin"
+                        android:layout_marginBottom="@dimen/scrollview_linearLayout_margin">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="开始时间："
+                            android:textSize="@dimen/scrollview_context_textsize"/>
+                        <TextView
+                            android:id="@+id/textview_time_start"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="未设定（点击修改）"
+                            android:textColor="@color/home_bar_text_push"
+                            android:textSize="@dimen/scrollview_context_textsize"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="@dimen/scrollview_linearLayout_margin"
+                        android:layout_marginBottom="@dimen/scrollview_linearLayout_margin">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="截至时间："
+                            android:textSize="@dimen/scrollview_context_textsize"/>
+                        <TextView
+                            android:id="@+id/textview_time_end"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="未设定（点击修改）"
+                            android:textColor="@color/home_bar_text_push"
+                            android:textSize="@dimen/scrollview_context_textsize"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_height="@dimen/scrollview_shadow_height"
+                android:layout_width="fill_parent"
+                android:scaleType="fitXY"
+                android:src="@mipmap/scrollview_shadow"/>
+
+            <!--5，奖励-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/scrollview_relativeLayout_margin"
+                android:layout_marginBottom="@dimen/scrollview_relativeLayout_margin"
+                android:layout_marginRight="@dimen/scrollview_relativeLayout_margin">
+
+                <ImageView
+                    android:id="@+id/imageview5"
+                    android:layout_width="@dimen/scrollview_image_size"
+                    android:layout_height="@dimen/scrollview_image_size"
+                    android:layout_marginLeft="@dimen/scrollview_image_margin"
+                    android:layout_marginRight="@dimen/scrollview_image_margin"
+                    android:src="@mipmap/publish_list_5" />
+
+                <TextView
+                    android:id="@+id/textview5"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="@dimen/scrollview_title_textsize"
+                    android:text="奖励"
+                    android:gravity="center|left"
+                    android:layout_toRightOf="@+id/imageview5"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignBottom="@+id/imageview5" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/scrollview_linearLayout_margin"
+                    android:layout_alignLeft="@+id/textview5"
+                    android:layout_below="@+id/textview5">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="积分值："
+                            android:textSize="@dimen/scrollview_context_textsize"/>
+                        <TextView
+                            android:id="@+id/textview_my_points"
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/scrollview_context_textsize"
+                            android:text="0"/>
+                        <TextView
+                            android:id="@+id/textview_points"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="（当前可用积分值：）"
+                            android:textSize="@dimen/scrollview_context_textsize"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="@dimen/scrollview_linearLayout_margin"
+                        android:layout_marginBottom="@dimen/scrollview_linearLayout_margin">
+
+                        <com.rey.material.widget.Slider
+                            android:id="@+id/slider_points"
+                            style="@style/Material.Widget.Slider"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            app:sl_minValue="0"
+                            app:sl_maxValue="100"
+                            app:sl_value="20"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_height="@dimen/scrollview_shadow_height"
+                android:layout_width="fill_parent"
+                android:scaleType="fitXY"
+                android:src="@mipmap/scrollview_shadow"/>
+
+            <!--6，任务描述-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/scrollview_relativeLayout_margin"
+                android:layout_marginBottom="@dimen/scrollview_relativeLayout_margin"
+                android:layout_marginRight="@dimen/scrollview_relativeLayout_margin">
+
+                <ImageView
+                    android:id="@+id/imageview6"
+                    android:layout_width="@dimen/scrollview_image_size"
+                    android:layout_height="@dimen/scrollview_image_size"
+                    android:layout_marginLeft="@dimen/scrollview_image_margin"
+                    android:layout_marginRight="@dimen/scrollview_image_margin"
+                    android:src="@mipmap/publish_list_6" />
+
+                <TextView
+                    android:id="@+id/textview6"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="@dimen/scrollview_title_textsize"
+                    android:text="任务描述"
+                    android:gravity="center|left"
+                    android:layout_toRightOf="@+id/imageview6"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignBottom="@+id/imageview6" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/scrollview_linearLayout_margin"
+                    android:layout_alignLeft="@+id/textview6"
+                    android:layout_below="@+id/textview6">
+
+                    <EditText
+                        android:id="@+id/task_desc"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="添加任务详细描述（可多行）"
+                        android:textSize="@dimen/scrollview_context_textsize"/>
+
+                </LinearLayout>
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_height="@dimen/scrollview_shadow_height"
+                android:layout_width="fill_parent"
+                android:scaleType="fitXY"
+                android:src="@mipmap/scrollview_shadow"/>
+
+            <!--7，添加图片-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/scrollview_relativeLayout_margin"
+                android:layout_marginBottom="@dimen/scrollview_relativeLayout_margin"
+                android:layout_marginRight="@dimen/scrollview_relativeLayout_margin">
+
+                <ImageView
+                    android:id="@+id/imageview7"
+                    android:layout_width="@dimen/scrollview_image_size"
+                    android:layout_height="@dimen/scrollview_image_size"
+                    android:layout_marginLeft="@dimen/scrollview_image_margin"
+                    android:layout_marginRight="@dimen/scrollview_image_margin"
+                    android:src="@mipmap/publish_list_7" />
+
+                <TextView
+                    android:id="@+id/textview7"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="@dimen/scrollview_title_textsize"
+                    android:text="添加图片"
+                    android:gravity="center|left"
+                    android:layout_toRightOf="@+id/imageview7"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignBottom="@+id/imageview7" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/scrollview_linearLayout_margin"
+                    android:layout_alignLeft="@+id/textview7"
+                    android:layout_below="@+id/textview7">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <com.rey.material.widget.Button
+                            android:id="@+id/select_or_clear_images"
+                            android:layout_width="@dimen/publish_activity_image_width"
+                            android:layout_height="@dimen/publish_activity_image_width"
+                            android:layout_margin="@dimen/publish_activity_image_margin"
+                            android:background="@mipmap/publish_activity_addimage"
+                            app:rd_enable="true"
+                            app:rd_delayClick="untilRelease"/>
+
+                        <ImageView
+                            android:id="@+id/publish_imageview1"
+                            android:layout_width="@dimen/publish_activity_image_width"
+                            android:layout_height="@dimen/publish_activity_image_width"
+                            android:layout_margin="@dimen/publish_activity_image_margin"
+                            android:scaleType="centerCrop"
+                            android:src="@mipmap/publish_activity_noimage"/>
+
+                        <ImageView
+                            android:id="@+id/publish_imageview2"
+                            android:layout_width="@dimen/publish_activity_image_width"
+                            android:layout_height="@dimen/publish_activity_image_width"
+                            android:layout_margin="@dimen/publish_activity_image_margin"
+                            android:scaleType="centerCrop"
+                            android:src="@mipmap/publish_activity_noimage"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/publish_imageview3"
+                            android:layout_width="@dimen/publish_activity_image_width"
+                            android:layout_height="@dimen/publish_activity_image_width"
+                            android:layout_margin="@dimen/publish_activity_image_margin"
+                            android:scaleType="centerCrop"
+                            android:src="@mipmap/publish_activity_noimage"/>
+
+                        <ImageView
+                            android:id="@+id/publish_imageview4"
+                            android:layout_width="@dimen/publish_activity_image_width"
+                            android:layout_height="@dimen/publish_activity_image_width"
+                            android:layout_margin="@dimen/publish_activity_image_margin"
+                            android:scaleType="centerCrop"
+                            android:src="@mipmap/publish_activity_noimage"/>
+
+                        <ImageView
+                            android:id="@+id/publish_imageview5"
+                            android:layout_width="@dimen/publish_activity_image_width"
+                            android:layout_height="@dimen/publish_activity_image_width"
+                            android:layout_margin="@dimen/publish_activity_image_margin"
+                            android:scaleType="centerCrop"
+                            android:src="@mipmap/publish_activity_noimage"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

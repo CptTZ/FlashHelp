@@ -21,8 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 //TODO: Splash_Image从网络上加载
-public class SplashActivity extends Activity
-{
+public class SplashActivity extends Activity {
     @BindView(R.id.AppName_CHN)
     TextView textAppName;
     @BindView(R.id.AppName_ENG)
@@ -33,8 +32,7 @@ public class SplashActivity extends Activity
     private boolean hasRunnedS, hasRunnedE;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
@@ -45,23 +43,20 @@ public class SplashActivity extends Activity
         agent.sync();
 
         Animation fadeIn = AnimationUtils.loadAnimation(this, R.anim.splash_fadein);
-        Animation.AnimationListener animationListener = new Animation.AnimationListener()
-        {
+        Animation.AnimationListener animationListener = new Animation.AnimationListener() {
             @Override
-            public void onAnimationStart(Animation animation)
-            {
+            public void onAnimationStart(Animation animation) {
                 if (hasRunnedS) return;
                 AVInstallation.getCurrentInstallation().saveInBackground(new SaveCallback()
                 {
                     @Override
                     public void done(AVException e)
                     {
-                        if (e == null)
-                        {
+                        if (e == null) {
                             String installationId = AVInstallation.getCurrentInstallation().getInstallationId();
                             // 关联  installationId 到用户表等操作……
-                        } else
-                        {
+                        }
+                        else {
                             Log.e("LeanCloud", "错误," + e.getLocalizedMessage());
                         }
                     }
@@ -70,8 +65,7 @@ public class SplashActivity extends Activity
             }
 
             @Override
-            public void onAnimationEnd(Animation animation)
-            {
+            public void onAnimationEnd(Animation animation) {
                 if (hasRunnedE) return;
                 startActivity(new Intent(SplashActivity.this, MainActivity.class));
                 SplashActivity.this.overridePendingTransition(R.anim.splash_slidein,
@@ -81,8 +75,7 @@ public class SplashActivity extends Activity
             }
 
             @Override
-            public void onAnimationRepeat(Animation animation)
-            {
+            public void onAnimationRepeat(Animation animation) {
             }
         };
 
@@ -93,15 +86,13 @@ public class SplashActivity extends Activity
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)
-    {
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
         // Splash不给主动退出
         return keyCode == KeyEvent.KEYCODE_BACK || super.onKeyDown(keyCode, event);
     }
 
     @Override
-    protected void onPause()
-    {
+    protected void onPause() {
         super.onPause();
         System.runFinalization();
     }
