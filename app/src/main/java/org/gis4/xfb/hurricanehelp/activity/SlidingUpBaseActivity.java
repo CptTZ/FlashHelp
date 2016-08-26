@@ -18,12 +18,12 @@ package org.gis4.xfb.hurricanehelp.activity;
 
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,7 +34,6 @@ import com.github.ksoichiro.android.observablescrollview.Scrollable;
 import com.github.ksoichiro.android.observablescrollview.TouchInterceptionFrameLayout;
 import com.nineoldandroids.animation.ValueAnimator;
 import com.nineoldandroids.view.ViewHelper;
-import com.nineoldandroids.view.ViewPropertyAnimator;
 
 import org.gis4.xfb.hurricanehelp.R;
 
@@ -49,7 +48,7 @@ public abstract class SlidingUpBaseActivity<S extends Scrollable> extends BaseAc
     private View mHeaderBar;
     private View mHeaderOverlay;
     private View mHeaderFlexibleSpace;
-    private TextView mTitle;
+    public TextView mTitle;
     private TextView mToolbarTitle;
     private View mImageView;
     private View mFab;
@@ -65,8 +64,8 @@ public abstract class SlidingUpBaseActivity<S extends Scrollable> extends BaseAc
     private int mSlidingHeaderBlueSize;
     private int mColorPrimary;
     private int mFlexibleSpaceImageHeight;
-    private int mToolbarColor;
     private int mFabMargin;
+    private int mToolbarColor;
 
     // Fields that needs to saved
     private int mSlidingState;
@@ -86,9 +85,12 @@ public abstract class SlidingUpBaseActivity<S extends Scrollable> extends BaseAc
     private View.OnClickListener fabClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Toast.makeText(SlidingUpBaseActivity.this, "floating action button clicked", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SlidingUpBaseActivity.this, "接单成功", Toast.LENGTH_SHORT).show();
         }
     };
+
+//    public MapView mMapView;
+//    private AMap aMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,16 +101,10 @@ public abstract class SlidingUpBaseActivity<S extends Scrollable> extends BaseAc
 
         setSupportActionBar(mToolbar);
         ViewHelper.setScaleY(mToolbar, 0);
-        ActionBar ab = getSupportActionBar();
-        if (ab != null) {
-            ab.setHomeButtonEnabled(true);
-            ab.setDisplayHomeAsUpEnabled(true);
-            ab.setTitle("");
-        }
 
         mToolbarColor = getResources().getColor(R.color.colorPrimary);
         mToolbar.setBackgroundColor(Color.TRANSPARENT);
-        mToolbar.setTitle("");
+        mToolbar.setTitle(" ");
 
         mFlexibleSpaceImageHeight = getResources().getDimensionPixelSize(R.dimen.flexible_space_image_height);
         mIntersectionHeight = getResources().getDimensionPixelSize(R.dimen.intersection_height);
@@ -126,7 +122,7 @@ public abstract class SlidingUpBaseActivity<S extends Scrollable> extends BaseAc
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                slideOnClick();
+                //slideOnClick();
             }
         });
         mScrollable = createScrollable();
@@ -138,7 +134,7 @@ public abstract class SlidingUpBaseActivity<S extends Scrollable> extends BaseAc
         mInterceptionLayout = (TouchInterceptionFrameLayout) findViewById(R.id.scroll_wrapper);
         mInterceptionLayout.setScrollInterceptionListener(mInterceptionListener);
         mTitle = (TextView) findViewById(R.id.title);
-        mTitle.setText(getTitle());
+        mTitle.setText("上滑查看更多……");
         mToolbarTitle = (TextView) findViewById(R.id.toolbar_title);
         mToolbarTitle.setText(mTitle.getText());
         ViewHelper.setAlpha(mToolbarTitle, 0);
@@ -158,6 +154,7 @@ public abstract class SlidingUpBaseActivity<S extends Scrollable> extends BaseAc
                 changeSlidingState(mSlidingState, false);
             }
         });
+
     }
 
     @Override
@@ -197,6 +194,19 @@ public abstract class SlidingUpBaseActivity<S extends Scrollable> extends BaseAc
             // slight fix for untappable floating action button for larger screens
             Rect fabRect = new Rect();
             mFab.getHitRect(fabRect);
+
+            //自己加了，为了实现效果
+            float translationY = ViewHelper.getTranslationY(mInterceptionLayout) - mScrollYOnDownMotion + diffY;
+            if (translationY < -mIntersectionHeight) {
+                translationY = -mIntersectionHeight;
+            } else if (getScreenHeight() - mHeaderBarHeight < translationY) {
+                translationY = getScreenHeight() - mHeaderBarHeight;
+            }
+
+            if((int)translationY <= 720) {
+                return false;
+            }
+
             // if the user's touch is within the floating action button's touch area, don't intercept
             if (fabRect.contains((int) ev.getX(), (int) ev.getY())) {
                 return false;
@@ -222,7 +232,15 @@ public abstract class SlidingUpBaseActivity<S extends Scrollable> extends BaseAc
                 translationY = getScreenHeight() - mHeaderBarHeight;
             }
 
-            slideTo(translationY, true);
+            //修改这行，禁止掉接单界面的toolbar从中间上滑至顶部的那段动画
+            if(translationY > 720) {
+                slideTo(translationY, true);
+            }
+            else {
+                mHeaderFlexibleSpace.requestLayout();
+                mHeaderOverlay.requestLayout();
+            }
+            //slideTo(translationY, true);
 
             mMovedDistanceY = ViewHelper.getTranslationY(mInterceptionLayout) - mInitialY;
         }
@@ -315,12 +333,6 @@ public abstract class SlidingUpBaseActivity<S extends Scrollable> extends BaseAc
     private void slideTo(float translationY, final boolean animated) {
         ViewHelper.setTranslationY(mInterceptionLayout, translationY);
 
-        if (translationY < 0) {
-            FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mInterceptionLayout.getLayoutParams();
-            lp.height = (int) -translationY + getScreenHeight();
-            mInterceptionLayout.requestLayout();
-        }
-
         // Translate title
         float hiddenHeight = translationY < 0 ? -translationY : 0;
         ViewHelper.setTranslationY(mTitle, Math.min(mIntersectionHeight, (mHeaderBarHeight + hiddenHeight - mActionBarSize) / 2));
@@ -331,27 +343,6 @@ public abstract class SlidingUpBaseActivity<S extends Scrollable> extends BaseAc
         float imageTranslationY = Math.max(0, imageAnimatableHeight - (imageAnimatableHeight - translationY) * imageTranslationScale);
         ViewHelper.setTranslationY(mImageView, imageTranslationY);
 
-        // Show/hide FAB
-        if (ViewHelper.getTranslationY(mInterceptionLayout) < mFlexibleSpaceImageHeight) {
-            hideFab(animated);
-        } else {
-            if (animated) {
-                ViewPropertyAnimator.animate(mToolbar).scaleY(0).setDuration(200).start();
-            } else {
-                ViewHelper.setScaleY(mToolbar, 0);
-            }
-            showFab(animated);
-        }
-        if (ViewHelper.getTranslationY(mInterceptionLayout) <= mFlexibleSpaceImageHeight) {
-            if (animated) {
-                ViewPropertyAnimator.animate(mToolbar).scaleY(1).setDuration(200).start();
-            } else {
-                ViewHelper.setScaleY(mToolbar, 1);
-            }
-            mToolbar.setBackgroundColor(ScrollUtils.getColorWithAlpha(0, mToolbarColor));
-        }
-
-        changeToolbarTitleVisibility();
         changeHeaderBarColorAnimated(animated);
         changeHeaderOverlay();
     }
@@ -367,20 +358,6 @@ public abstract class SlidingUpBaseActivity<S extends Scrollable> extends BaseAc
                 }
             });
             animator.start();
-        }
-    }
-
-    private void changeToolbarTitleVisibility() {
-        if (ViewHelper.getTranslationY(mInterceptionLayout) <= mIntersectionHeight) {
-            if (ViewHelper.getAlpha(mToolbarTitle) != 1) {
-                ViewPropertyAnimator.animate(mToolbarTitle).cancel();
-                ViewPropertyAnimator.animate(mToolbarTitle).alpha(1).setDuration(200).start();
-            }
-        } else if (ViewHelper.getAlpha(mToolbarTitle) != 0) {
-            ViewPropertyAnimator.animate(mToolbarTitle).cancel();
-            ViewPropertyAnimator.animate(mToolbarTitle).alpha(0).setDuration(200).start();
-        } else {
-            ViewHelper.setAlpha(mToolbarTitle, 0);
         }
     }
 
@@ -441,46 +418,6 @@ public abstract class SlidingUpBaseActivity<S extends Scrollable> extends BaseAc
             mHeaderOverlay.requestLayout();
         } else {
             mHeaderOverlay.setVisibility(View.INVISIBLE);
-        }
-    }
-
-    private void showFab(boolean animated) {
-        if (mFab == null) {
-            return;
-        }
-        if (!mFabIsShown) {
-            if (animated) {
-                ViewPropertyAnimator.animate(mFab).cancel();
-                ViewPropertyAnimator.animate(mFab).scaleX(1).scaleY(1).setDuration(200).start();
-            } else {
-                ViewHelper.setScaleX(mFab, 1);
-                ViewHelper.setScaleY(mFab, 1);
-            }
-            mFabIsShown = true;
-        } else {
-            // Ensure that FAB is shown
-            ViewHelper.setScaleX(mFab, 1);
-            ViewHelper.setScaleY(mFab, 1);
-        }
-    }
-
-    private void hideFab(boolean animated) {
-        if (mFab == null) {
-            return;
-        }
-        if (mFabIsShown) {
-            if (animated) {
-                ViewPropertyAnimator.animate(mFab).cancel();
-                ViewPropertyAnimator.animate(mFab).scaleX(0).scaleY(0).setDuration(200).start();
-            } else {
-                ViewHelper.setScaleX(mFab, 0);
-                ViewHelper.setScaleY(mFab, 0);
-            }
-            mFabIsShown = false;
-        } else {
-            // Ensure that FAB is hidden
-            ViewHelper.setScaleX(mFab, 0);
-            ViewHelper.setScaleY(mFab, 0);
         }
     }
 

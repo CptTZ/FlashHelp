@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">旋风帮</string>
     <string name="app_copyright">Copyright 2016 旋风帮</string>
-    <string name="app_dev">TonyZ, BranZhang</string>
+    <string name="app_dev">TonyZ, 张驰</string>
 
     <string name="navigation_drawer_open">打开导航</string>
     <string name="navigation_drawer_close">关闭导航</string>

@@ -6,14 +6,16 @@ import android.os.SystemClock;
 
 import org.gis4.xfb.hurricanehelp.R;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 
 /**
  * 旋风帮，基础任务
+ * 引入Serializable接口，这样XfbTask可以作为参数在activity间传递
  */
 //// TODO: 2016-8-18 这个类里面还要记录发单人，就是发这个单的用户id，别忘了。
-public class XfbTask
+public class XfbTask implements Serializable
 {
     private String title, desc, senderId, taskType;
 
@@ -62,7 +64,7 @@ public class XfbTask
     }
 
     public static XfbTask[] taskSample(){
-        XfbTask[] taskList = new XfbTask[8];
+        XfbTask[] taskList = new XfbTask[50];
 
         //desc字段后加上一个随机数，以此判断是否真刷新了
         taskList[0] = new XfbTask(
@@ -120,6 +122,10 @@ public class XfbTask
                 "南京市栖霞区文苑路1号南京师范大学", "老北区复印店，水果店旁边那个",
                 "南京市栖霞区文苑路1号南京师范大学", "老北区31栋女生宿舍楼",
                 new Date(2016,8,20,9,30), new Date(2016,8,20,21,30), 120);
+
+        for(int n = 8; n < 50; n++) {
+            taskList[n] = taskList[0];
+        }
 
         //延迟一定时间，模拟真实情况,3~8秒
         SystemClock.sleep(((int)(Math.random()*6) + 1) * 1000);

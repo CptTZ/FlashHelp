@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -20,6 +21,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.amap.api.location.AMapLocation;
 import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.MapView;
@@ -79,15 +81,13 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     @OnClick(R.id.ivCenterBtn)
     public void onClick(View v) {
         String text;
-        if (super.locationOld.getLocation() == null)
+        if (locationManager.getLocation() == null) {
             text = "无有效位置，无法发布！";
-        else
-            text = "发布活动中，您的位置：" + super.locationOld.getLocation().getAddress();
-
-        Toast.makeText(MainActivity.this, text, Toast.LENGTH_SHORT).show();
-
-        //打开发单界面
-        startActivity(new Intent(this,PublishActivity.class));
+            Toast.makeText(MainActivity.this, text, Toast.LENGTH_SHORT).show();
+        }
+        else {
+            startActivity(new Intent(this,PublishActivity.class));
+        }
     }
 
     @Override
@@ -107,7 +107,9 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         image_search_back = (ImageView) findViewById(R.id.image_search_back);
         onPageSelected(0);
 
+        locationManager = super.locationOld;
         InitTab();
+        handleFragmentToolBarClick();
     }
 
     private void InitTab() {
@@ -127,23 +129,22 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     }
 
     private long mExitTime;
+    private LocationManager locationManager;
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK)
-        {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
             //如果搜索框打开了得话，按返回键先隐藏搜索框，否则按正常流程走
             if (card_search.getVisibility() == View.VISIBLE){
                 image_search_back.callOnClick();
             }
             else{
                 // 1.5s内再次按下即退出
-                if ((System.currentTimeMillis() - mExitTime) > 1500)
-                {
+                if ((System.currentTimeMillis() - mExitTime) > 1500) {
                     Toast.makeText(this, "再按一次返回键退出程序", Toast.LENGTH_SHORT).show();
                     mExitTime = System.currentTimeMillis();
-                } else
-                {
+                }
+                else {
                     super.locationOld.DestoryLocation();
                     System.runFinalization();
                     System.exit(0);
@@ -176,10 +177,9 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     //滑动时每个ViewPager都有一个对应的position，根据poision设置不同页面的toolbar的内容
     @Override
     public void onPageSelected(int position) {
-        switch(position){
+        switch(position) {
             case 0:
                 InitiateToolbarTabs("首页", R.mipmap.tabbar_home_logo, R.menu.fragment_index);
-                handleIndexFragment();
                 break;
             case 1:
                 InitiateToolbarTabs("任务", R.mipmap.tabbar_message_center_logo, R.menu.fragment_task);
@@ -204,7 +204,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     }
 
     //处理toolbar对indexFragment的操作
-    private void handleIndexFragment(){
+    private void handleFragmentToolBarClick(){
 
         image_search_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -222,7 +222,8 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                     case R.id.action_location:
                         MapView mMapView = (MapView) findViewById(R.id.indexMap);
                         aMap = mMapView.getMap();
-                        aMap.animateCamera(CameraUpdateFactory.changeLatLng(new LatLng(32.114516, 118.91393)));
+                        AMapLocation location = locationManager.getLocation();
+                        aMap.animateCamera(CameraUpdateFactory.changeLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
                         break;
                     case R.id.action_search:
                         initiateSearch.showSearchBox(MainActivity.this, card_search, toolbar, view_search, listView, edit_text_search, line_divider);
@@ -242,6 +243,10 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                         }
                         aMap.clear();
                         new Task().execute();
+                    case R.id.action_top:
+                        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+                        recyclerView.smoothScrollToPosition(0);
+                        break;
                 }
 
                 return false;

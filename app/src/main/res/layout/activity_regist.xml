@@ -11,84 +11,97 @@
     app:sliding_mode="top"
     app:sliding_pointer_mode="more">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#ffffff"
-        android:padding="10dp">
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="20dp"
+        android:layout_gravity="center"
+        android:paddingBottom="10dp">
 
-        <EditText
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:paddingBottom="10dp">
+            <ImageView
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:src="@mipmap/highquality_logo"
+                android:paddingRight="20dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="旋风帮"
+                android:layout_gravity="center"
+                android:textSize="40sp"/>
+        </LinearLayout>
+
+        <com.rengwuxian.materialedittext.MaterialEditText
             android:id="@+id/editText_register_userName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/login_input_user_name">
-        </EditText>
+            android:hint="输入用户名："
+            app:met_baseColor="@color/colorPrimary"
+            app:met_primaryColor="#982360"
+            app:met_floatingLabel="highlight"
+            app:met_maxCharacters="12"
+            app:met_clearButton="true"/>
 
-        <EditText
+        <com.rengwuxian.materialedittext.MaterialEditText
             android:id="@+id/editText_register_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/editText_register_userName"
-            android:layout_below="@+id/editText_register_userName"
-            android:ems="10"
-            android:hint="@string/register_input_user_email"
-            android:inputType="textEmailAddress">
-        </EditText>
+            android:paddingBottom="10dp"
+            android:hint="输入E-mail地址："
+            app:met_baseColor="@color/colorPrimary"
+            app:met_primaryColor="#982360"
+            app:met_floatingLabel="highlight"
+            app:met_clearButton="true"/>
 
-        <EditText
+        <com.rengwuxian.materialedittext.MaterialEditText
             android:id="@+id/editText_register_userPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/editText_register_email"
-            android:layout_below="@+id/editText_register_email"
-            android:ems="10"
-            android:hint="@string/login_input_user_password"
-            android:inputType="textPassword">
-        </EditText>
+            android:hint="请输入密码："
+            android:inputType="textPassword"
+            app:met_baseColor="@color/colorPrimary"
+            app:met_primaryColor="#982360"
+            app:met_floatingLabel="highlight"
+            app:met_maxCharacters="16"
+            app:met_clearButton="true"/>
 
-        <EditText
+        <com.rengwuxian.materialedittext.MaterialEditText
             android:id="@+id/editText_register_userPassword_again"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/editText_register_userPassword"
-            android:layout_below="@+id/editText_register_userPassword"
-            android:ems="10"
-            android:hint="@string/register_input_user_password_again"
-            android:inputType="textPassword">
-        </EditText>
+            android:hint="请再次输入密码："
+            android:inputType="textPassword"
+            app:met_baseColor="@color/colorPrimary"
+            app:met_primaryColor="#982360"
+            app:met_floatingLabel="highlight"
+            app:met_maxCharacters="16"
+            app:met_clearButton="true"/>
 
         <Button
-            android:id="@+id/button_i_need_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/editText_register_userPassword_again"
-            android:layout_below="@+id/editText_register_userPassword_again"
-            android:text="@string/login_button_register"/>
+            android:layout_marginTop="30dp"
+            android:text="注册"
+            android:textColor="@color/white"
+            android:background="@color/colorPrimary"/>
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_alignLeft="@id/button_i_need_register"
-            android:layout_below="@id/button_i_need_register"
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="已有账户？点击登陆"/>
 
-            <Button
-                android:id="@+id/button_reg_with_qq"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/login_button_register_qq"/>
 
-            <Button
-                android:id="@+id/button_reg_with_weibo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/login_button_register_weibo"/>
-
-        </LinearLayout>
-
-    </RelativeLayout>
+    </LinearLayout>
 
 </lib.homhomlib.design.SlidingLayout>
