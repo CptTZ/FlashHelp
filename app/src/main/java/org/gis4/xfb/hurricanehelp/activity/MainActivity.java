@@ -36,6 +36,7 @@ import org.gis4.xfb.hurricanehelp.data.XfbTask;
 import org.gis4.xfb.hurricanehelp.data.initiateSearch;
 import org.gis4.xfb.hurricanehelp.fragments.main.*;
 import org.gis4.xfb.hurricanehelp.location.LocationManager;
+import org.gis4.xfb.hurricanehelp.widget.APSTSViewPager;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -58,14 +59,6 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     private MeFragment mThirdFragment = null;
     private ActivitiesFragment mFourthFragment = null;
 
-    private Toolbar toolbar;
-    private RelativeLayout view_search;
-    private CardView card_search;
-    private ListView listView, listContainer;
-    private View line_divider;
-    private EditText edit_text_search;
-    private ImageView image_search_back;
-
     //刷新页面时获得的数据存在着个里面。
     private XfbTask[] taskData;
 
@@ -77,10 +70,31 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     AdvancedPagerSlidingTabStrip mAPSTS;
     @BindView(R.id.vp_main)
     APSTSViewPager mVP;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.view_search)
+    RelativeLayout view_search;
+    @BindView(R.id.line_divider)
+    View line_divider;
+    @BindView(R.id.card_search)
+    CardView card_search;
+    @BindView(R.id.edit_text_search)
+    EditText edit_text_search;
+    @BindView(R.id.listView)
+    ListView listView;
+    @BindView(R.id.listContainer)
+    ListView listContainer;
+    @BindView(R.id.image_search_back)
+    ImageView image_search_back;
 
     @OnClick(R.id.ivCenterBtn)
     public void onClick(View v) {
         String text;
+        if(!super.hasLogined())
+        {
+            Toast.makeText(MainActivity.this, getString(R.string.user_not_reg_yet), Toast.LENGTH_SHORT).show();
+            return;
+        }
         if (locationManager.getLocation() == null) {
             text = "无有效位置，无法发布！";
             Toast.makeText(MainActivity.this, text, Toast.LENGTH_SHORT).show();
@@ -97,14 +111,6 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        toolbar=(Toolbar) findViewById(R.id.toolbar);
-        view_search = (RelativeLayout) findViewById(R.id.view_search);
-        line_divider = findViewById(R.id.line_divider);
-        card_search = (CardView) findViewById(R.id.card_search);
-        edit_text_search = (EditText) findViewById(R.id.edit_text_search);
-        listView = (ListView) findViewById(R.id.listView);
-        listContainer = (ListView) findViewById(R.id.listContainer);
-        image_search_back = (ImageView) findViewById(R.id.image_search_back);
         onPageSelected(0);
 
         locationManager = super.locationOld;
@@ -150,10 +156,8 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                     System.exit(0);
                 }
             }
-
             return true;
         }
-
         return super.onKeyDown(keyCode, event);
     }
 

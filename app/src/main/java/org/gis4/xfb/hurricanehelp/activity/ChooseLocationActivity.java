@@ -43,6 +43,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+/**
+ * 打开高德地图，并选择位置
+ * @author zc(BranZhang)
+ */
 public class ChooseLocationActivity extends BaseActivity implements AMap.OnCameraChangeListener {
 
     public static final int REQUEST_SEND_LOCATION = 201;
@@ -184,7 +188,7 @@ public class ChooseLocationActivity extends BaseActivity implements AMap.OnCamer
                         addressName = result.getRegeocodeAddress().getFormatAddress()
                                 + "附近";
                     } else {
-                        addressName = "位置太偏，找不到";
+                        addressName = "军事重地，位置已隐藏";
                     }
                 } else {
                     addressName = "查询失败";

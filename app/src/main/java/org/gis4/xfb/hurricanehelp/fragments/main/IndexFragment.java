@@ -1,21 +1,14 @@
 package org.gis4.xfb.hurricanehelp.fragments.main;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.location.Location;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.AMapOptions;
@@ -24,18 +17,15 @@ import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.MapView;
 import com.amap.api.maps2d.UiSettings;
 import com.amap.api.maps2d.model.BitmapDescriptorFactory;
-import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.maps2d.model.LatLngBounds;
 import com.amap.api.maps2d.model.MyLocationStyle;
 
 import org.gis4.xfb.hurricanehelp.R;
-import org.gis4.xfb.hurricanehelp.activity.APSTSViewPager;
+import org.gis4.xfb.hurricanehelp.widget.APSTSViewPager;
 import org.gis4.xfb.hurricanehelp.fragments.BaseFragment;
-import org.gis4.xfb.hurricanehelp.location.AmapLocationSource;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class IndexFragment extends BaseFragment
 {
@@ -50,8 +40,7 @@ public class IndexFragment extends BaseFragment
 
     public AMap aMap;
 
-    //TODO: 更优雅的解决地图移动问题
-    //// TODO: 2016-8-19 已经被我优雅的解决了。
+    //TODO: 更优雅的解决地图移动问题，2016-8-19 已经被ZC优雅的解决了。
     @BindView(R.id.indexMap)
     public MapView mMapView;
 

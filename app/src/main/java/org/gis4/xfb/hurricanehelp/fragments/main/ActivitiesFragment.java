@@ -16,10 +16,15 @@ import android.view.animation.OvershootInterpolator;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.LogInCallback;
 
 import org.gis4.xfb.hurricanehelp.R;
 import org.gis4.xfb.hurricanehelp.activity.MainActivity;
@@ -31,6 +36,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout;
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
 import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
@@ -55,11 +63,67 @@ public class ActivitiesFragment extends BaseFragment
     public ActivitiesFragment() {
     }
 
+    @BindView(R.id.editText_login_userName)
+    EditText loginUserName;
+    @BindView(R.id.editText_login_userPassword)
+    EditText loginUserPass;
+
+    @OnClick(R.id.button_i_need_register)
+    public void iNeedRegClick(View v)
+    {
+        baseF.showRegisterActivity();
+    }
+    @OnClick(R.id.button_login)
+    public void loginClick(View v)
+    {
+        if(getEditTextUsername().isEmpty()||getEditTextPassword().isEmpty())
+        {
+            baseF.showError("请填写完整登陆信息！");
+            return;
+        }
+        baseF.progressDialogShow();
+        // 下面是LeanCloud的登陆过程
+        AVUser.logInInBackground(
+                getEditTextUsername(), getEditTextPassword(),
+                new LogInCallback<AVUser>()
+                {
+                    @Override
+                    public void done(AVUser avUser, AVException e)
+                    {
+                        baseF.progressDialogDismiss();
+                        if (avUser != null) {
+                            baseF.UpdateUser();
+                            Toast.makeText(baseF.getContext(),"登陆成功！",Toast.LENGTH_SHORT).show();
+                            //TODO: 更新一下我的界面为已经登陆
+                        } else {
+                            //TODO: 根据e判断是用户名密码还是其它问题
+                            showError("登陆失败，请确认用户名密码，或者网络情况");
+                        }
+                    }
+                }
+        );
+    }
+
+    private String getEditTextUsername() {return loginUserName.getText().toString();}
+    private String getEditTextPassword() {return loginUserPass.getText().toString();}
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_activities, container, false);
+        View view;
+        if (super.getUserId().isEmpty())
+        {
+            // 引导登陆或者注册
+            view = inflater.inflate(R.layout.fragment_me_reg, container, false);
+        }
+        else
+        {
+            // 已登陆的界面
+            view = inflater.inflate(R.layout.fragment_activities, container, false);
+        }
 
+        ButterKnife.bind(this,view);
+        return view;
     }
 
     @Override

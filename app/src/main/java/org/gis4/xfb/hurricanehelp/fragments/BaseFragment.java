@@ -1,5 +1,6 @@
 package org.gis4.xfb.hurricanehelp.fragments;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,7 +21,6 @@ import org.gis4.xfb.hurricanehelp.location.AmapLocationSource;
 public class BaseFragment extends Fragment
 {
     protected BaseFragment baseF;
-    protected boolean hasLogined;
 
     /**
      * 定位信息
@@ -35,6 +35,29 @@ public class BaseFragment extends Fragment
         return "";
     }
 
+    public boolean hasLogined() {return this.currentUser != null;}
+
+    private ProgressDialog prgd;
+    /**
+     * 显示请等待窗口
+     */
+    public void progressDialogShow()
+    {
+        prgd=ProgressDialog
+                .show(this.baseF.getContext(),
+                        "提示","请等待", true, false);
+    }
+
+    public void progressDialogDismiss()
+    {
+        if(prgd==null) return;
+        prgd.dismiss();
+    }
+
+    /**
+     * 显示错误窗口
+     * @param msg 消息内容
+     */
     public void showError(String msg)
     {
         showError(msg, this.baseF.getContext());
@@ -55,6 +78,11 @@ public class BaseFragment extends Fragment
                             }
                         }).show();
     }
+
+    /**
+     * 更新用户信息，登陆以后重新调用一次
+     */
+    public void UpdateUser() {this.currentUser=AVUser.getCurrentUser();}
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -94,7 +122,6 @@ public class BaseFragment extends Fragment
         startActivity(new Intent(this.baseF.getContext(), RegistActivity.class));
         this.baseF.getActivity().overridePendingTransition(R.anim.splash_slidein,
                 R.anim.splash_slideout);
-        Toast.makeText(this.baseF.getContext(), "开始注册...", Toast.LENGTH_SHORT).show();
     }
 
 }

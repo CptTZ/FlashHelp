@@ -1,7 +1,6 @@
 package org.gis4.xfb.hurricanehelp.activity;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -23,7 +22,6 @@ import com.rey.material.widget.Button;
 import com.rey.material.widget.Slider;
 import com.rey.material.widget.Spinner;
 
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,12 +34,17 @@ import com.yongchun.library.view.ImageSelectorActivity;
 import org.gis4.xfb.hurricanehelp.R;
 import org.gis4.xfb.hurricanehelp.data.XfbTask;
 import org.gis4.xfb.hurricanehelp.data.pickedDate;
+import org.gis4.xfb.hurricanehelp.widget.SublimePickerFragment;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+/**
+ * 发布新的XFB任务
+ * @author zc
+ */
 public class PublishActivity extends BaseActivity {
 
     //保存数据

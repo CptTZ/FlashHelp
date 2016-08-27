@@ -28,154 +28,155 @@ import butterknife.OnClick;
 
 public class RegistActivity extends BaseActivity
 {
+    /*
+    protected SNSCallback myCallback;
+    private SNSType loginType;
 
-//    @OnClick(R.id.button_reg_with_weibo)
-//    public void RegWB(View v)
-//    {
-//        //TODO: 微博登陆
-//        try
-//        {
-//            SNS.setupPlatform(SNSType.AVOSCloudSNSSinaWeibo, "https://leancloud.cn/1.1/sns/goto/4upfku4dx2h57ib0");
-//        } catch (AVException e)
-//        {
-//            e.printStackTrace();
-//            return;
-//        }
-//        loginType = SNSType.AVOSCloudSNSSinaWeibo;
-//        SNS.loginWithCallback(this, SNSType.AVOSCloudSNSSinaWeibo, myCallback);
-//    }
+    @OnClick(R.id.button_reg_with_weibo)
+    public void RegWB(View v)
+    {
+        //TODO: 微博登陆
+        try
+        {
+            SNS.setupPlatform(SNSType.AVOSCloudSNSSinaWeibo, "https://leancloud.cn/1.1/sns/goto/4upfku4dx2h57ib0");
+        } catch (AVException e)
+        {
+            e.printStackTrace();
+            return;
+        }
+        loginType = SNSType.AVOSCloudSNSSinaWeibo;
+        SNS.loginWithCallback(this, SNSType.AVOSCloudSNSSinaWeibo, myCallback);
+    }
 
-//    @OnClick(R.id.button_reg_with_qq)
-//    public void RegQQ(View v)
-//    {
-//        //TODO: QQ登陆
-//        try
-//        {
-//            SNS.setupPlatform(this, SNSType.AVOSCloudSNSQQ, "1105407778", "",
-//                    "https://leancloud.cn/1.1/sns/goto/158n3i1bngnrhmj3");
-//        } catch (AVException e)
-//        {
-//            e.printStackTrace();
-//            return;
-//        }
-//        loginType = SNSType.AVOSCloudSNSQQ;
-//        SNS.loginWithCallback(this, SNSType.AVOSCloudSNSQQ, myCallback);
-//    }
+    @OnClick(R.id.button_reg_with_qq)
+    public void RegQQ(View v)
+    {
+        //TODO: QQ登陆
+        try
+        {
+            SNS.setupPlatform(this, SNSType.AVOSCloudSNSQQ, "1105407778", "",
+                    "https://leancloud.cn/1.1/sns/goto/158n3i1bngnrhmj3");
+        } catch (AVException e)
+        {
+            e.printStackTrace();
+            return;
+        }
+        loginType = SNSType.AVOSCloudSNSQQ;
+        SNS.loginWithCallback(this, SNSType.AVOSCloudSNSQQ, myCallback);
+    }*/
 
-//    @OnClick(R.id.button_i_need_register)
-//    public void RegNorm(View v)
-//    {
-//        if (userPassword.getText().toString()
-//                .equals(userPasswordAgain.getText().toString()))
-//        {
-//            if (!userPassword.getText().toString().isEmpty())
-//            {
-//                if (!userName.getText().toString().isEmpty())
-//                {
-//                    if (!userEmail.getText().toString().isEmpty())
-//                    {
-//                        progressDialogShow();
-//                        register();
-//                    } else
-//                    {
-//                        showError(getString(R.string.error_register_email_address_null));
-//                    }
-//                } else
-//                {
-//                    showError(getString(R.string.error_register_user_name_null));
-//                }
-//            } else
-//            {
-//                showError(getString(R.string.error_register_password_null));
-//            }
-//        } else
-//        {
-//            showError(getString(R.string.error_register_password_not_equals));
-//        }
-//    }
+    @OnClick(R.id.proceed_to_reg)
+    public void RegNorm(View v)
+    {
+        if (userPassword.getText().toString()
+                .equals(userPasswordAgain.getText().toString()))
+        {
+            if (!userPassword.getText().toString().isEmpty())
+            {
+                if (!userName.getText().toString().isEmpty())
+                {
+                    if (!userEmail.getText().toString().isEmpty())
+                    {
+                        progressDialogShow();
+                        register();
+                    } else
+                    {
+                        showError(getString(R.string.error_register_email_address_null));
+                    }
+                } else
+                {
+                    showError(getString(R.string.error_register_user_name_null));
+                }
+            } else
+            {
+                showError(getString(R.string.error_register_password_null));
+            }
+        } else
+        {
+            showError(getString(R.string.error_register_password_not_equals));
+        }
+    }
 
-//    @BindView(R.id.editText_register_email)
-//    EditText userEmail;
-//    @BindView(R.id.editText_register_userName)
-//    EditText userName;
-//    @BindView(R.id.editText_register_userPassword)
-//    EditText userPassword;
-//    @BindView(R.id.editText_register_userPassword_again)
-//    EditText userPasswordAgain;
+    @BindView(R.id.editText_register_email)
+    EditText userEmail;
+    @BindView(R.id.editText_register_userName)
+    EditText userName;
+    @BindView(R.id.editText_register_userPassword)
+    EditText userPassword;
+    @BindView(R.id.editText_register_userPassword_again)
+    EditText userPasswordAgain;
 
-//    protected SNSCallback myCallback;
-//    private SNSType loginType;
-//    private ProgressDialog progressDialog;
-//    private RegistActivity regAct;
-//    private AlertDialog alertDiag;
+    private ProgressDialog progressDialog;
+    private RegistActivity regAct;
+    private AlertDialog alertDiag;
 
     public void register()
     {
-//        SignUpCallback signUpCallback = new SignUpCallback()
-//        {
-//            public void done(AVException e)
-//            {
-//                progressDialogDismiss();
-//                if (e == null)
-//                {
-//                    showRegisterSuccess();
-//                    alertDiag.dismiss();
-//                    regAct.finish();
-//                } else
-//                {
-//                    switch (e.getCode())
-//                    {
-//                        case 202:
-//                            showError(getString(R.string.error_register_user_name_repeat));
-//                            break;
-//                        case 203:
-//                            showError(getString(R.string.error_register_email_repeat));
-//                            break;
-//                        default:
-//                            showError(getString(R.string.network_error));
-//                            break;
-//                    }
-//                }
-//            }
-//        };
+       SignUpCallback signUpCallback = new SignUpCallback()
+       {
+           public void done(AVException e)
+           {
+               progressDialogDismiss();
+               if (e == null)
+               {
+                   showRegisterSuccess();
+                   alertDiag.dismiss();
+                   regAct.finish();
+               } else
+               {
+                   switch (e.getCode())
+                   {
+                       case 202:
+                           showError(getString(R.string.error_register_user_name_repeat));
+                           break;
+                       case 203:
+                           showError(getString(R.string.error_register_email_repeat));
+                           break;
+                       default:
+                           showError(getString(R.string.network_error));
+                           break;
+                   }
+               }
+           }
+       };
 
-//        AVUser user = new AVUser();
-//        user.setUsername(userName.getText().toString());
-//        user.setPassword(userPassword.getText().toString());
-//        user.setEmail(userEmail.getText().toString());
-//        user.signUpInBackground(signUpCallback);
+       AVUser user = new AVUser();
+       user.setUsername(userName.getText().toString());
+       user.setPassword(userPassword.getText().toString());
+       user.setEmail(userEmail.getText().toString());
+       user.signUpInBackground(signUpCallback);
     }
 
     private void showRegisterSuccess()
     {
-//        alertDiag = new AlertDialog.Builder(this)
-//                .setTitle(getString(R.string.dialog_message_title))
-//                .setMessage(getString(R.string.success_register_success))
-//                .setNegativeButton(android.R.string.ok,
-//                        new DialogInterface.OnClickListener()
-//                        {
-//                            public void onClick(DialogInterface dialog,
-//                                                int which)
-//                            {
-//                                dialog.dismiss();
-//                            }
-//                        }).show();
-    }
+        alertDiag = new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.dialog_message_title))
+                .setMessage(getString(R.string.success_register_success))
+                .setNegativeButton(android.R.string.ok,
+                        new DialogInterface.OnClickListener()
+                        {
+                            public void onClick(DialogInterface dialog,
+                                                int which)
+                            {
+                                dialog.dismiss();
+                            }
+                        }).show();
+  }
 
-    private void progressDialogDismiss()
-    {
-//        if (progressDialog != null)
-//            progressDialog.dismiss();
+  private void progressDialogDismiss()
+  {
+        if (progressDialog != null)
+            progressDialog.dismiss();
     }
 
     private void progressDialogShow()
     {
-//        progressDialog = ProgressDialog
-//                .show(this,
-//                        getResources().getText(
-//                                R.string.dialog_message_title),
-//                        getResources().getText(
-//                                R.string.dialog_text_wait), true, false);
+        progressDialog = ProgressDialog
+                .show(this,
+                        getResources().getText(
+                                R.string.dialog_message_title),
+                        getResources().getText(
+                                R.string.dialog_text_wait), true, false);
     }
 
     @Override
@@ -183,26 +184,27 @@ public class RegistActivity extends BaseActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_regist);
-//        ButterKnife.bind(this);
-//        regAct = this;
-//
-//        myCallback = new SNSCallback()
-//        {
-//            @Override
-//            public void done(SNSBase object, SNSException e)
-//            {
-//                if (e == null)
-//                {
-//                    Toast.makeText(RegistActivity.this, "Login OK", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        };
+        ButterKnife.bind(this);
+        regAct = this;
+
+        /*myCallback = new SNSCallback()
+        {
+            @Override
+            public void done(SNSBase object, SNSException e)
+            {
+                if (e == null)
+                {
+                    Toast.makeText(RegistActivity.this, "Login OK", Toast.LENGTH_SHORT).show();
+                }
+            }
+        };*/
 
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
+        //TODO: 用于QQ或者微博登陆的回调，暂时不用。
 //        super.onActivityResult(requestCode, resultCode, data);
 //        if (loginType == null) return;
 //        SNS.onActivityResult(requestCode, resultCode, data, loginType);

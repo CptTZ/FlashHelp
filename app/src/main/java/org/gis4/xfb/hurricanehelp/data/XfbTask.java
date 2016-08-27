@@ -14,7 +14,6 @@ import java.util.HashMap;
  * 旋风帮，基础任务
  * 引入Serializable接口，这样XfbTask可以作为参数在activity间传递
  */
-//// TODO: 2016-8-18 这个类里面还要记录发单人，就是发这个单的用户id，别忘了。
 public class XfbTask implements Serializable
 {
     private String title, desc, senderId, taskType;

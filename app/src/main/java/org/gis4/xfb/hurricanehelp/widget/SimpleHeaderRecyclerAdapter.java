@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.gis4.xfb.hurricanehelp.activity;
+package org.gis4.xfb.hurricanehelp.widget;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -25,6 +25,10 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+/**
+ * TODO:不知道干嘛的，未使用，请说明用途
+ * @author zc
+ */
 public class SimpleHeaderRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int VIEW_TYPE_HEADER = 0;
     private static final int VIEW_TYPE_ITEM = 1;

@@ -8,6 +8,6 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="我的已注册"/>
+        android:text="TO ZC：已注册的我的界面，请添加相应逻辑！"/>
 
 </FrameLayout>

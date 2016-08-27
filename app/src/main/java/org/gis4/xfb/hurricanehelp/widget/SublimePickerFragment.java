@@ -1,4 +1,4 @@
-package org.gis4.xfb.hurricanehelp.activity;
+package org.gis4.xfb.hurricanehelp.widget;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,6 +20,7 @@ import java.util.TimeZone;
 import org.gis4.xfb.hurricanehelp.R;
 
 /**
+ * 绚丽的日期选择器
  * Created by chi on 2016-8-8.
  */
 public class SublimePickerFragment extends DialogFragment {

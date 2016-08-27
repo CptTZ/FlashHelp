@@ -17,7 +17,7 @@
         app:title=""/>
 
     <!--Fragment-->
-    <org.gis4.xfb.hurricanehelp.activity.APSTSViewPager
+    <org.gis4.xfb.hurricanehelp.widget.APSTSViewPager
         android:id="@+id/vp_main"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"

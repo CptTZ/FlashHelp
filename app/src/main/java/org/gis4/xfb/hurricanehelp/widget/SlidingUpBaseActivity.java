@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
-package org.gis4.xfb.hurricanehelp.activity;
+package org.gis4.xfb.hurricanehelp.widget;
 
 import android.graphics.Color;
 import android.graphics.Rect;
-import android.location.Location;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MotionEvent;
 import android.view.View;
@@ -36,7 +34,13 @@ import com.nineoldandroids.animation.ValueAnimator;
 import com.nineoldandroids.view.ViewHelper;
 
 import org.gis4.xfb.hurricanehelp.R;
+import org.gis4.xfb.hurricanehelp.activity.BaseActivity;
 
+/**
+ * 上滑界面
+ * @author zc
+ * @param <S>
+ */
 public abstract class SlidingUpBaseActivity<S extends Scrollable> extends BaseActivity implements ObservableScrollViewCallbacks {
 
     private static final String STATE_SLIDING_STATE = "slidingState";

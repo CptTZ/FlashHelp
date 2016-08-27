@@ -1,14 +1,7 @@
 package org.gis4.xfb.hurricanehelp.activity;
 
-import android.content.Context;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,20 +16,22 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
-import com.github.ksoichiro.android.observablescrollview.ObservableRecyclerView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
 
 import org.gis4.xfb.hurricanehelp.R;
 import org.gis4.xfb.hurricanehelp.data.XfbTask;
+import org.gis4.xfb.hurricanehelp.widget.SlidingUpBaseActivity;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import butterknife.BindView;
-
+/**
+ * 显示收到的任务的信息
+ * @author zc
+ */
 public class TaskLandingActivity extends SlidingUpBaseActivity<ObservableScrollView> implements ObservableScrollViewCallbacks, BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener {
 
     private ObservableScrollView scrollView;

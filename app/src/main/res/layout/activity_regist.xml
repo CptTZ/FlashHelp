@@ -44,7 +44,7 @@
             android:id="@+id/editText_register_userName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="输入用户名："
+            android:hint="输入用户名"
             app:met_baseColor="@color/colorPrimary"
             app:met_primaryColor="#982360"
             app:met_floatingLabel="highlight"
@@ -56,7 +56,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="10dp"
-            android:hint="输入E-mail地址："
+            android:hint="输入E-mail地址"
             app:met_baseColor="@color/colorPrimary"
             app:met_primaryColor="#982360"
             app:met_floatingLabel="highlight"
@@ -78,7 +78,7 @@
             android:id="@+id/editText_register_userPassword_again"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="请再次输入密码："
+            android:hint="请再次输入密码"
             android:inputType="textPassword"
             app:met_baseColor="@color/colorPrimary"
             app:met_primaryColor="#982360"
@@ -87,6 +87,7 @@
             app:met_clearButton="true"/>
 
         <Button
+            android:id="@+id/proceed_to_reg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
@@ -95,12 +96,12 @@
             android:background="@color/colorPrimary"/>
 
         <TextView
+            android:id="@+id/login_from_reg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:gravity="center"
             android:text="已有账户？点击登陆"/>
-
 
     </LinearLayout>
 

@@ -23,6 +23,7 @@ import org.gis4.xfb.hurricanehelp.activity.TaskLandingActivity;
 import org.gis4.xfb.hurricanehelp.data.XfbTask;
 
 /**
+ * “发现”里的列表适配器
  * Created by chi on 2016-8-23.
  */
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
