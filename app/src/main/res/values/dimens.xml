@@ -33,8 +33,13 @@
     <dimen name="publish_activity_image_margin">5dp</dimen>
 
     <dimen name="flexible_space_image_height">240dp</dimen>
-    <dimen name="header_bar_height">72dp</dimen>
+    <dimen name="header_bar_height">56dp</dimen>
     <dimen name="sliding_overlay_blur_size">4dp</dimen>
     <dimen name="intersection_height">16dp</dimen>
+    <dimen name="margin_standard">16dp</dimen>
+    <dimen name="margin_extra_short">4dp</dimen>
+    <dimen name="toolbar_margin_start">72dp</dimen>
+    <dimen name="sliding_slop">32dp</dimen>
 
+    <dimen name="task_relativeLayout_margin">15dp</dimen>
 </resources>

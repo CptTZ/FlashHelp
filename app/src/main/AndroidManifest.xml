@@ -85,7 +85,8 @@
 
         <service android:name="com.amap.api.location.APSService" />
 
-        <activity android:name=".activity.TaskLandingActivity"></activity>
+        <activity android:name=".activity.TaskLandingActivity" />
+        <activity android:name=".activity.TestActivity"></activity>
     </application>
 
 </manifest>

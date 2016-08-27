@@ -9,12 +9,10 @@
         android:layout_height="match_parent"
         android:id="@+id/main_swipe">
 
-        <ListView
-            android:id="@+id/main_list"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:divider="#00000000"
-            android:dividerHeight="0dp"/>
+            android:layout_height="match_parent" />
 
     </jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout>
 

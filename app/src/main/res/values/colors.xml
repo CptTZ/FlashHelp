@@ -12,4 +12,8 @@
     <color name="btn_bg_color">#ff5959</color>
 
     <color name="listview_bg">#FAFAFA</color>
+
+    <color name="accent">#eeff41</color>
+    <color name="accentLight">#F4FF81</color>
+
 </resources>
