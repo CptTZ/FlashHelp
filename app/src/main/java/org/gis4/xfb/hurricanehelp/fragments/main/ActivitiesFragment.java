@@ -130,9 +130,21 @@ public class ActivitiesFragment extends BaseFragment
     public void onStart() {
         super.onStart();
 
+        //TODO!!: 这样的Hack估计以后会遇到问题
+        if (!super.getUserId().isEmpty())
+        {
+            initSwipeRefresh();
+        }
+    }
+
+    private void initSwipeRefresh()
+    {
         mWaveSwipeRefreshLayout = (WaveSwipeRefreshLayout) getActivity().findViewById(R.id.main_swipe);
-        mWaveSwipeRefreshLayout.setOnRefreshListener(new WaveSwipeRefreshLayout.OnRefreshListener() {
-            @Override public void onRefresh() {
+        mWaveSwipeRefreshLayout.setOnRefreshListener(new WaveSwipeRefreshLayout.OnRefreshListener()
+        {
+            @Override
+            public void onRefresh()
+            {
                 new Task().execute();
             }
         });
@@ -145,7 +157,6 @@ public class ActivitiesFragment extends BaseFragment
 
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setItemAnimator(new SlideInLeftAnimator());
-
     }
 
     //// TODO: 2016-8-21 没有考虑到请求超时的情况，可以在请求的代码中解决。
