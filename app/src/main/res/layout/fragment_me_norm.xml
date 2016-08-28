@@ -5,9 +5,206 @@
              android:layout_height="match_parent"
              tools:context="org.gis4.xfb.hurricanehelp.fragments.main.MeFragment">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="TO ZC：已注册的我的界面，请添加相应逻辑！"/>
+        android:orientation="vertical">
+
+        <!--头像区域-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:background="@color/colorPrimary">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="20dp"
+                android:layout_centerHorizontal="true"
+                android:src="@mipmap/avatar_sample1"/>
+
+            <ImageView
+                android:id="@+id/avatar_border"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="20dp"
+                android:layout_centerHorizontal="true"
+                android:src="@mipmap/avatar_border_girl"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:layout_below="@+id/avatar_border"
+                android:layout_centerHorizontal="true"
+                android:paddingTop="10dp"
+                android:text="这个人很懒，什么也没说。╮(╯_╰)╭"/>
+
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_height="@dimen/scrollview_shadow_height"
+            android:layout_width="fill_parent"
+            android:scaleType="fitXY"
+            android:src="@mipmap/scrollview_shadow"/>
+
+        <!--用户名-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:background="@color/white">
+
+            <TextView
+                android:layout_width="120dp"
+                android:layout_height="match_parent"
+                android:paddingLeft="15dp"
+                android:textSize="@dimen/scrollview_title_textsize"
+                android:gravity="center|left"
+                android:text="用户名："/>
+
+            <TextView
+                android:id="@+id/userid"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textSize="@dimen/scrollview_context_textsize"
+                android:text="woshiyonghumin"/>
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_height="@dimen/scrollview_shadow_height"
+            android:layout_width="fill_parent"
+            android:scaleType="fitXY"
+            android:src="@mipmap/scrollview_shadow"/>
+
+        <!--绑定的邮箱-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:background="@color/white">
+
+            <TextView
+                android:layout_width="120dp"
+                android:layout_height="match_parent"
+                android:paddingLeft="15dp"
+                android:textSize="@dimen/scrollview_title_textsize"
+                android:gravity="center|left"
+                android:text="绑定邮箱："/>
+
+            <TextView
+                android:id="@+id/usermail"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textSize="@dimen/scrollview_context_textsize"
+                android:text="12345678@qq.com"/>
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_height="@dimen/scrollview_shadow_height"
+            android:layout_width="fill_parent"
+            android:scaleType="fitXY"
+            android:src="@mipmap/scrollview_shadow"/>
+
+        <!--可用积分-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:background="@color/white">
+
+            <TextView
+                android:layout_width="120dp"
+                android:layout_height="match_parent"
+                android:paddingLeft="15dp"
+                android:textSize="@dimen/scrollview_title_textsize"
+                android:gravity="center|left"
+                android:text="可用积分："/>
+
+            <TextView
+                android:id="@+id/userpoint"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textSize="@dimen/scrollview_context_textsize"
+                android:text="80"/>
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_height="@dimen/scrollview_shadow_height"
+            android:layout_width="fill_parent"
+            android:scaleType="fitXY"
+            android:src="@mipmap/scrollview_shadow"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="95dp"
+            android:background="@color/white"
+            android:paddingTop="15dp">
+
+            <TextView
+                android:id="@+id/fadanshu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginBottom="5dp"
+                android:textSize="@dimen/scrollview_title_textsize"
+                android:text="发单数："/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="25sp"
+                android:layout_below="@+id/fadanshu"
+                android:layout_alignLeft="@+id/fadanshu"
+                android:typeface="sans"
+                android:text="0"/>
+
+            <TextView
+                android:id="@+id/jiedanshu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginBottom="5dp"
+                android:layout_toRightOf="@+id/fadanshu"
+                android:textSize="@dimen/scrollview_title_textsize"
+                android:text="接单数："/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="25sp"
+                android:layout_below="@+id/fadanshu"
+                android:layout_alignLeft="@+id/jiedanshu"
+                android:typeface="sans"
+                android:text="0"/>
+
+            <TextView
+                android:id="@+id/wancheng"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginBottom="5dp"
+                android:layout_toRightOf="@+id/jiedanshu"
+                android:textSize="@dimen/scrollview_title_textsize"
+                android:text="总完成数："/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="25sp"
+                android:layout_below="@+id/fadanshu"
+                android:layout_alignLeft="@+id/wancheng"
+                android:typeface="sans"
+                android:text="0"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
 
 </FrameLayout>
