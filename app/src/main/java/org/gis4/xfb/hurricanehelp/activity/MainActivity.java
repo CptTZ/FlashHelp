@@ -186,13 +186,13 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                 InitiateToolbarTabs("首页", R.mipmap.tabbar_home_logo, R.menu.fragment_index);
                 break;
             case 1:
-                InitiateToolbarTabs("任务", R.mipmap.tabbar_message_center_logo, R.menu.fragment_task);
+                InitiateToolbarTabs("我的任务", R.mipmap.tabbar_message_center_logo, R.menu.fragment_task);
                 break;
             case 2:
-                InitiateToolbarTabs("我的", R.mipmap.tabbar_profile_logo, R.menu.fragment_me);
+                InitiateToolbarTabs("我的信息", R.mipmap.tabbar_profile_logo, R.menu.fragment_me);
                 break;
             case 3:
-                InitiateToolbarTabs("发现", R.mipmap.tabbar_discover_logo, R.menu.fragment_activities);
+                InitiateToolbarTabs("发现新任务", R.mipmap.tabbar_discover_logo, R.menu.fragment_activities);
                 break;
         }
     }
