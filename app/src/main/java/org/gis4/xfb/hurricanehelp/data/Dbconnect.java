@@ -9,8 +9,9 @@ import java.util.List;
  */
 public class Dbconnect {
 
+    //TODO: 晚上回来弄获取数据的
     //接单的经纬度坐标
     public static XfbTask[] getTaskList(double lat, double lng){
-        return XfbTask.taskSample();
+        return testXfbTask.taskSample();
     }
 }

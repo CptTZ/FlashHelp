@@ -28,12 +28,14 @@ import com.amap.api.maps2d.MapView;
 import com.amap.api.maps2d.model.BitmapDescriptorFactory;
 import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.maps2d.model.MarkerOptions;
+import com.avos.avoscloud.AVUser;
 import com.lhh.apst.library.AdvancedPagerSlidingTabStrip;
 import com.lhh.apst.library.Margins;
 
 import org.gis4.xfb.hurricanehelp.R;
 import org.gis4.xfb.hurricanehelp.data.XfbTask;
 import org.gis4.xfb.hurricanehelp.data.initiateSearch;
+import org.gis4.xfb.hurricanehelp.data.testXfbTask;
 import org.gis4.xfb.hurricanehelp.fragments.main.*;
 import org.gis4.xfb.hurricanehelp.location.LocationManager;
 import org.gis4.xfb.hurricanehelp.widget.APSTSViewPager;
@@ -88,7 +90,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     ImageView image_search_back;
 
     @OnClick(R.id.ivCenterBtn)
-    public void onClick(View v) {
+    public void onClickPostTask(View v) {
         String text;
         if(!super.hasLogined())
         {
@@ -190,6 +192,16 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                 break;
             case 2:
                 InitiateToolbarTabs("我的信息", R.mipmap.tabbar_profile_logo, R.menu.fragment_me);
+                //TODO: 2016-08-29下拉菜单？
+                findViewById(R.id.action_setting).setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        if(AVUser.getCurrentUser()==null) return;
+                        AVUser.logOut();
+                    }
+                });
                 break;
             case 3:
                 InitiateToolbarTabs("发现新任务", R.mipmap.tabbar_discover_logo, R.menu.fragment_activities);
@@ -278,7 +290,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     private class Task extends AsyncTask<Void, Void, String> {
         @Override
         protected String doInBackground(Void... params) {
-            taskData = XfbTask.taskSample();
+            taskData = testXfbTask.taskSample();
             return String.valueOf(taskData.length);
         }
 

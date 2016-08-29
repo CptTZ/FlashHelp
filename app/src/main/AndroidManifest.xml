@@ -80,10 +80,7 @@
         <activity android:name="com.yongchun.library.view.ImagePreviewActivity" />
         <activity android:name="com.yongchun.library.view.ImageCropActivity" />
         <activity android:name=".activity.ChooseLocationActivity" />
-        <!--
- ATTENTION: This was auto-generated to add Google Play services to your project for
-     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
-        -->
+        <!-- See https://g.co/AppIndexing/AndroidStudio for more information. -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -91,6 +88,7 @@
         <service android:name="com.amap.api.location.APSService" />
 
         <activity android:name=".activity.TaskLandingActivity" />
+        <activity android:name=".test.TestActivity"/>
     </application>
 
 </manifest>

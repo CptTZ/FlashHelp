@@ -84,7 +84,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         public TextView itemDesc;
         public TextView itemRewardPoint;
 
-        //// TODO: 2016-8-21 这里还少一个根据经纬度计算当前定位地点到任务地点的距离
+        // TODO: 2016-8-21 这里还少一个根据经纬度计算当前定位地点到任务地点的距离
+        // ZYC COMMENT FOR ABOVE: 未来使用LeanCloud中的CQL直接计算
 
         public ViewHolder(View itemView) {
             super(itemView);

@@ -97,6 +97,12 @@ public class RegistActivity extends BaseActivity
         }
     }
 
+    @OnClick(R.id.login_from_reg)
+    public void onClickLoginFromReg(View v)
+    {
+        this.finish();
+    }
+
     @BindView(R.id.editText_register_email)
     EditText userEmail;
     @BindView(R.id.editText_register_userName)

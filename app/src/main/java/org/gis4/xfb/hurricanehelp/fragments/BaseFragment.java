@@ -7,11 +7,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.view.LayoutInflater;
 import android.widget.Toast;
 
+import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.LogInCallback;
 
 import org.gis4.xfb.hurricanehelp.R;
+import org.gis4.xfb.hurricanehelp.activity.BaseActivity;
 import org.gis4.xfb.hurricanehelp.activity.RegistActivity;
 import org.gis4.xfb.hurricanehelp.location.AmapLocationSource;
 
@@ -83,6 +91,72 @@ public class BaseFragment extends Fragment
      * 更新用户信息，登陆以后重新调用一次
      */
     public void UpdateUser() {this.currentUser=AVUser.getCurrentUser();}
+
+    private EditText uName,uPass;
+    /**
+     * 初始化登陆界面
+     * @return View
+     */
+    public View initLoginUi(final Fragment f, LayoutInflater inflater, final ViewGroup container,
+                            final int viewForLogin)
+    {
+        View view = inflater.inflate(R.layout.fragment_me_reg, container, false);
+        uName=(EditText) view.findViewById(R.id.editText_login_userName);
+        uPass=(EditText) view.findViewById(R.id.editText_login_userPassword);
+        view.findViewById(R.id.button_i_need_register).setOnClickListener(
+                new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        baseF.showRegisterActivity();
+                    }
+                }
+        );
+        view.findViewById(R.id.button_login).setOnClickListener(
+                new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        if(uName==null|uPass==null)return;
+                        if(getUserName().isEmpty()|getUserPass().isEmpty())
+                        {
+                            showError("请填写完整登陆信息！");
+                            return;
+                        }
+                        progressDialogShow();
+                        // 下面是LeanCloud的登陆过程
+                        AVUser.logInInBackground(getUserName(), getUserPass(),
+                                new LogInCallback<AVUser>()
+                                {
+                                    @Override
+                                    public void done(AVUser avUser, AVException e)
+                                    {
+                                        baseF.progressDialogDismiss();
+                                        if (avUser != null) {
+                                            baseF.UpdateUser();
+                                            Toast.makeText(baseF.getContext(),"登陆成功！",Toast.LENGTH_SHORT).show();
+                                            //TODO: 2016-08-29，登陆成功后切换布局请放在下面
+                                            //f.getFragmentManager().beginTransaction().replace(viewForLogin,f).commit();
+                                        } else {
+                                            //TODO: 根据e判断是用户名密码还是其它问题
+                                            showError("登陆失败，请确认用户名密码或网络情况");
+                                        }
+                                    }
+                                }
+                        );
+                    }
+                }
+        );
+
+
+        return view;
+    }
+
+    private String getUserName() {return uName.getText().toString();}
+
+    private String getUserPass() {return uPass.getText().toString();}
 
     @Override
     public void onCreate(Bundle savedInstanceState)

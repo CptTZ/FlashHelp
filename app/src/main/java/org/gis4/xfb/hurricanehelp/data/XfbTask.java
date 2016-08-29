@@ -4,6 +4,9 @@ package org.gis4.xfb.hurricanehelp.data;
 import android.graphics.Bitmap;
 import android.os.SystemClock;
 
+import com.avos.avoscloud.AVClassName;
+import com.avos.avoscloud.AVObject;
+
 import org.gis4.xfb.hurricanehelp.R;
 
 import java.io.Serializable;
@@ -13,26 +16,42 @@ import java.util.HashMap;
 /**
  * 旋风帮，基础任务
  * 引入Serializable接口，这样XfbTask可以作为参数在activity间传递
+ * 为了用LeanCloud的StorageEngine，需要继承AVObject
  */
-public class XfbTask implements Serializable
+@AVClassName("XfbTask")
+public class XfbTask extends AVObject implements Serializable
 {
-    private String title, desc, senderId, taskType;
-
-    //送达地点坐标，执行地点坐标
-    private double senderLat, senderLng, happenLat, happenLng, dur;
+    public static final Creator CREATOR = AVObjectCreator.instance;
 
     //送达地点名称，送达地点描述，前者是由地图根据经纬度生成的，后者是用户自己手输的。
-    private String senderLocation, senderLocationDescription;
+    public static final String SENDERLOCATION = "senderLocation";
+    public static final String SENDERLOCATIONDESCRIPTION = "senderLocationDescription";
     //执行地点名称，执行地点描述，前者是由地图根据经纬度生成的，后者是用户自己手输的。
-    private String happenLocation, happenLocationDescription;
+    public static final String HAPPENLOCATION = "happenLocation";
+    public static final String HAPPENLOCATIONDESCRIPTION = "happenLocationDescription";
 
-    //任务开始时间，截至时间
-    private Date startTime, endTime;
+    //任务标题，详细描述，发送人ID，任务类型
+    public static final String TITLE = "title";
+    public static final String DESC = "desc";
+    public static final String SENDERID = "senderId";
+    public static final String TASKTYPE = "taskType";
 
-    //奖励积分
-    private int rewardPoint;
+    //送达地点坐标，执行地点坐标，预计执行时间
+    public static final String SENDERLAT = "senderLat";
+    public static final String SENDERLNG = "senderLng";
+    public static final String HAPPENLAT = "happenLat";
+    public static final String HAPPENLNG = "happenLng";
+    public static final String DUR = "dur";
 
-    //图片，我把本地路径和bitmap图片都保存了。
+    //任务开始时间，截至时间，奖励积分
+    public static final String STARTTIME = "startTime";
+    public static final String ENDTIME = "endTime";
+    public static final String REWARDPOINT = "rewardPoint";
+
+    //一张图片（目前只可以一个）
+    public static final String DESCIMAGE = "descImage";
+
+    //图片路径，我把本地路径和bitmap图片都保存了。
     private String[] imagePaths;
     private Bitmap[] lowQualityBitmaps;
     private Bitmap[] highQualityBitmaps;
@@ -44,96 +63,25 @@ public class XfbTask implements Serializable
                    String senderLocation, String senderLocationDescription,
                    String happenLocation, String happenLocationDescription,
                    Date startTime, Date endTime, int rewardPoint) {
-        this.title=title;
-        this.desc=desc;
-        this.senderId=senderId;
-        this.taskType=taskType;
-        this.senderLat=senderLat;
-        this.senderLng=senderLng;
-        this.happenLat=happenLat;
-        this.happenLng=happenLng;
-        this.dur=dur;
-        this.senderLocation=senderLocation;
-        this.senderLocationDescription=senderLocationDescription;
-        this.happenLocation=happenLocation;
-        this.happenLocationDescription=happenLocationDescription;
-        this.startTime=startTime;
-        this.endTime=endTime;
-        this.rewardPoint=rewardPoint;
+        put(TITLE, title);
+        put(DESC, desc);
+        put(SENDERID, senderId);
+        put(TASKTYPE, taskType);
+        put(SENDERLAT, senderLat);
+        put(SENDERLNG, senderLng);
+        put(HAPPENLAT, happenLat);
+        put(HAPPENLNG, happenLng);
+        put(DUR, dur);
+        put(SENDERLOCATION, senderLocation);
+        put(SENDERLOCATIONDESCRIPTION, senderLocationDescription);
+        put(HAPPENLOCATION, happenLocation);
+        put(HAPPENLOCATIONDESCRIPTION, happenLocationDescription);
+        put(STARTTIME, startTime);
+        put(ENDTIME, endTime);
+        put(REWARDPOINT, rewardPoint);
     }
 
-    public static XfbTask[] taskSample(){
-        XfbTask[] taskList = new XfbTask[50];
-
-        //desc字段后加上一个随机数，以此判断是否真刷新了
-        taskList[0] = new XfbTask(
-                "", "帮忙去北区复印店拿顺丰快递。" + (int)(Math.random()*10), "", "拿快递",
-                32.1049720000, 118.9142240000, 234.45, 345.45, 23.45,
-                "南京市栖霞区文苑路1号南京师范大学老北区", "老北区复印店，水果店旁边那个",
-                "南京市栖霞区文苑路1号南京师范大学老北区", "老北区34栋男生宿舍楼",
-                new Date(2016,8,20,17,30), new Date(2016,8,20,21,30), 50);
-
-        taskList[1] = new XfbTask(
-                "", "东区校园促销活动需要帮手，在线等，急" + (int)(Math.random()*10), "", "帮干活",
-                32.1072240000,118.9301580000, 234.45, 345.45, 23.45,
-                "南京市栖霞区文苑路1号南京师范大学老北区", "老北区复印店，水果店旁边那个",
-                "南京市栖霞区文苑路1号南京师范大学老北区", "老北区34栋男生宿舍楼",
-                new Date(2016,8,20,17,30), new Date(2016,8,20,21,30), 60);
-
-        taskList[2] = new XfbTask(
-                "", "帮忙去正门拿快递，再寄给指定地点" + (int)(Math.random()*10), "", "拿快递",
-                32.1000990000,118.9189140000, 234.45, 345.45, 23.45,
-                "南京市栖霞区文苑路1号南京师范大学老北区", "老北区复印店，水果店旁边那个",
-                "南京市栖霞区文苑路1号南京师范大学老北区", "老北区34栋男生宿舍楼",
-                new Date(2016,8,20,17,30), new Date(2016,8,20,21,30), 70);
-
-        taskList[3] = new XfbTask(
-                "", "帮我操死张宜弛" + (int)(Math.random()*10), "", "帮干活",
-                32.0981720000,118.9021340000, 234.45, 345.45, 23.45,
-                "南京市栖霞区文苑路1号南京师范大学老北区", "老北区超市内",
-                "南京市栖霞区文苑路1号南京师范大学老北区", "老北区34栋男生宿舍楼",
-                new Date(2016,8,20,17,30), new Date(2016,8,20,21,30), 80);
-
-        taskList[4] = new XfbTask(
-                "", "帮忙去北区复印店拿圆通快递。" + (int)(Math.random()*10), "", "拿快递",
-                32.1155480000,118.9310590000, 234.45, 345.45, 23.45,
-                "南京市栖霞区文苑路1号南京师范大学老北区", "老北区复印店，水果店旁边那个",
-                "南京市栖霞区文苑路1号南京师范大学老北区", "老北区34栋男生宿舍楼",
-                new Date(2016,8,20,16,30), new Date(2016,8,20,21,30), 90);
-
-        taskList[5] = new XfbTask(
-                "", "帮忙去北区复印店拿韵达快递。" + (int)(Math.random()*10), "", "其他",
-                32.1178020000,118.9085710000, 234.45, 345.45, 23.45,
-                "南京市栖霞区文苑路1号南京师范大学老北区", "老北区复印店，水果店旁边那个",
-                "南京市栖霞区文苑路1号南京师范大学老北区", "老北区34栋男生宿舍楼",
-                new Date(2016,8,20,9,30), new Date(2016,8,20,21,30), 120);
-
-        taskList[6] = new XfbTask(
-                "", "帮忙去北区复印店拿圆通快递。" + (int)(Math.random()*10), "", "拿快递",
-                32.1216550000,118.9331190000, 234.45, 345.45, 23.45,
-                "南京市栖霞区文苑路1号南京师范大学老北区", "老北区复印店，水果店旁边那个",
-                "南京市栖霞区文苑路1号南京师范大学老北区", "老北区34栋男生宿舍楼",
-                new Date(2016,8,20,16,30), new Date(2016,8,20,21,30), 90);
-
-        taskList[7] = new XfbTask(
-                "", "帮忙去北区复印店拿韵达快递。" + (int)(Math.random()*10), "", "其他",
-                32.1012800000,118.9462510000, 234.45, 345.45, 23.45,
-                "南京市栖霞区文苑路1号南京师范大学", "老北区复印店，水果店旁边那个",
-                "南京市栖霞区文苑路1号南京师范大学", "老北区31栋女生宿舍楼",
-                new Date(2016,8,20,9,30), new Date(2016,8,20,21,30), 120);
-
-        for(int n = 8; n < 50; n++) {
-            taskList[n] = taskList[0];
-        }
-
-        //延迟一定时间，模拟真实情况,3~8秒
-        SystemClock.sleep(((int)(Math.random()*6) + 1) * 1000);
-
-        return taskList;
-    }
-
-    //// TODO: 2016-8-21 这边没处理好，能用，不优雅
-    //根据task_type字段获得对应的图片资源
+    // 根据task_type字段获得对应的图片资源，能用，不优雅
     public static HashMap<String, Integer> imageList(){
         HashMap<String, Integer> imageList = new HashMap<String, Integer>();
         imageList.put("拿快递", R.mipmap.task_type_kuaidi);
@@ -143,155 +91,51 @@ public class XfbTask implements Serializable
         return imageList;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDesc() {
-        return desc;
-    }
-
-    public void setDesc(String desc) {
-        this.desc = desc;
-    }
-
-    public String getSenderId() {
-        return senderId;
-    }
-
-    public void setSenderId(String senderId) {
-        this.senderId = senderId;
-    }
-
-    public String getTaskType() {
-        return taskType;
-    }
-
-    public void setTaskType(String taskType) {
-        this.taskType = taskType;
-    }
-
-    public double getSenderLat() {
-        return senderLat;
-    }
-
-    public void setSenderLat(double senderLat) {
-        this.senderLat = senderLat;
-    }
-
-    public double getSenderLng() {
-        return senderLng;
-    }
-
-    public void setSenderLng(double senderLng) {
-        this.senderLng = senderLng;
-    }
-
-    public double getHappenLat() {
-        return happenLat;
-    }
-
-    public void setHappenLat(double happenLat) {
-        this.happenLat = happenLat;
-    }
-
-    public double getHappenLng() {
-        return happenLng;
-    }
-
-    public void setHappenLng(double happenLng) {
-        this.happenLng = happenLng;
-    }
-
-    public double getDur() {
-        return dur;
-    }
-
-    public void setDur(double dur) {
-        this.dur = dur;
-    }
-
-    public String getSenderLocation() {
-        return senderLocation;
-    }
-
-    public void setSenderLocation(String senderLocation) {
-        this.senderLocation = senderLocation;
-    }
-
-    public String getSenderLocationDescription() {
-        return senderLocationDescription;
-    }
-
-    public void setSenderLocationDescription(String senderLocationDescription) {
-        this.senderLocationDescription = senderLocationDescription;
-    }
-
-    public String getHappenLocation() {
-        return happenLocation;
-    }
-
-    public void setHappenLocation(String happenLocation) {
-        this.happenLocation = happenLocation;
-    }
-
-    public String getHappenLocationDescription() {
-        return happenLocationDescription;
-    }
-
-    public void setHappenLocationDescription(String happenLocationDescription) {
-        this.happenLocationDescription = happenLocationDescription;
-    }
-
-    public Date getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
-
-    public Date getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
-
-    public int getRewardPoint() {
-        return rewardPoint;
-    }
-
-    public void setRewardPoint(int rewardPoint) {
-        this.rewardPoint = rewardPoint;
-    }
+    public String getTitle(){ return getString(TITLE); }
+    public String getDesc(){ return getString(DESC); }
+    public String getSenderId(){ return getString(SENDERID); }
+    public String getTaskType(){ return getString(TASKTYPE); }
+    public double getSenderLat(){ return getDouble(SENDERLAT); }
+    public double getSenderLng(){ return getDouble(SENDERLNG); }
+    public double getHappenLat(){ return getDouble(HAPPENLAT); }
+    public double getHappenLng(){ return getDouble(HAPPENLNG); }
+    public double getDur(){ return getDouble(DUR); }
+    public String getSenderLocation(){ return getString(SENDERLOCATION); }
+    public String getSenderLocationDescription(){ return getString(SENDERLOCATIONDESCRIPTION); }
+    public String getHappenLocation(){ return getString(HAPPENLOCATION); }
+    public String getHappenLocationDescription(){ return getString(HAPPENLOCATIONDESCRIPTION); }
+    public Date getStartTime(){ return getDate(STARTTIME); }
+    public Date getEndTime(){ return getDate(ENDTIME); }
+    public int getRewardPoint(){ return getInt(REWARDPOINT); }
+    public void setTitle(String d) { put(TITLE, d); }
+    public void setDesc(String d) { put(DESC, d); }
+    public void setSenderId(String d) { put(SENDERID, d); }
+    public void setTaskType(String d) { put(TASKTYPE, d); }
+    public void setSenderLat(double d) { put(SENDERLAT, d); }
+    public void setSenderLng(double d) { put(SENDERLNG, d); }
+    public void setHappenLat(double d) { put(HAPPENLAT, d); }
+    public void setHappenLng(double d) { put(HAPPENLNG, d); }
+    public void setDur(double d) { put(DUR, d); }
+    public void setSenderLocation(String d) { put(SENDERLOCATION, d); }
+    public void setSenderLocationDescription(String d) { put(SENDERLOCATIONDESCRIPTION, d); }
+    public void setHappenLocation(String d) { put(HAPPENLOCATION, d); }
+    public void setHappenLocationDescription(String d) { put(HAPPENLOCATIONDESCRIPTION, d); }
+    public void setStartTime(Date d) { put(STARTTIME, d); }
+    public void setEndTime(Date d) { put(ENDTIME, d); }
+    public void setRewardPoint(int d) { put(REWARDPOINT, d); }
 
     public String[] getImagePaths() {
         return imagePaths;
     }
-
     public void setImagePaths(String[] imagePaths) {
         this.imagePaths = imagePaths;
     }
-
     public Bitmap[] getLowQualityBitmaps() {
         return lowQualityBitmaps;
     }
-
-    public void setLowQualityBitmaps(Bitmap[] lowQualityBitmaps) {
-        this.lowQualityBitmaps = lowQualityBitmaps;
-    }
-
+    public void setLowQualityBitmaps(Bitmap[] lowQualityBitmaps) { this.lowQualityBitmaps = lowQualityBitmaps; }
     public Bitmap[] getHighQualityBitmaps() {
         return highQualityBitmaps;
     }
-
-    public void setHighQualityBitmaps(Bitmap[] highQualityBitmaps) {
-        this.highQualityBitmaps = highQualityBitmaps;
-    }
+    public void setHighQualityBitmaps(Bitmap[] highQualityBitmaps) { this.highQualityBitmaps = highQualityBitmaps; }
 }
