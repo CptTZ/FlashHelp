@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.view.LayoutInflater;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.avos.avoscloud.AVException;
@@ -20,6 +22,7 @@ import com.avos.avoscloud.LogInCallback;
 
 import org.gis4.xfb.hurricanehelp.R;
 import org.gis4.xfb.hurricanehelp.activity.BaseActivity;
+import org.gis4.xfb.hurricanehelp.activity.MainActivity;
 import org.gis4.xfb.hurricanehelp.activity.RegistActivity;
 import org.gis4.xfb.hurricanehelp.location.AmapLocationSource;
 
@@ -100,56 +103,57 @@ public class BaseFragment extends Fragment
     public View initLoginUi(final Fragment f, LayoutInflater inflater, final ViewGroup container,
                             final int viewForLogin)
     {
-        View view = inflater.inflate(R.layout.fragment_me_reg, container, false);
-        uName=(EditText) view.findViewById(R.id.editText_login_userName);
-        uPass=(EditText) view.findViewById(R.id.editText_login_userPassword);
-        view.findViewById(R.id.button_i_need_register).setOnClickListener(
-                new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(View v)
-                    {
-                        baseF.showRegisterActivity();
-                    }
-                }
-        );
-        view.findViewById(R.id.button_login).setOnClickListener(
-                new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(View v)
-                    {
-                        if(uName==null|uPass==null)return;
-                        if(getUserName().isEmpty()|getUserPass().isEmpty())
-                        {
-                            showError("请填写完整登陆信息！");
-                            return;
+        final View view = inflater.inflate(viewForLogin, container, false);
+        if (getUserId().isEmpty()) {
+            uName = (EditText) view.findViewById(R.id.editText_login_userName);
+            uPass = (EditText) view.findViewById(R.id.editText_login_userPassword);
+            view.findViewById(R.id.button_i_need_register).setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            baseF.showRegisterActivity();
                         }
-                        progressDialogShow();
-                        // 下面是LeanCloud的登陆过程
-                        AVUser.logInInBackground(getUserName(), getUserPass(),
-                                new LogInCallback<AVUser>()
-                                {
-                                    @Override
-                                    public void done(AVUser avUser, AVException e)
-                                    {
-                                        baseF.progressDialogDismiss();
-                                        if (avUser != null) {
-                                            baseF.UpdateUser();
-                                            Toast.makeText(baseF.getContext(),"登陆成功！",Toast.LENGTH_SHORT).show();
-                                            //TODO: 2016-08-29，登陆成功后切换布局请放在下面
-                                            //f.getFragmentManager().beginTransaction().replace(viewForLogin,f).commit();
-                                        } else {
-                                            //TODO: 根据e判断是用户名密码还是其它问题
-                                            showError("登陆失败，请确认用户名密码或网络情况");
+                    }
+            );
+            view.findViewById(R.id.button_login).setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (uName == null | uPass == null) return;
+                            if (getUserName().isEmpty() | getUserPass().isEmpty()) {
+                                showError("请填写完整登陆信息！");
+                                return;
+                            }
+                            progressDialogShow();
+                            // 下面是LeanCloud的登陆过程
+                            AVUser.logInInBackground(getUserName(), getUserPass(),
+                                    new LogInCallback<AVUser>() {
+                                        @Override
+                                        public void done(AVUser avUser, AVException e) {
+                                            baseF.progressDialogDismiss();
+                                            if (avUser != null) {
+                                                baseF.UpdateUser();
+                                                Toast.makeText(baseF.getContext(), "登陆成功！", Toast.LENGTH_SHORT).show();
+                                                //TODO: 2016-08-29，登陆成功后切换布局请放在下面
+                                                //f.getFragmentManager().beginTransaction().replace(viewForLogin,f).commit();
+                                                hideLogInWindow();
+                                                //LinearLayout linearLayoutReg = (LinearLayout) view.findViewById(R.id.linearLayout_reg);
+                                                //linearLayoutReg.setVisibility(View.GONE);
+                                            } else {
+                                                //TODO: 根据e判断是用户名密码还是其它问题
+                                                showError("登陆失败，请确认用户名密码或网络情况");
+                                            }
                                         }
                                     }
-                                }
-                        );
+                            );
+                        }
                     }
-                }
-        );
-
+            );
+        }
+        else {
+            LinearLayout linearLayoutReg = (LinearLayout) view.findViewById(R.id.linearLayout_reg);
+            linearLayoutReg.setVisibility(View.GONE);
+        }
 
         return view;
     }
@@ -196,6 +200,14 @@ public class BaseFragment extends Fragment
         startActivity(new Intent(this.baseF.getContext(), RegistActivity.class));
         this.baseF.getActivity().overridePendingTransition(R.anim.splash_slidein,
                 R.anim.splash_slideout);
+    }
+
+    //隐藏三个fragment里面的登陆窗口
+    private void hideLogInWindow() {
+        MainActivity mainActivity = (MainActivity) getActivity();
+        mainActivity.mSecondFragment.getView().findViewById(R.id.linearLayout_reg).setVisibility(View.GONE);
+        mainActivity.mThirdFragment.getView().findViewById(R.id.linearLayout_reg).setVisibility(View.GONE);
+        mainActivity.mFourthFragment.getView().findViewById(R.id.linearLayout_reg).setVisibility(View.GONE);
     }
 
 }

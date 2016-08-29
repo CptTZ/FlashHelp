@@ -14,4 +14,11 @@
         android:orderInCategory="2"
         android:title=""
         app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/action_logout"
+        android:icon="@mipmap/ic_logout"
+        android:orderInCategory="3"
+        android:title=""
+        app:showAsAction="always"/>
 </menu>
