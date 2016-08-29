@@ -55,7 +55,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             public void onClick(View v) {
                 Intent intent =new Intent(mContext,TaskLandingActivity.class);
                 Bundle bundle=new Bundle();
-                bundle.putSerializable("xfbTask", mDataSet.get((int)v.getTag()));
+                bundle.putParcelable("xfbTask", mDataSet.get((int)v.getTag()));
                 intent.putExtras(bundle);
                 mContext.startActivity(intent);
             }
@@ -67,15 +67,21 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         return mDataSet.size();
     }
 
+    /**
+     * remove功能暂时不实现
+     * @param position 位置
+     */
     public void remove(int position) {
         mDataSet.remove(position);
         notifyItemRemoved(position);
     }
 
-    //add功能暂时不实现，没有这个需求。
-    public void add(String text, int position) {
-        //mDataSet.add(position, text);
-        //notifyItemInserted(position);
+    /**
+     * add功能暂时不实现
+     */
+    public void add(XfbTask task, int position) {
+        mDataSet.add(position, task);
+        notifyItemInserted(position);
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder{

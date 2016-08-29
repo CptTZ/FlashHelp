@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.view.LayoutInflater;
 import android.widget.Toast;
@@ -19,9 +18,8 @@ import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.LogInCallback;
 
 import org.gis4.xfb.hurricanehelp.R;
-import org.gis4.xfb.hurricanehelp.activity.BaseActivity;
 import org.gis4.xfb.hurricanehelp.activity.RegistActivity;
-import org.gis4.xfb.hurricanehelp.location.AmapLocationSource;
+import org.gis4.xfb.hurricanehelp.lbs.location.AmapLocationSource;
 
 /**
  * 基本Fragment，用于同步登录状态和位置

@@ -5,11 +5,16 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
 import android.widget.Toast;
+
+import com.avos.avoscloud.AVAnalytics;
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVQuery;
 
 import org.gis4.xfb.hurricanehelp.R;
 import org.gis4.xfb.hurricanehelp.data.XfbTask;
@@ -17,6 +22,7 @@ import org.gis4.xfb.hurricanehelp.data.testXfbTask;
 import org.gis4.xfb.hurricanehelp.fragments.BaseFragment;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout;
@@ -60,6 +66,9 @@ public class ActivitiesFragment extends BaseFragment
         }
     }
 
+    /**
+     * 初始化下拉刷新，不涉及数据
+     */
     private void initSwipeRefresh()
     {
         mWaveSwipeRefreshLayout = (WaveSwipeRefreshLayout) getActivity().findViewById(R.id.main_swipe);
@@ -82,15 +91,36 @@ public class ActivitiesFragment extends BaseFragment
         mRecyclerView.setItemAnimator(new SlideInLeftAnimator());
     }
 
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        AVAnalytics.onFragmentEnd("Activities-Frag");
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        AVAnalytics.onFragmentStart("Activities-Frag");
+    }
+
     /**
      * 后台异步更新数据
      */
     private class RefreshXfbTask extends AsyncTask<Void, Void, String> {
         @Override
         protected String doInBackground(Void... params) {
-            XfbTask[] sample=testXfbTask.taskSample();
-            taskData = Arrays.asList(sample);
-            testXfbTask.saveSampleTask(sample);
+            AVQuery<XfbTask> query = AVQuery.getQuery(XfbTask.class);
+            query.orderByDescending("updatedAt");
+            //CACHE REF: https://leancloud.cn/docs/leanstorage_guide-android.html#缓存查询
+            query.limit(20);
+            try {
+                taskData = query.find();
+            } catch (AVException exception) {
+                Log.e("XFB_Cloud", exception.getMessage(), exception);
+                return "0";
+            }
             return String.valueOf(taskData.size());
         }
 

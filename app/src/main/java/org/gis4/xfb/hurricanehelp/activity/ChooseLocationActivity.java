@@ -33,15 +33,14 @@ import com.amap.api.services.geocoder.GeocodeResult;
 import com.amap.api.services.geocoder.GeocodeSearch;
 import com.amap.api.services.geocoder.RegeocodeQuery;
 import com.amap.api.services.geocoder.RegeocodeResult;
+import com.avos.avoscloud.AVAnalytics;
 
 
 import org.gis4.xfb.hurricanehelp.R;
-import org.gis4.xfb.hurricanehelp.data.XfbTask;
-import org.gis4.xfb.hurricanehelp.location.LocationManager;
+import org.gis4.xfb.hurricanehelp.lbs.location.LocationManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * 打开高德地图，并选择位置
@@ -217,12 +216,14 @@ public class ChooseLocationActivity extends BaseActivity implements AMap.OnCamer
     public void onPause() {
         super.onPause();
         mMapView.onPause();
+        AVAnalytics.onPause(this);
     }
 
     @Override
     public void onResume() {
         super.onResume();
         mMapView.onResume();
+        AVAnalytics.onResume(this);
     }
 
     @Override

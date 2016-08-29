@@ -1,16 +1,14 @@
 package org.gis4.xfb.hurricanehelp.fragments.main;
 
 import android.os.Bundle;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
+
+import com.avos.avoscloud.AVAnalytics;
 
 import org.gis4.xfb.hurricanehelp.R;
 import org.gis4.xfb.hurricanehelp.fragments.BaseFragment;
-
-import jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout;
 
 public class TaskFragment extends BaseFragment
 {
@@ -30,4 +28,17 @@ public class TaskFragment extends BaseFragment
         return inflater.inflate(R.layout.fragment_task, container, false);
     }
 
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        AVAnalytics.onFragmentStart("Task-Frag");
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        AVAnalytics.onFragmentEnd("Task-Frag");
+    }
 }

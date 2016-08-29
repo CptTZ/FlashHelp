@@ -1,4 +1,4 @@
-package org.gis4.xfb.hurricanehelp.location;
+package org.gis4.xfb.hurricanehelp.lbs.location;
 
 import android.content.Context;
 import android.util.Log;

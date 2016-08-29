@@ -14,10 +14,6 @@ import com.avos.avoscloud.SaveCallback;
 
 import org.gis4.xfb.hurricanehelp.activity.SplashActivity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.gis4.xfb.hurricanehelp.R;
 import org.gis4.xfb.hurricanehelp.data.XfbTask;
 
 public class HurricaneHelpApp extends Application
@@ -34,7 +30,7 @@ public class HurricaneHelpApp extends Application
 
         AVOSCloud.initialize(this, "LGhLGudXgoF9oTXHTr1an03Y-gzGzoHsz", "z4Dou3Q1LNlmG176tECNBxQh");
         AVAnalytics.setAnalyticsEnabled(true);
-        AVAnalytics.enableCrashReport(this, false);
+        //AVAnalytics.enableCrashReport(this, true);
         PushService.setDefaultPushCallback(this, SplashActivity.class);
     }
 

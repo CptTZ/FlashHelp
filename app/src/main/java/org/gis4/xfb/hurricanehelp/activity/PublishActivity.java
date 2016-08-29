@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 
+import com.avos.avoscloud.AVAnalytics;
 import com.rey.material.widget.Button;
 import com.rey.material.widget.Slider;
 import com.rey.material.widget.Spinner;
@@ -145,8 +146,8 @@ public class PublishActivity extends BaseActivity {
                 switch (item.getItemId()){
                     case R.id.action_save:
                         xfbTask.setDesc(taskDesc.getText().toString());
-                        xfbTask.setSenderLocationDescription(edittextSend.getText().toString());
-                        xfbTask.setHappenLocationDescription(edittextExecute.getText().toString());
+                        xfbTask.setSenderlocationManualDesc(edittextSend.getText().toString());
+                        xfbTask.setHappenLocationManualDesc(edittextExecute.getText().toString());
 
                         //xfbTask内的字段已经设置完毕。
                         //// TODO: 2016-8-19 从这里将xfbTask上传出去
@@ -223,8 +224,7 @@ public class PublishActivity extends BaseActivity {
     }
 
     //初始化地点选择功能
-    //// TODO: 2016-8-18 记录所选点的位置以及缩放级别，使得第二次及之后打开选点界面时，地图显示在上一次所选的地方
-    //// TODO: 2016-8-18 问题：第一次打开发单界面时，地图那边显示什么图片？
+    //TODO: 2016-8-18 记录所选点的位置以及缩放级别，使得第二次及之后打开选点界面时，地图显示在上一次所选的地方
     private void initialLocationSelect(){
         taskSendLocationImageview.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -349,7 +349,7 @@ public class PublishActivity extends BaseActivity {
 
             xfbTask.setSenderLat(locationLatitude);
             xfbTask.setSenderLng(locationLongitude);
-            xfbTask.setSenderLocation(locationText);
+            xfbTask.setSenderLocationAutoDesc(locationText);
         }
 
         if(resultCode == RESULT_OK && requestCode == ChooseLocationActivity.REQUEST_EXECUTE_LOCATION){
@@ -363,7 +363,7 @@ public class PublishActivity extends BaseActivity {
 
             xfbTask.setHappenLat(locationLatitude);
             xfbTask.setHappenLng(locationLongitude);
-            xfbTask.setHappenLocation(locationText);
+            xfbTask.setHappenLocationAutoDesc(locationText);
         }
     }
 
@@ -466,4 +466,17 @@ public class PublishActivity extends BaseActivity {
         return new Pair<>(true, options);
     }
 
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+        AVAnalytics.onPause(this);
+    }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        AVAnalytics.onResume(this);
+    }
 }

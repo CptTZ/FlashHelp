@@ -37,7 +37,7 @@ import org.gis4.xfb.hurricanehelp.data.XfbTask;
 import org.gis4.xfb.hurricanehelp.data.initiateSearch;
 import org.gis4.xfb.hurricanehelp.data.testXfbTask;
 import org.gis4.xfb.hurricanehelp.fragments.main.*;
-import org.gis4.xfb.hurricanehelp.location.LocationManager;
+import org.gis4.xfb.hurricanehelp.lbs.location.LocationManager;
 import org.gis4.xfb.hurricanehelp.widget.APSTSViewPager;
 
 import java.util.HashMap;

@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 
+import com.avos.avoscloud.AVAnalytics;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.LogInCallback;
@@ -51,5 +52,19 @@ public class MeFragment extends BaseFragment
         {
 
         }
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        AVAnalytics.onFragmentStart("MyAccount-Frag");
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        AVAnalytics.onFragmentEnd("MyAccount-Frag");
     }
 }

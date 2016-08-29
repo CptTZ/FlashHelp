@@ -6,22 +6,13 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
-import android.view.View;
-import android.widget.AbsListView;
-import android.widget.ArrayAdapter;
-import android.widget.GridView;
-import android.widget.ListView;
 
-import com.amap.api.location.AMapLocation;
 import com.avos.avoscloud.AVUser;
 
 import org.gis4.xfb.hurricanehelp.R;
-import org.gis4.xfb.hurricanehelp.location.AmapLocationSource;
-import org.gis4.xfb.hurricanehelp.location.LocationManager;
-
-import java.util.ArrayList;
+import org.gis4.xfb.hurricanehelp.lbs.location.AmapLocationSource;
+import org.gis4.xfb.hurricanehelp.lbs.location.LocationManager;
 
 /**
  * Created by Tony on 2016/7/26.

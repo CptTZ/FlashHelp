@@ -17,7 +17,7 @@ import com.amap.api.maps2d.model.BitmapDescriptorFactory;
 import com.amap.api.maps2d.model.MyLocationStyle;
 
 import org.gis4.xfb.hurricanehelp.R;
-import org.gis4.xfb.hurricanehelp.location.AmapLocationSource;
+import org.gis4.xfb.hurricanehelp.lbs.location.AmapLocationSource;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

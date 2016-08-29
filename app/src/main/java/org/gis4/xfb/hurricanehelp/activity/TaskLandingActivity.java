@@ -11,6 +11,7 @@ import com.amap.api.maps2d.MapView;
 import com.amap.api.maps2d.UiSettings;
 import com.amap.api.maps2d.model.BitmapDescriptorFactory;
 import com.amap.api.maps2d.model.MyLocationStyle;
+import com.avos.avoscloud.AVAnalytics;
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
@@ -140,12 +141,14 @@ public class TaskLandingActivity extends SlidingUpBaseActivity<ObservableScrollV
     @Override
     public void onPause() {
         super.onPause();
+        AVAnalytics.onPause(this);
         mMapView.onPause();
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        AVAnalytics.onResume(this);
         mMapView.onResume();
     }
 

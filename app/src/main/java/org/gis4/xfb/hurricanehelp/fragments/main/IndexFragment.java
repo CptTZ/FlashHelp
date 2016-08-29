@@ -19,6 +19,7 @@ import com.amap.api.maps2d.UiSettings;
 import com.amap.api.maps2d.model.BitmapDescriptorFactory;
 import com.amap.api.maps2d.model.LatLngBounds;
 import com.amap.api.maps2d.model.MyLocationStyle;
+import com.avos.avoscloud.AVAnalytics;
 
 import org.gis4.xfb.hurricanehelp.R;
 import org.gis4.xfb.hurricanehelp.widget.APSTSViewPager;
@@ -158,12 +159,14 @@ public class IndexFragment extends BaseFragment
     public void onPause() {
         super.onPause();
         mMapView.onPause();
+        AVAnalytics.onFragmentEnd("Index-Frag");
     }
 
     @Override
     public void onResume() {
         super.onResume();
         mMapView.onResume();
+        AVAnalytics.onFragmentStart("Index-Frag");
     }
 
     @Override

@@ -15,7 +15,6 @@ import com.avos.avoscloud.SaveCallback;
 import com.avos.avoscloud.feedback.FeedbackAgent;
 
 import org.gis4.xfb.hurricanehelp.R;
-import org.gis4.xfb.hurricanehelp.location.AmapLocationSource;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
