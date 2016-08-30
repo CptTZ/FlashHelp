@@ -61,7 +61,7 @@ public class TaskLandingActivity extends SlidingUpBaseActivity<ObservableScrollV
         super.onCreate(savedInstanceState);
 
         Bundle bundle = this.getIntent().getExtras();
-        XfbTask xfbTask = (XfbTask) bundle.getSerializable("xfbTask");
+        XfbTask xfbTask = bundle.getParcelable("xfbTask");
         xfbTaskList = new ArrayList<>();
         xfbTaskList.add(xfbTask);
 

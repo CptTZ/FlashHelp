@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -15,6 +16,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.avos.avoscloud.AVAnalytics;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.LogInCallback;
@@ -124,7 +126,6 @@ public class BaseFragment extends Fragment
                                 return;
                             }
                             progressDialogShow();
-                            // 下面是LeanCloud的登陆过程
                             AVUser.logInInBackground(getUserName(), getUserPass(),
                                     new LogInCallback<AVUser>() {
                                         @Override
@@ -137,8 +138,21 @@ public class BaseFragment extends Fragment
                                                 //LinearLayout linearLayoutReg = (LinearLayout) view.findViewById(R.id.linearLayout_reg);
                                                 //linearLayoutReg.setVisibility(View.GONE);
                                             } else {
-                                                //TODO: 根据e判断是用户名密码还是其它问题
-                                                showError("登陆失败，请确认用户名密码或网络情况");
+                                                String errDef;
+                                                switch (e.getCode())
+                                                {
+                                                    case AVException.USER_DOESNOT_EXIST:
+                                                        errDef="该用户不存在";
+                                                        break;
+                                                    case AVException.USERNAME_PASSWORD_MISMATCH:
+                                                        errDef="用户密码输入错误";
+                                                        break;
+                                                    default:
+                                                        errDef="网络连接失败或出现未知错误";
+                                                        Log.e("Xfb_Cloud", e.getMessage(), e);
+                                                        AVAnalytics.onEvent(getContext(),e.getMessage(),"Xfb_Cloud");
+                                                }
+                                                showError(errDef);
                                             }
                                         }
                                     }
@@ -156,7 +170,6 @@ public class BaseFragment extends Fragment
     }
 
     private String getUserName() {return uName.getText().toString();}
-
     private String getUserPass() {return uPass.getText().toString();}
 
     @Override

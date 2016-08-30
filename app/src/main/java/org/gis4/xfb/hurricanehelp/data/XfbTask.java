@@ -53,18 +53,16 @@ public class XfbTask extends AVObject
     public static final String ENDTIME = "endTime";
     public static final String REWARDPOINT = "rewardPoint";
 
-    //一张图片（目前只可以一个）
+    //5张图片
     public static final String DESCIMAGE = "descImage";
 
-    //TODO: 未来用上面的那个DESCIMAGE
-    //图片路径，我把本地路径和bitmap图片都保存了。
     private String[] imagePaths;
     private Bitmap[] lowQualityBitmaps;
     private Bitmap[] highQualityBitmaps;
 
     public XfbTask() { }
 
-    public XfbTask(String title, String desc, String senderId, String taskType,
+    public XfbTask(String title, String desc, String taskType,
                    double senderLat, double senderLng, double happenLat, double happenLng, double dur,
                    String senderLocation, String senderLocationDescription,
                    String happenLocation, String happenLocationDescription,
@@ -74,7 +72,7 @@ public class XfbTask extends AVObject
         put(SENDERID, AVUser.getCurrentUser().getObjectId());
         put(TASKTYPE, taskType);
         senderGeoLocation = new AVGeoPoint(senderLat,senderLng);
-        AVGeoPoint happen=new AVGeoPoint(happenLat,happenLng);
+        AVGeoPoint happen = new AVGeoPoint(happenLat,happenLng);
         put(SENDERLAT, senderLat);
         put(SENDERLNG, senderLng);
         put(HAPPENGEOLOCATION, happen);
@@ -117,7 +115,7 @@ public class XfbTask extends AVObject
     public Date getStartTime(){ return getDate(STARTTIME); }
     public Date getEndTime(){ return getDate(ENDTIME); }
     public int getRewardPoint(){ return getInt(REWARDPOINT); }
-    public AVFile getDescImage(){ return getAVFile(DESCIMAGE); }
+    public AVFile getDescImage(int i){ return getAVFile(DESCIMAGE + String.valueOf(i)); }
     public int getTaskState() { return getInt(TASKSTATE); }
     public void setTitle(String d) { put(TITLE, d); }
     public void setDesc(String d) { put(DESC, d); }
@@ -127,8 +125,8 @@ public class XfbTask extends AVObject
     public void setHappenGeoLocation(AVGeoPoint d) { put(HAPPENGEOLOCATION, d); }
     public void setSenderLat(double d) { put(SENDERLAT,d); }
     public void setSenderLng(double d) { put(SENDERLNG,d); }
-    public void setHappenLat(double d) { AVGeoPoint old=getAVGeoPoint(HAPPENGEOLOCATION); old.setLatitude(d); put(HAPPENGEOLOCATION, old); }
-    public void setHappenLng(double d) { AVGeoPoint old=getAVGeoPoint(HAPPENGEOLOCATION); old.setLongitude(d); put(HAPPENGEOLOCATION, old); }
+    public void setHappenLat(double d) { AVGeoPoint old = getAVGeoPoint(HAPPENGEOLOCATION); old.setLatitude(d); put(HAPPENGEOLOCATION, old); }
+    public void setHappenLng(double d) { AVGeoPoint old = getAVGeoPoint(HAPPENGEOLOCATION); old.setLongitude(d); put(HAPPENGEOLOCATION, old); }
     public void setDur(double d) { put(DUR, d); }
     public void setSenderlocationManualDesc(String d) { put(SENDERLOCATIONMANUALDESC, d); }
     public void setSenderLocationAutoDesc(String d) { put(SENDERLOCATIONAUTODESC, d); }
@@ -137,7 +135,7 @@ public class XfbTask extends AVObject
     public void setStartTime(Date d) { put(STARTTIME, d); }
     public void setEndTime(Date d) { put(ENDTIME, d); }
     public void setRewardPoint(int d) { put(REWARDPOINT, d); }
-    public void setDescImage(AVFile d) { put(DESCIMAGE, d); }
+    public void setDescImage(AVFile d, int i) { put(DESCIMAGE + String.valueOf(i), d); }
     public void setTaskstate(int d) { put(TASKSTATE, d); }
 
     public String[] getImagePaths() {
