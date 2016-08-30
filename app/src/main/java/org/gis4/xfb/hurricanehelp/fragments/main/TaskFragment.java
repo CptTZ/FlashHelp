@@ -20,12 +20,7 @@ public class TaskFragment extends BaseFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        if (super.getUserId().isEmpty())
-        {
-            return baseF.initLoginUi(this,inflater,container,R.layout.fragment_task);
-        }
-        // 已登陆的界面
-        return inflater.inflate(R.layout.fragment_task, container, false);
+        return baseF.initLoginUi(this,inflater,container,R.layout.fragment_task);
     }
 
     @Override

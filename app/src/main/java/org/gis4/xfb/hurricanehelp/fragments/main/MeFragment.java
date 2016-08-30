@@ -37,10 +37,7 @@ public class MeFragment extends BaseFragment
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
-        if (super.getUserId().isEmpty()) {
-            return baseF.initLoginUi(this,inflater,container,R.layout.fragment_me_norm);
-        }
-        return inflater.inflate(R.layout.fragment_me_norm, container, false);
+        return baseF.initLoginUi(this,inflater,container,R.layout.fragment_me_reg_and_norm);
     }
 
     @Override

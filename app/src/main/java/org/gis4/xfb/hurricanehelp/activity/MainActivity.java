@@ -56,10 +56,10 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     private static final int VIEW_CAPACITY = 4;
     private int mSize = 0;
 
-    private IndexFragment mFirstFragment = null;
-    private TaskFragment mSecondFragment = null;
-    private MeFragment mThirdFragment = null;
-    private ActivitiesFragment mFourthFragment = null;
+    public IndexFragment mFirstFragment = null;
+    public TaskFragment mSecondFragment = null;
+    public MeFragment mThirdFragment = null;
+    public ActivitiesFragment mFourthFragment = null;
 
     //刷新页面时获得的数据存在着个里面。
     private XfbTask[] taskData;
@@ -124,7 +124,6 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         Random rnd = new Random();
         mSize = getResources().getDimensionPixelSize(R.dimen.xfb_tab_size);
         mVP.setOffscreenPageLimit(VIEW_CAPACITY);
-
         FragmentAdapter adapter = new FragmentAdapter(getSupportFragmentManager());
         mVP.setAdapter(adapter);
         adapter.notifyDataSetChanged();
@@ -192,14 +191,15 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                 break;
             case 2:
                 InitiateToolbarTabs("我的信息", R.mipmap.tabbar_profile_logo, R.menu.fragment_me);
-                //TODO: 2016-08-29下拉菜单？
-                findViewById(R.id.action_setting).setOnClickListener(new View.OnClickListener()
+                //不是下拉菜单，设置放在那做个样子，我加了一个退出按钮
+                findViewById(R.id.action_logout).setOnClickListener(new View.OnClickListener()
                 {
                     @Override
                     public void onClick(View v)
                     {
                         if(AVUser.getCurrentUser()==null) return;
                         AVUser.logOut();
+                        showLogInWindow();
                     }
                 });
                 break;
@@ -209,6 +209,12 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         }
     }
 
+    //显示三个fragment里面的登陆窗口
+    private void showLogInWindow() {
+        mSecondFragment.getView().findViewById(R.id.linearLayout_reg).setVisibility(View.VISIBLE);
+        mThirdFragment.getView().findViewById(R.id.linearLayout_reg).setVisibility(View.VISIBLE);
+        mFourthFragment.getView().findViewById(R.id.linearLayout_reg).setVisibility(View.VISIBLE);
+    }
     //设置toolbar的内容。
     private void InitiateToolbarTabs(String title, int iconId, int menuId) {
 

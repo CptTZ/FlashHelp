@@ -47,12 +47,7 @@ public class ActivitiesFragment extends BaseFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if (super.getUserId().isEmpty())
-        {
-            return baseF.initLoginUi(this,inflater,container,R.layout.fragment_activities);
-        }
-        // 已登陆的界面
-        return inflater.inflate(R.layout.fragment_activities, container, false);
+        return baseF.initLoginUi(this,inflater,container,R.layout.fragment_activities);
     }
 
     @Override

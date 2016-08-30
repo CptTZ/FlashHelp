@@ -2,12 +2,97 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
              tools:context="org.gis4.xfb.hurricanehelp.fragments.main.TaskFragment">
 
-    <TextView
-        android:id="@+id/textviewTest"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="任务"/>
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/linearLayout_norm"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textviewTest"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="任务"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout_reg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/white">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="150dp"
+                android:layout_gravity="center">
+                <ImageView
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:src="@mipmap/highquality_logo"
+                    android:paddingRight="20dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="旋风帮"
+                    android:layout_gravity="center"
+                    android:textSize="40sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp">
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/editText_login_userName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="输入用户名"
+                    app:met_baseColor="@color/colorPrimary"
+                    app:met_primaryColor="#982360"
+                    app:met_floatingLabel="highlight"
+                    app:met_maxCharacters="12"
+                    app:met_clearButton="true"/>
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/editText_login_userPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="请输入密码"
+                    android:inputType="textPassword"
+                    app:met_baseColor="@color/colorPrimary"
+                    app:met_primaryColor="#982360"
+                    app:met_floatingLabel="highlight"
+                    app:met_maxCharacters="16"
+                    app:met_clearButton="true"/>
+
+                <Button
+                    android:id="@+id/button_login"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/login_button_login" />
+
+                <Button
+                    android:id="@+id/button_i_need_register"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/login_button_register"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
 </FrameLayout>
