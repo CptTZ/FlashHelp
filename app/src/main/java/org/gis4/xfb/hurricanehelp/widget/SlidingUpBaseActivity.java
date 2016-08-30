@@ -16,12 +16,15 @@
 
 package org.gis4.xfb.hurricanehelp.widget;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -73,6 +76,8 @@ public abstract class SlidingUpBaseActivity<S extends Scrollable> extends BaseAc
 
     // Fields that needs to saved
     private int mSlidingState;
+
+    private int screenHeight;
 
     // Temporary states
     private boolean mFabIsShown;
@@ -159,6 +164,8 @@ public abstract class SlidingUpBaseActivity<S extends Scrollable> extends BaseAc
             }
         });
 
+        DisplayMetrics metric = new DisplayMetrics();
+        screenHeight = getScreenHeight();
     }
 
     @Override
@@ -237,7 +244,7 @@ public abstract class SlidingUpBaseActivity<S extends Scrollable> extends BaseAc
             }
 
             //修改这行，禁止掉接单界面的toolbar从中间上滑至顶部的那段动画
-            if(translationY > 720) {
+            if(translationY > screenHeight / 8 * 3) {
                 slideTo(translationY, true);
             }
             else {
@@ -420,7 +427,8 @@ public abstract class SlidingUpBaseActivity<S extends Scrollable> extends BaseAc
             mHeaderFlexibleSpace.getLayoutParams().height = (int) (mToolbar.getHeight() - mSlidingHeaderBlueSize - translationY);
             mHeaderFlexibleSpace.requestLayout();
             mHeaderOverlay.requestLayout();
-        } else {
+        }
+        else {
             mHeaderOverlay.setVisibility(View.INVISIBLE);
         }
     }

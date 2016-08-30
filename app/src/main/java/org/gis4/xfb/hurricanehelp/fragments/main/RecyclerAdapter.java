@@ -45,8 +45,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         //把当前item的index存在RelativeLayout的Tag中，方便点击事件的实现
         holder.itemRelativeLayout.setTag(position);
-        HashMap<String, Integer> imageList = XfbTask.imageList();
-        Picasso.with(mContext).load(imageList.get(mDataSet.get(position).getTaskType())).into(holder.itemTaskType);
+        Picasso.with(mContext).load(XfbTask.getLogoOfTaskType(mDataSet.get(position).getTaskType())).into(holder.itemTaskType);
         holder.itemDesc.setText(mDataSet.get(position).getDesc());
         holder.itemRewardPoint.setText("奖励积分：" + mDataSet.get(position).getRewardPoint());
 

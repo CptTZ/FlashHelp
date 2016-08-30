@@ -81,14 +81,21 @@ public class XfbTask extends AVObject implements Serializable
         put(REWARDPOINT, rewardPoint);
     }
 
-    // 根据task_type字段获得对应的图片资源，能用，不优雅
-    public static HashMap<String, Integer> imageList(){
+    public static int getLogoOfTaskType(String taskType) {
         HashMap<String, Integer> imageList = new HashMap<String, Integer>();
         imageList.put("拿快递", R.mipmap.task_type_kuaidi);
         imageList.put("帮干活", R.mipmap.task_type_ganhuo);
         imageList.put("其他", R.mipmap.task_type_qita);
+        imageList.put("送达", R.mipmap.task_send);
+        imageList.put("执行", R.mipmap.task_happen);
 
-        return imageList;
+        try {
+            return imageList.get(taskType);
+        }
+        catch (Exception e) {
+            return imageList.get("拿快递");
+        }
+
     }
 
     public String getTitle(){ return getString(TITLE); }
