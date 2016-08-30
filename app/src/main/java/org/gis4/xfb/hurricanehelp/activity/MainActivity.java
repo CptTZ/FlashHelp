@@ -1,6 +1,8 @@
 package org.gis4.xfb.hurricanehelp.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -310,8 +312,9 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                 markerOptions.position(new LatLng(taskData[n].getSenderLat(),taskData[n].getSenderLng()));
                 markerOptions.title(taskData[n].getDesc());
 
-                HashMap<String, Integer> imageList = XfbTask.imageList();
-                markerOptions.icon(BitmapDescriptorFactory.fromResource(imageList.get(taskData[n].getTaskType())));
+                Bitmap bitmap = BitmapFactory. decodeResource (getResources(), XfbTask.getLogoOfTaskType(taskData[n].getTaskType()));
+                Bitmap smallBitmap = bitmap.createScaledBitmap(bitmap, bitmap.getWidth() / 3 * 2, bitmap.getHeight() / 3 * 2, true);
+                markerOptions.icon(BitmapDescriptorFactory.fromBitmap(smallBitmap));
 
                 aMap.addMarker(markerOptions);
             }

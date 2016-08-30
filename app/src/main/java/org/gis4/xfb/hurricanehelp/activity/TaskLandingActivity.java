@@ -1,5 +1,7 @@
 package org.gis4.xfb.hurricanehelp.activity;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -7,9 +9,13 @@ import android.widget.Toast;
 
 import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.AMapOptions;
+import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.MapView;
 import com.amap.api.maps2d.UiSettings;
 import com.amap.api.maps2d.model.BitmapDescriptorFactory;
+import com.amap.api.maps2d.model.LatLng;
+import com.amap.api.maps2d.model.LatLngBounds;
+import com.amap.api.maps2d.model.MarkerOptions;
 import com.amap.api.maps2d.model.MyLocationStyle;
 import com.avos.avoscloud.AVAnalytics;
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
@@ -136,6 +142,28 @@ public class TaskLandingActivity extends SlidingUpBaseActivity<ObservableScrollV
         ui.setZoomControlsEnabled(true);
         ui.setScaleControlsEnabled(true);
         ui.setAllGesturesEnabled(true);
+
+        //添加地图上的标记点,执行点
+        LatLng happenLatLng = new LatLng(xfbTaskList.get(0).getHappenLat(),xfbTaskList.get(0).getHappenLng());
+        MarkerOptions happenMarkerOptions = new MarkerOptions();
+        happenMarkerOptions.position(happenLatLng);
+        Bitmap bitmap = BitmapFactory. decodeResource (getResources(), XfbTask.getLogoOfTaskType("执行"));
+        Bitmap smallBitmap = bitmap.createScaledBitmap(bitmap, bitmap.getWidth()/2, bitmap.getHeight()/2, true);
+        happenMarkerOptions.icon(BitmapDescriptorFactory.fromBitmap(smallBitmap));
+        aMap.addMarker(happenMarkerOptions);
+        //送达点
+        LatLng sendLatLng =new LatLng(xfbTaskList.get(0).getSenderLat(),xfbTaskList.get(0).getSenderLng());
+        MarkerOptions sendMarkerOptions = new MarkerOptions();
+        sendMarkerOptions.position(sendLatLng);
+        Bitmap bitmap2 = BitmapFactory. decodeResource (getResources(), XfbTask.getLogoOfTaskType("送达"));
+        Bitmap smallBitmap2 = bitmap2.createScaledBitmap(bitmap2, bitmap2.getWidth()/2, bitmap2.getHeight()/2, true);
+        sendMarkerOptions.icon(BitmapDescriptorFactory.fromBitmap(smallBitmap2));
+
+        LatLngBounds latLngBounds = new LatLngBounds(happenLatLng, sendLatLng);
+
+        aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds, 0));
+
+        aMap.addMarker(sendMarkerOptions);
     }
 
     @Override
