@@ -19,6 +19,9 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 
 import com.avos.avoscloud.AVAnalytics;
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.LogUtil;
+import com.avos.avoscloud.SaveCallback;
 import com.rey.material.widget.Button;
 import com.rey.material.widget.Slider;
 import com.rey.material.widget.Spinner;
@@ -132,7 +135,6 @@ public class PublishActivity extends BaseActivity {
 
     private void initialMenu(Menu menu) {
         toolbar.setNavigationIcon(R.mipmap.ic_back_white);
-
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -149,13 +151,25 @@ public class PublishActivity extends BaseActivity {
                         xfbTask.setSenderlocationManualDesc(edittextSend.getText().toString());
                         xfbTask.setHappenLocationManualDesc(edittextExecute.getText().toString());
 
-                        //xfbTask内的字段已经设置完毕。
-                        //// TODO: 2016-8-19 从这里将xfbTask上传出去
-                        Toast.makeText(PublishActivity.this, "提交成功", Toast.LENGTH_SHORT).show();
-                        finish();
+                        xfbTask.saveInBackground(new SaveCallback()
+                        {
+                            @Override
+                            public void done(AVException e)
+                            {
+                                if(e == null)
+                                {
+                                    Toast.makeText(PublishActivity.this, "提交成功", Toast.LENGTH_SHORT).show();
+                                    finish();
+                                    return;
+                                }
+                                LogUtil.log.e("Xfb_Cloud", e.getMessage(), e);
+                                AVAnalytics.onEvent(getApplicationContext(), e.getMessage(), "Xfb_Cloud");
+                                Toast.makeText(PublishActivity.this, "提交失败,请检查网络连接", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                         break;
                     case R.id.action_clear:
-                        Toast.makeText(PublishActivity.this, "重置(未完成)", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PublishActivity.this, "您已重置,尚未提交", Toast.LENGTH_SHORT).show();
                         break;
                 }
                 return false;
@@ -174,16 +188,13 @@ public class PublishActivity extends BaseActivity {
         textViewTimeStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // DialogFragment to host SublimePicker
                 SublimePickerFragment pickerFrag = new SublimePickerFragment();
                 pickerFrag.setCallback(mFragmentCallback);
 
-                // Options
                 textViewTimeStartSelected = true;
                 textViewTimeEndSelected = false;
                 Pair<Boolean, SublimeOptions> optionsPair = getOptions();
 
-                // Valid options
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("SUBLIME_OPTIONS", optionsPair.second);
                 pickerFrag.setArguments(bundle);
@@ -196,29 +207,24 @@ public class PublishActivity extends BaseActivity {
         textViewTimeEnd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 if(startDate == null){
                     Toast.makeText(PublishActivity.this, "请先选择开始时间", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                // DialogFragment to host SublimePicker
                 SublimePickerFragment pickerFrag = new SublimePickerFragment();
                 pickerFrag.setCallback(mFragmentCallback);
 
-                // Options
                 textViewTimeStartSelected = false;
                 textViewTimeEndSelected = true;
                 Pair<Boolean, SublimeOptions> optionsPair = getOptions();
 
-                // Valid options
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("SUBLIME_OPTIONS", optionsPair.second);
                 pickerFrag.setArguments(bundle);
 
                 pickerFrag.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
                 pickerFrag.show(getSupportFragmentManager(), "SUBLIME_PICKER");
-
             }
         });
     }
@@ -275,8 +281,9 @@ public class PublishActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 if(hasSelectImage){
-                    for(int n = 0; n<imageViewsArray.length; n++){
-                        imageViewsArray[n].setImageDrawable(getResources().getDrawable(R.mipmap.publish_activity_noimage));
+                    for (ImageView anImageViewsArray : imageViewsArray)
+                    {
+                        anImageViewsArray.setImageDrawable(getResources().getDrawable(R.mipmap.publish_activity_noimage));
                     }
 
                     Toast.makeText(PublishActivity.this, "清空已选", Toast.LENGTH_SHORT).show();
@@ -326,7 +333,7 @@ public class PublishActivity extends BaseActivity {
                     newHeight = 300;
                     newWidth = bitmap.getWidth() * newHeight / bitmap.getHeight();
                 }
-                Bitmap smallBitmap = zoomImage(bitmap, newWidth, newHeight);
+                Bitmap smallBitmap = compressImage(bitmap, newWidth, newHeight);
                 imageViewsArray[n].setImageBitmap(smallBitmap);
                 lowQualityBitmaps[n] = smallBitmap;
                 highQualityBitmaps[n] = bitmap;
@@ -371,31 +378,31 @@ public class PublishActivity extends BaseActivity {
     private Bitmap getLoacalBitmap(String url) {
         try {
             FileInputStream fis = new FileInputStream(url);
-            return BitmapFactory.decodeStream(fis);  ///把流转化为Bitmap图片
-
+            return BitmapFactory.decodeStream(fis);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            LogUtil.log.e("Xfb_Main", e.getMessage(), e);
             return null;
         }
     }
 
-    //压缩图片，防止内存溢出
-    public static Bitmap zoomImage(Bitmap bgimage, double newWidth, double newHeight) {
+    /**
+     * 压缩图片，防止内存溢出（这算啥压缩？？？）
+     */
+    public static Bitmap compressImage(Bitmap bgimage, double newWidth, double newHeight) {
         // 获取这个图片的宽和高
         float width = bgimage.getWidth();
         float height = bgimage.getHeight();
         // 创建操作图片用的matrix对象
         Matrix matrix = new Matrix();
-        // 计算宽高缩放率
         float scaleWidth = ((float) newWidth) / width;
         float scaleHeight = ((float) newHeight) / height;
-        // 缩放图片动作
         matrix.postScale(scaleWidth, scaleHeight);
-        Bitmap bitmap = Bitmap.createBitmap(bgimage, 0, 0, (int) width, (int) height, matrix, true);
-        return bitmap;
+        return Bitmap.createBitmap(bgimage, 0, 0, (int) width, (int) height, matrix, true);
     }
 
-    //时间控件相关的方法
+    /**
+     * 时间控件相关的方法
+     */
     SublimePickerFragment.Callback mFragmentCallback = new SublimePickerFragment.Callback() {
         @Override
         public void onCancelled() {
@@ -436,7 +443,10 @@ public class PublishActivity extends BaseActivity {
         }
     };
 
-    //获取时间设置空间的参数
+    /**
+     * 获取时间设置控件的参数
+     * @return 参数
+     */
     Pair<Boolean, SublimeOptions> getOptions() {
         SublimeOptions options = new SublimeOptions();
         int displayOptions = 0;

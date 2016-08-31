@@ -135,8 +135,6 @@ public class BaseFragment extends Fragment
                                                 baseF.UpdateUser();
                                                 Toast.makeText(baseF.getContext(), "登陆成功！", Toast.LENGTH_SHORT).show();
                                                 hideLogInWindow();
-                                                //LinearLayout linearLayoutReg = (LinearLayout) view.findViewById(R.id.linearLayout_reg);
-                                                //linearLayoutReg.setVisibility(View.GONE);
                                             } else {
                                                 String errDef;
                                                 switch (e.getCode())

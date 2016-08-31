@@ -68,7 +68,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     /**
      * remove功能暂时不实现
-     * @param position 位置
      */
     public void remove(int position) {
         mDataSet.remove(position);

@@ -214,7 +214,7 @@ public abstract class SlidingUpBaseActivity<S extends Scrollable> extends BaseAc
                 translationY = getScreenHeight() - mHeaderBarHeight;
             }
 
-            if((int)translationY <= 720) {
+            if((int)translationY <= screenHeight / 8 * 3) {
                 return false;
             }
 

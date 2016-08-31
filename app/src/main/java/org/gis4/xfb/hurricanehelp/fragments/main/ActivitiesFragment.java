@@ -17,6 +17,7 @@ import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVQuery;
 
 import org.gis4.xfb.hurricanehelp.R;
+import org.gis4.xfb.hurricanehelp.data.Dbconnect;
 import org.gis4.xfb.hurricanehelp.data.XfbTask;
 import org.gis4.xfb.hurricanehelp.data.testXfbTask;
 import org.gis4.xfb.hurricanehelp.fragments.BaseFragment;
@@ -106,16 +107,7 @@ public class ActivitiesFragment extends BaseFragment
     private class RefreshXfbTask extends AsyncTask<Void, Void, String> {
         @Override
         protected String doInBackground(Void... params) {
-            AVQuery<XfbTask> query = AVQuery.getQuery(XfbTask.class);
-            query.orderByDescending("updatedAt");
-            //CACHE REF: https://leancloud.cn/docs/leanstorage_guide-android.html#缓存查询
-            query.limit(20);
-            try {
-                taskData = query.find();
-            } catch (AVException exception) {
-                Log.e("XFB_Cloud", exception.getMessage(), exception);
-                return "0";
-            }
+            taskData = Dbconnect.FetchAllXfbTask();
             return String.valueOf(taskData.size());
         }
 

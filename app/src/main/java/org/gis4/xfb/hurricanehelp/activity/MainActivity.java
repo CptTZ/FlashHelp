@@ -35,6 +35,7 @@ import com.lhh.apst.library.AdvancedPagerSlidingTabStrip;
 import com.lhh.apst.library.Margins;
 
 import org.gis4.xfb.hurricanehelp.R;
+import org.gis4.xfb.hurricanehelp.data.Dbconnect;
 import org.gis4.xfb.hurricanehelp.data.XfbTask;
 import org.gis4.xfb.hurricanehelp.data.initiateSearch;
 import org.gis4.xfb.hurricanehelp.data.testXfbTask;
@@ -42,7 +43,7 @@ import org.gis4.xfb.hurricanehelp.fragments.main.*;
 import org.gis4.xfb.hurricanehelp.lbs.location.LocationManager;
 import org.gis4.xfb.hurricanehelp.widget.APSTSViewPager;
 
-import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 import butterknife.BindView;
@@ -64,7 +65,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     public ActivitiesFragment mFourthFragment = null;
 
     //刷新页面时获得的数据存在着个里面。
-    private XfbTask[] taskData;
+    private List<XfbTask> taskData;
 
     //从indexFragment里面获取到的地图,为了实现toolBar上的定位，刷新，搜索功能。
     //因为涉及到初始化问题，只能在每次使用时赋值。
@@ -266,7 +267,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                             aMap = mMapView1.getMap();
                         }
                         aMap.clear();
-                        new Task().execute();
+                        new ShowMarkerOnMapTask().execute();
                     case R.id.action_top:
                         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
                         recyclerView.smoothScrollToPosition(0);
@@ -282,7 +283,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
             public boolean onKey(View v, int keyCode, KeyEvent event){
                 switch (keyCode){
                     case KeyEvent.KEYCODE_ENTER:
-                        //// TODO: 2016-8-1 实现搜索框回车事件，这边在按下回车后会被调用两次，不知道出了什么幺蛾子。加个变量能解决这个问题，但是这样不够优雅
+                        // 实现搜索框回车事件，这边在按下回车后会被调用两次，不知道出了什么幺蛾子。加个变量能解决这个问题，但是这样不够优雅
                         Toast.makeText(MainActivity.this, "搜索：" + edit_text_search.getText(), Toast.LENGTH_SHORT).show();
                 }
                 return false;
@@ -295,11 +296,11 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
 
     }
 
-    private class Task extends AsyncTask<Void, Void, String> {
+    private class ShowMarkerOnMapTask extends AsyncTask<Void, Void, String> {
         @Override
         protected String doInBackground(Void... params) {
-            taskData = testXfbTask.taskSample();
-            return String.valueOf(taskData.length);
+            taskData = Dbconnect.FetchAllXfbTask();
+            return String.valueOf(taskData.size());
         }
 
         @Override
@@ -307,12 +308,13 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
 
             Toast.makeText(MainActivity.this, "共刷新" + result + "条记录", Toast.LENGTH_SHORT).show();
 
-            for(int n = 0; n < taskData.length; n++) {
+            for (XfbTask task : taskData)
+            {
                 MarkerOptions markerOptions = new MarkerOptions();
-                markerOptions.position(new LatLng(taskData[n].getSenderLat(),taskData[n].getSenderLng()));
-                markerOptions.title(taskData[n].getDesc());
+                markerOptions.position(new LatLng(task.getSenderLat(), task.getSenderLng()));
+                markerOptions.title(task.getDesc());
 
-                Bitmap bitmap = BitmapFactory. decodeResource (getResources(), XfbTask.getLogoOfTaskType(taskData[n].getTaskType()));
+                Bitmap bitmap = BitmapFactory.decodeResource(getResources(), XfbTask.getLogoOfTaskType(task.getTaskType()));
                 Bitmap smallBitmap = bitmap.createScaledBitmap(bitmap, bitmap.getWidth() / 3 * 2, bitmap.getHeight() / 3 * 2, true);
                 markerOptions.icon(BitmapDescriptorFactory.fromBitmap(smallBitmap));
 
@@ -323,6 +325,9 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         }
     }
 
+    /**
+     * 首页滑动Fragment管理器
+     */
     public class FragmentAdapter extends FragmentStatePagerAdapter implements
             AdvancedPagerSlidingTabStrip.IconTabProvider,
             AdvancedPagerSlidingTabStrip.LayoutProvider,
@@ -536,4 +541,5 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
             return null;
         }
     }
+
 }

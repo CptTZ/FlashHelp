@@ -60,7 +60,10 @@ public class XfbTask extends AVObject
     private Bitmap[] lowQualityBitmaps;
     private Bitmap[] highQualityBitmaps;
 
-    public XfbTask() { }
+    public XfbTask() {
+        put(SENDERID, AVUser.getCurrentUser().getObjectId());
+        put(TASKSTATE, 0);
+    }
 
     public XfbTask(String title, String desc, String taskType,
                    double senderLat, double senderLng, double happenLat, double happenLng, double dur,
@@ -132,8 +135,32 @@ public class XfbTask extends AVObject
     public void setHappenGeoLocation(AVGeoPoint d) { put(HAPPENGEOLOCATION, d); }
     public void setSenderLat(double d) { put(SENDERLAT,d); }
     public void setSenderLng(double d) { put(SENDERLNG,d); }
-    public void setHappenLat(double d) { AVGeoPoint old = getAVGeoPoint(HAPPENGEOLOCATION); old.setLatitude(d); put(HAPPENGEOLOCATION, old); }
-    public void setHappenLng(double d) { AVGeoPoint old = getAVGeoPoint(HAPPENGEOLOCATION); old.setLongitude(d); put(HAPPENGEOLOCATION, old); }
+    public void setHappenLat(double d)
+    {
+        AVGeoPoint old = getAVGeoPoint(HAPPENGEOLOCATION);
+        if(old != null)
+        {
+            old.setLatitude(d);
+            put(HAPPENGEOLOCATION, old);
+            return;
+        }
+        AVGeoPoint tmpGeo = new AVGeoPoint();
+        tmpGeo.setLatitude(d);
+        put(HAPPENGEOLOCATION, tmpGeo);
+    }
+    public void setHappenLng(double d)
+    {
+        AVGeoPoint old = getAVGeoPoint(HAPPENGEOLOCATION);
+        if(old != null)
+        {
+            old.setLongitude(d);
+            put(HAPPENGEOLOCATION, old);
+            return;
+        }
+        AVGeoPoint tmpGeo = new AVGeoPoint();
+        tmpGeo.setLongitude(d);
+        put(HAPPENGEOLOCATION, tmpGeo);
+    }
     public void setDur(double d) { put(DUR, d); }
     public void setSenderlocationManualDesc(String d) { put(SENDERLOCATIONMANUALDESC, d); }
     public void setSenderLocationAutoDesc(String d) { put(SENDERLOCATIONAUTODESC, d); }
