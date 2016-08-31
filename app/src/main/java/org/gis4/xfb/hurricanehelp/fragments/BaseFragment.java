@@ -1,5 +1,6 @@
 package org.gis4.xfb.hurricanehelp.fragments;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -33,6 +34,7 @@ import org.gis4.xfb.hurricanehelp.lbs.location.AmapLocationSource;
 public class BaseFragment extends Fragment
 {
     protected BaseFragment baseF;
+    protected BaseActivity baseA;
 
     /**
      * 定位信息
@@ -133,6 +135,7 @@ public class BaseFragment extends Fragment
                                             baseF.progressDialogDismiss();
                                             if (avUser != null) {
                                                 baseF.UpdateUser();
+                                                baseA.UpdateUser();
                                                 Toast.makeText(baseF.getContext(), "登陆成功！", Toast.LENGTH_SHORT).show();
                                                 hideLogInWindow();
                                             } else {
@@ -199,6 +202,8 @@ public class BaseFragment extends Fragment
         super.onDestroy();
         locationSource.deactivate();
     }
+
+    public void SetBaseActivity(BaseActivity a) { this.baseA = a; }
 
     /**
      * 显示注册界面

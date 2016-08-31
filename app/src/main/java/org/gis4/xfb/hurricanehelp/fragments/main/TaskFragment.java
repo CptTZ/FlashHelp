@@ -8,12 +8,16 @@ import android.view.ViewGroup;
 import com.avos.avoscloud.AVAnalytics;
 
 import org.gis4.xfb.hurricanehelp.R;
+import org.gis4.xfb.hurricanehelp.activity.BaseActivity;
+import org.gis4.xfb.hurricanehelp.activity.MainActivity;
 import org.gis4.xfb.hurricanehelp.fragments.BaseFragment;
 
 public class TaskFragment extends BaseFragment
 {
-    public static TaskFragment instance() {
-        return new TaskFragment();
+    public static TaskFragment instance(BaseActivity b) {
+        TaskFragment t = new TaskFragment();
+        t.SetBaseActivity(b);
+        return t;
     }
 
     @Override

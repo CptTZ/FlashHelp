@@ -194,7 +194,6 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                 break;
             case 2:
                 InitiateToolbarTabs("我的信息", R.mipmap.tabbar_profile_logo, R.menu.fragment_me);
-                //不是下拉菜单，设置放在那做个样子，我加了一个退出按钮
                 findViewById(R.id.action_logout).setOnClickListener(new View.OnClickListener()
                 {
                     @Override
@@ -202,6 +201,11 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                     {
                         if(AVUser.getCurrentUser()==null) return;
                         AVUser.logOut();
+                        UpdateUser();
+                        mFirstFragment.UpdateUser();
+                        mSecondFragment.UpdateUser();
+                        mThirdFragment.UpdateUser();
+                        mFourthFragment.UpdateUser();
                         showLogInWindow();
                     }
                 });
@@ -343,22 +347,22 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                 switch (position) {
                     case VIEW_INDEX:
                         if (null == mFirstFragment)
-                            mFirstFragment = IndexFragment.instance();
+                            mFirstFragment = IndexFragment.instance(baseActivity);
                         return mFirstFragment;
 
                     case VIEW_TASK:
                         if (null == mSecondFragment)
-                            mSecondFragment = TaskFragment.instance();
+                            mSecondFragment = TaskFragment.instance(baseActivity);
                         return mSecondFragment;
 
                     case VIEW_MY:
                         if (null == mThirdFragment)
-                            mThirdFragment = MeFragment.instance();
+                            mThirdFragment = MeFragment.instance(baseActivity);
                         return mThirdFragment;
 
                     case VIEW_ACTIVITIES:
                         if (null == mFourthFragment)
-                            mFourthFragment = ActivitiesFragment.instance();
+                            mFourthFragment = ActivitiesFragment.instance(baseActivity);
                         return mFourthFragment;
                     default:
                         break;

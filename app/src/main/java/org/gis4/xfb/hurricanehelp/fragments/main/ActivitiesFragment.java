@@ -17,6 +17,7 @@ import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVQuery;
 
 import org.gis4.xfb.hurricanehelp.R;
+import org.gis4.xfb.hurricanehelp.activity.BaseActivity;
 import org.gis4.xfb.hurricanehelp.data.Dbconnect;
 import org.gis4.xfb.hurricanehelp.data.XfbTask;
 import org.gis4.xfb.hurricanehelp.data.testXfbTask;
@@ -40,8 +41,9 @@ public class ActivitiesFragment extends BaseFragment
     private RecyclerAdapter mAdapter;
     private List<XfbTask> taskData;
 
-    public static ActivitiesFragment instance() {
+    public static ActivitiesFragment instance(BaseActivity b) {
         ActivitiesFragment view = new ActivitiesFragment();
+        view.SetBaseActivity(b);
         return view;
     }
 

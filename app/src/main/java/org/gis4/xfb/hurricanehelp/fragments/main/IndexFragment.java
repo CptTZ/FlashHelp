@@ -22,6 +22,7 @@ import com.amap.api.maps2d.model.MyLocationStyle;
 import com.avos.avoscloud.AVAnalytics;
 
 import org.gis4.xfb.hurricanehelp.R;
+import org.gis4.xfb.hurricanehelp.activity.BaseActivity;
 import org.gis4.xfb.hurricanehelp.widget.APSTSViewPager;
 import org.gis4.xfb.hurricanehelp.fragments.BaseFragment;
 
@@ -34,9 +35,11 @@ public class IndexFragment extends BaseFragment
     private boolean locChgFirst = true;
     private Toolbar toolBar;
 
-    public static IndexFragment instance()
+    public static IndexFragment instance(BaseActivity b)
     {
-        return new IndexFragment();
+        IndexFragment i = new IndexFragment();
+        i.SetBaseActivity(b);
+        return i;
     }
 
     public AMap aMap;

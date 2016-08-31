@@ -20,6 +20,7 @@ import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.LogInCallback;
 
 import org.gis4.xfb.hurricanehelp.R;
+import org.gis4.xfb.hurricanehelp.activity.BaseActivity;
 import org.gis4.xfb.hurricanehelp.fragments.BaseFragment;
 
 import butterknife.BindView;
@@ -28,9 +29,11 @@ import butterknife.OnClick;
 
 public class MeFragment extends BaseFragment
 {
-    public static MeFragment instance()
+    public static MeFragment instance(BaseActivity b)
     {
-        return new MeFragment();
+        MeFragment m = new MeFragment();
+        m.SetBaseActivity(b);
+        return m;
     }
 
 
@@ -44,7 +47,7 @@ public class MeFragment extends BaseFragment
     public void onStart() {
         super.onStart();
 
-        //TODO!!: 这样的Hack估计以后会遇到问题
+        //TODO: 这页干嘛？
         if (super.getUserId().isEmpty())
         {
 
