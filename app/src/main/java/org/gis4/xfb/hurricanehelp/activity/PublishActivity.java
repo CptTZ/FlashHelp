@@ -45,64 +45,74 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * 发布新的XFB任务
  * @author zc
  */
 public class PublishActivity extends BaseActivity {
 
-    //保存数据
-    private XfbTask xfbTask;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
-    private Toolbar toolbar;
-    private Spinner spinner;
-    private TextView textViewTimeStart;
-    private TextView textViewTimeEnd;
-    private TextView textviewPoints;
-    private TextView textviewMyPoints;
-    private Slider sliderPoints;
+    @BindView(R.id.task_type)
+    Spinner spinner;
 
-    private ImageView taskSendLocationImageview;
-    private ImageView taskExecuteLocationImageview;
+    @BindView(R.id.textview_time_start)
+    TextView textViewTimeStart;
 
-    private EditText taskDesc;
-    private EditText edittextSend;
-    private EditText edittextExecute;
+    @BindView(R.id.textview_time_end)
+    TextView textViewTimeEnd;
 
-    private Button selectOrClearImages;
-    private boolean hasSelectImage;
+    @BindView(R.id.textview_points)
+    TextView textviewPoints;
+
+    @BindView(R.id.textview_my_points)
+    TextView textviewMyPoints;
+
+    @BindView(R.id.slider_points)
+    Slider sliderPoints;
+
+    @BindView(R.id.task_send_location_imageview)
+    ImageView taskSendLocationImageview;
+
+    @BindView(R.id.task_execute_location_imageview)
+    ImageView taskExecuteLocationImageview;
+
+    @BindView(R.id.task_desc)
+    EditText taskDesc;
+
+    @BindView(R.id.edittext_send_location_discription)
+    EditText edittextSend;
+
+    @BindView(R.id.edittext_execute_location_discription)
+    EditText edittextExecute;
+
+    @BindView(R.id.select_or_clear_images)
+    Button selectOrClearImages;
+
+
     private ImageView[] imageViewsArray;
-
+    private boolean hasSelectImage;
     private boolean textViewTimeStartSelected, textViewTimeEndSelected;
     private pickedDate startDate, endDate;
+
+    //保存数据
+    private XfbTask xfbTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_publish);
+        ButterKnife.bind(this);
 
+        toolbar.inflateMenu(R.menu.activity_publish_menu);
         xfbTask = new XfbTask();
 
-        spinner = (Spinner) findViewById(R.id.task_type);
-        sliderPoints = (Slider) findViewById(R.id.slider_points);
-
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.inflateMenu(R.menu.activity_publish_menu);
-
-        textViewTimeStart =(TextView) findViewById(R.id.textview_time_start);
-        textViewTimeEnd =(TextView) findViewById(R.id.textview_time_end);
-        textviewMyPoints =(TextView) findViewById(R.id.textview_my_points);
-        textviewPoints =(TextView) findViewById(R.id.textview_points);
-
-        taskDesc =(EditText) findViewById(R.id.task_desc);
-        edittextSend =(EditText) findViewById(R.id.edittext_send_location_discription);
-        edittextExecute=(EditText) findViewById(R.id.edittext_execute_location_discription);
-
-        taskSendLocationImageview =(ImageView) findViewById(R.id.task_send_location_imageview);
-        taskExecuteLocationImageview =(ImageView) findViewById(R.id.task_execute_location_imageview);
-
         selectOrClearImages =(Button) findViewById(R.id.select_or_clear_images);
-        hasSelectImage =false;
+        hasSelectImage = false;
         imageViewsArray = new ImageView[5];
         imageViewsArray[0] =(ImageView) findViewById(R.id.publish_imageview1);
         imageViewsArray[1] =(ImageView) findViewById(R.id.publish_imageview2);

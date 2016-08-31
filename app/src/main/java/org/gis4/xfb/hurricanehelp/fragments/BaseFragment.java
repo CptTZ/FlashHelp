@@ -146,7 +146,7 @@ public class BaseFragment extends Fragment
                                                         errDef="用户密码输入错误";
                                                         break;
                                                     default:
-                                                        errDef="网络连接失败或出现未知错误";
+                                                        errDef=e.getLocalizedMessage();
                                                         Log.e("Xfb_Cloud", e.getMessage(), e);
                                                         AVAnalytics.onEvent(getContext(),e.getMessage(),"Xfb_Cloud");
                                                 }

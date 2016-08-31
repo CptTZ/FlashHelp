@@ -3,11 +3,15 @@ package org.gis4.xfb.hurricanehelp.data;
 import android.graphics.Bitmap;
 import android.os.SystemClock;
 
+import com.avos.avoscloud.AVACL;
 import com.avos.avoscloud.AVClassName;
+import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVFile;
 import com.avos.avoscloud.AVGeoPoint;
 import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.AVSaveOption;
 import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.SaveCallback;
 
 import org.gis4.xfb.hurricanehelp.R;
 
@@ -105,6 +109,52 @@ public class XfbTask extends AVObject
             return imageList.get("拿快递");
         }
 
+    }
+
+    /**
+     * Task权限设置，只让当前用户修改
+     */
+    private void aclSaveSet()
+    {
+        AVACL acl = new AVACL();
+        acl.setPublicReadAccess(true);
+        acl.setWriteAccess(AVUser.getCurrentUser(), true);
+        this.setACL(acl);
+    }
+
+    @Override
+    public void save() throws AVException
+    {
+        aclSaveSet();
+        super.save();
+    }
+
+    @Override
+    public void saveInBackground()
+    {
+        aclSaveSet();
+        super.saveInBackground();
+    }
+
+    @Override
+    public void saveInBackground(AVSaveOption o)
+    {
+        aclSaveSet();
+        super.saveInBackground(o);
+    }
+
+    @Override
+    public void saveInBackground(SaveCallback c)
+    {
+        aclSaveSet();
+        super.saveInBackground(c);
+    }
+
+    @Override
+    public void saveInBackground(AVSaveOption o, SaveCallback c)
+    {
+        aclSaveSet();
+        super.saveInBackground(o, c);
     }
 
     public String getTitle(){ return getString(TITLE); }
