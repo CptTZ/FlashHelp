@@ -12,6 +12,7 @@ import com.avos.avoscloud.AVQuery;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 /**
  * 获取后台数据的类（均不在后台，所以请保证该类在后台线程中运行
@@ -27,6 +28,7 @@ public class Dbconnect
     {
         AVQuery<XfbTask> query = AVQuery.getQuery(XfbTask.class);
         query.orderByDescending("updatedAt");
+        query.setLimit(50);
         try {
             return query.find();
         } catch (AVException ex) {

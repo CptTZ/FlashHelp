@@ -136,8 +136,8 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         mAPSTS.setViewPager(mVP);
         mAPSTS.setOnPageChangeListener(this);
         mVP.setCurrentItem(VIEW_INDEX);
-        mAPSTS.showDot(VIEW_TASK, "...");
-        mAPSTS.showDot(VIEW_ACTIVITIES, "...");
+        mAPSTS.showDot(VIEW_TASK, "❤");
+        mAPSTS.showDot(VIEW_ACTIVITIES, "❤");
     }
 
     private long mExitTime;
@@ -193,6 +193,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                 break;
             case 1:
                 InitiateToolbarTabs("我的任务", R.mipmap.tabbar_message_center_logo, R.menu.fragment_task);
+                mAPSTS.hideDot(1);
                 break;
             case 2:
                 InitiateToolbarTabs("我的信息", R.mipmap.tabbar_profile_logo, R.menu.fragment_me);
@@ -214,6 +215,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                 break;
             case 3:
                 InitiateToolbarTabs("发现新任务", R.mipmap.tabbar_discover_logo, R.menu.fragment_activities);
+                mAPSTS.hideDot(3);
                 break;
         }
     }
