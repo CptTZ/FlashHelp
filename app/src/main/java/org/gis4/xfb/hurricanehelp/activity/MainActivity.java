@@ -29,7 +29,13 @@ import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.MapView;
 import com.amap.api.maps2d.model.BitmapDescriptorFactory;
 import com.amap.api.maps2d.model.LatLng;
+import com.amap.api.maps2d.model.Marker;
 import com.amap.api.maps2d.model.MarkerOptions;
+import com.amap.api.services.geocoder.GeocodeAddress;
+import com.amap.api.services.geocoder.GeocodeQuery;
+import com.amap.api.services.geocoder.GeocodeResult;
+import com.amap.api.services.geocoder.GeocodeSearch;
+import com.amap.api.services.geocoder.RegeocodeResult;
 import com.avos.avoscloud.AVUser;
 import com.lhh.apst.library.AdvancedPagerSlidingTabStrip;
 import com.lhh.apst.library.Margins;
@@ -50,7 +56,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends BaseActivity implements ViewPager.OnPageChangeListener
+public class MainActivity extends BaseActivity implements ViewPager.OnPageChangeListener, GeocodeSearch.OnGeocodeSearchListener
 {
     private static final int VIEW_INDEX = 0;
     private static final int VIEW_TASK = 1;
@@ -63,6 +69,10 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     public TaskFragment mSecondFragment = null;
     public MeFragment mThirdFragment = null;
     public ActivitiesFragment mFourthFragment = null;
+
+    //因为点击搜索会莫名其妙搜索两次，所以设置一个计数，强制搜索一次
+    private int searchCount = 0;
+    private GeocodeSearch geocoderSearch;
 
     //刷新页面时获得的数据存在着个里面。
     private List<XfbTask> taskData;
@@ -269,12 +279,28 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                         if(aMap ==null) {
                             mMapView1 = (MapView) findViewById(R.id.indexMap);
                             aMap = mMapView1.getMap();
+
+                            aMap.setOnInfoWindowClickListener(new AMap.OnInfoWindowClickListener() {
+                                @Override
+                                public void onInfoWindowClick(Marker marker) {
+                                    Intent intent =new Intent(MainActivity.this, TaskLandingActivity.class);
+                                    Bundle bundle=new Bundle();
+                                    bundle.putParcelable("xfbTask", (XfbTask) marker.getObject());
+                                    intent.putExtras(bundle);
+                                    MainActivity.this.startActivity(intent);
+                                }
+                            });
                         }
                         aMap.clear();
                         new ShowMarkerOnMapTask().execute();
+                        break;
                     case R.id.action_top:
                         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
                         recyclerView.smoothScrollToPosition(0);
+                        break;
+
+                    case R.id.action_feedback:
+                        //// TODO: 2016-09-03 “我的”界面上的反馈
                         break;
                 }
 
@@ -288,11 +314,47 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                 switch (keyCode){
                     case KeyEvent.KEYCODE_ENTER:
                         // 实现搜索框回车事件，这边在按下回车后会被调用两次，不知道出了什么幺蛾子。加个变量能解决这个问题，但是这样不够优雅
-                        Toast.makeText(MainActivity.this, "搜索：" + edit_text_search.getText(), Toast.LENGTH_SHORT).show();
+                        if(searchCount % 2 == 0) {
+                            MapView mMapView = (MapView) findViewById(R.id.indexMap);
+                            aMap = mMapView.getMap();
+
+                            geocoderSearch = new GeocodeSearch(MainActivity.this);
+                            geocoderSearch.setOnGeocodeSearchListener(MainActivity.this);
+                            GeocodeQuery query = new GeocodeQuery(edit_text_search.getText().toString(), "025");
+                            geocoderSearch.getFromLocationNameAsyn(query);// 设置同步地理编码请求
+                        }
+                        searchCount++;
                 }
                 return false;
             }
         });
+    }
+
+    @Override
+    public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
+
+    }
+
+    @Override
+    public void onGeocodeSearched(GeocodeResult result, int rCode) {
+        if (rCode == 1000) {
+            if (result != null && result.getGeocodeAddressList() != null
+                    && result.getGeocodeAddressList().size() > 0) {
+                GeocodeAddress address = result.getGeocodeAddressList().get(0);
+                aMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                        new LatLng(address.getLatLonPoint().getLatitude(), address.getLatLonPoint().getLongitude()), 15));
+
+                String addressName = "已移动地图至:" + address.getFormatAddress();
+                image_search_back.callOnClick();
+                Toast.makeText(MainActivity.this, addressName, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(MainActivity.this, "没有搜索结果，你输入的地点太偏啦", Toast.LENGTH_SHORT).show();
+            }
+
+        }
+        else {
+            Toast.makeText(MainActivity.this, "出错啦，你的网是不是断掉了？", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -319,10 +381,11 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                 markerOptions.title(task.getDesc());
 
                 Bitmap bitmap = BitmapFactory.decodeResource(getResources(), XfbTask.getLogoOfTaskType(task.getTaskType()));
-                Bitmap smallBitmap = bitmap.createScaledBitmap(bitmap, bitmap.getWidth() / 3 * 2, bitmap.getHeight() / 3 * 2, true);
+                Bitmap smallBitmap = bitmap.createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getHeight(), true);
                 markerOptions.icon(BitmapDescriptorFactory.fromBitmap(smallBitmap));
 
-                aMap.addMarker(markerOptions);
+                Marker marker = aMap.addMarker(markerOptions);
+                marker.setObject(task);
             }
 
             super.onPostExecute(result);
