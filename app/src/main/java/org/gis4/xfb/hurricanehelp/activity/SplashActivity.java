@@ -9,10 +9,13 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
+import com.avos.avoscloud.AVAnalytics;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVInstallation;
+import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.LogUtil;
+import com.avos.avoscloud.PushService;
 import com.avos.avoscloud.SaveCallback;
-import com.avos.avoscloud.feedback.FeedbackAgent;
 
 import org.gis4.xfb.hurricanehelp.R;
 
@@ -28,48 +31,56 @@ public class SplashActivity extends Activity {
     @BindView(R.id.BriefIntro)
     TextView briefIntro;
 
-    private boolean hasRunnedS, hasRunnedE;
+    private boolean hasRunnedStart, hasRunnedEnd;
+
+    /**
+     * 初始化Push模块
+     */
+    private void initPush()
+    {
+        PushService.setDefaultPushCallback(this, SplashActivity.class);
+        PushService.subscribe(this, "publicEvent", SplashActivity.class);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
-        hasRunnedS = false;
-        hasRunnedE = false;
+        hasRunnedStart = false;
+        hasRunnedEnd = false;
 
-        FeedbackAgent agent = new FeedbackAgent(this);
-        agent.sync();
+        // 保存installId
+        AVInstallation.getCurrentInstallation().saveInBackground(new SaveCallback() {
+            @Override
+            public void done(AVException e) {
+                if (e == null) {
+                    if(AVUser.getCurrentUser() != null) {
+                        AVInstallation.getCurrentInstallation().put("user", AVUser.getCurrentUser());
+                    }
+                }
+                else {
+                    AVAnalytics.onEvent(getApplicationContext(), e.getMessage(), "Xfb_Cloud_Init");
+                }
+            }
+        });
 
+        initPush();
         Animation fadeIn = AnimationUtils.loadAnimation(this, R.anim.splash_fadein);
         Animation.AnimationListener animationListener = new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-                if (hasRunnedS) return;
-                AVInstallation.getCurrentInstallation().saveInBackground(new SaveCallback()
-                {
-                    @Override
-                    public void done(AVException e)
-                    {
-                        if (e == null) {
-                            String installationId = AVInstallation.getCurrentInstallation().getInstallationId();
-                            // 关联  installationId 到用户表等操作……
-                        }
-                        else {
-                            Log.e("LeanCloud", "错误," + e.getLocalizedMessage());
-                        }
-                    }
-                });
-                hasRunnedS = true;
+                if (hasRunnedStart) return;
+                hasRunnedStart = true;
             }
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                if (hasRunnedE) return;
+                if (hasRunnedEnd) return;
                 startActivity(new Intent(SplashActivity.this, MainActivity.class));
                 SplashActivity.this.overridePendingTransition(R.anim.splash_slidein,
                         R.anim.splash_slideout);
-                hasRunnedE = true;
+                hasRunnedEnd = true;
                 SplashActivity.this.finish();
             }
 

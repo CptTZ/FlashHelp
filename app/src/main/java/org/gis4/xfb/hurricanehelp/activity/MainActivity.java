@@ -31,6 +31,7 @@ import com.amap.api.maps2d.model.BitmapDescriptorFactory;
 import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.maps2d.model.MarkerOptions;
 import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.feedback.FeedbackAgent;
 import com.lhh.apst.library.AdvancedPagerSlidingTabStrip;
 import com.lhh.apst.library.Margins;
 
@@ -118,6 +119,8 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
 
         onPageSelected(0);
 
+        super.feedBackAgent = new FeedbackAgent(this);
+        super.feedBackAgent.sync();
         locationManager = super.locationOld;
         InitTab();
         handleFragmentToolBarClick();
@@ -252,7 +255,13 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                         MapView mMapView = (MapView) findViewById(R.id.indexMap);
                         aMap = mMapView.getMap();
                         AMapLocation location = locationManager.getLocation();
+                        if(location == null)
+                        {
+                            showError("定位失败，过会再试吧");
+                            return false;
+                        }
                         aMap.animateCamera(CameraUpdateFactory.changeLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
+                        Toast.makeText(getApplicationContext(), "您的位置是: " + location.getAddress(), Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.action_search:
                         initiateSearch.showSearchBox(MainActivity.this, card_search, toolbar, view_search, listView, edit_text_search, line_divider);
@@ -276,9 +285,11 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
                         recyclerView.smoothScrollToPosition(0);
                         break;
+                    default:
+                        return false;
                 }
 
-                return false;
+                return true;
             }
         });
 

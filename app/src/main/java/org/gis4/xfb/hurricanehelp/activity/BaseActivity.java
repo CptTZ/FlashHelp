@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
 
 import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.feedback.FeedbackAgent;
 
 import org.gis4.xfb.hurricanehelp.R;
 import org.gis4.xfb.hurricanehelp.lbs.location.AmapLocationSource;
@@ -22,6 +23,7 @@ public class BaseActivity extends AppCompatActivity {
     protected LocationManager locationOld;
     protected AmapLocationSource locationSource;
     protected BaseActivity baseActivity;
+    protected FeedbackAgent feedBackAgent;
 
     private static final int NUM_OF_ITEMS = 100;
     private static final int NUM_OF_ITEMS_FEW = 3;
