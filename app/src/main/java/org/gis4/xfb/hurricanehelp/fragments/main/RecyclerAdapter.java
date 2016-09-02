@@ -12,11 +12,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amap.api.location.AMapLocation;
+import com.avos.avoscloud.AVGeoPoint;
 import com.squareup.picasso.Picasso;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+
 import org.gis4.xfb.hurricanehelp.R;
 import org.gis4.xfb.hurricanehelp.activity.MainActivity;
 import org.gis4.xfb.hurricanehelp.activity.TaskLandingActivity;
@@ -29,10 +33,12 @@ import org.gis4.xfb.hurricanehelp.data.XfbTask;
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
     private Context mContext;
     private List<XfbTask> mDataSet;
+    private AMapLocation userLocation;
 
-    public RecyclerAdapter(Context context, List<XfbTask> dataSet) {
+    public RecyclerAdapter(Context context, List<XfbTask> dataSet, AMapLocation loc) {
         mContext = context;
         mDataSet = dataSet;
+        userLocation = loc;
     }
 
     @Override
@@ -47,12 +53,26 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.itemRelativeLayout.setTag(position);
         Picasso.with(mContext).load(XfbTask.getLogoOfTaskType(mDataSet.get(position).getTaskType())).into(holder.itemTaskType);
         holder.itemDesc.setText(mDataSet.get(position).getDesc());
-        holder.itemRewardPoint.setText("奖励积分：" + mDataSet.get(position).getRewardPoint());
+        String rewPnt = "奖励积分：" + mDataSet.get(position).getRewardPoint();
+        holder.itemRewardPoint.setText(rewPnt);
+        String disTxt;
+        if(userLocation==null) { disTxt="距离：未定位，无法计算"; } else
+        {
+            double dist = mDataSet.get(position).getHappenGeoLocation().
+                    distanceInKilometersTo(new AVGeoPoint(
+                            userLocation.getLatitude(),userLocation.getLongitude()) );
+            if (dist < 1) {
+                disTxt = "距离：" + String.format(Locale.CHINA, "%1$.0f", dist*1000) + "米";
+            } else {
+                disTxt = "距离：" + String.format(Locale.CHINA, "%1$.1f", dist) + "公里";
+            }
+        }
+        holder.itemDistance.setText(disTxt);
 
         holder.itemRelativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent =new Intent(mContext,TaskLandingActivity.class);
+                Intent intent =new Intent(mContext, TaskLandingActivity.class);
                 Bundle bundle=new Bundle();
                 bundle.putParcelable("xfbTask", mDataSet.get((int)v.getTag()));
                 intent.putExtras(bundle);
@@ -87,9 +107,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         public ImageView itemTaskType;
         public TextView itemDesc;
         public TextView itemRewardPoint;
-
-        // TODO: 2016-8-21 这里还少一个根据经纬度计算当前定位地点到任务地点的距离
-        // ZYC COMMENT FOR ABOVE: 未来使用LeanCloud中的CQL直接计算
+        public TextView itemDistance;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -97,6 +115,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             itemTaskType = (ImageView) itemView.findViewById(R.id.item_task_type);
             itemDesc = (TextView) itemView.findViewById(R.id.item_desc);
             itemRewardPoint = (TextView) itemView.findViewById(R.id.item_reward_point);
+            itemDistance = (TextView) itemView.findViewById(R.id.item_distance);
         }
     }
 }

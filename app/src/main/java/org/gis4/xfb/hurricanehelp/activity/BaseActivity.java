@@ -8,6 +8,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
 
+import com.amap.api.location.AMapLocation;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.feedback.FeedbackAgent;
 
@@ -29,6 +30,12 @@ public class BaseActivity extends AppCompatActivity {
     private static final int NUM_OF_ITEMS_FEW = 3;
 
     private AVUser currentUser;
+
+    public AMapLocation getCurrentLocation()
+    {
+        if(this.locationOld==null) return null;
+        return this.locationOld.getLocation();
+    }
 
     public String getUserId()
     {

@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
 import android.widget.Toast;
 
+import com.amap.api.location.AMapLocation;
 import com.avos.avoscloud.AVAnalytics;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVQuery;
@@ -109,13 +110,24 @@ public class ActivitiesFragment extends BaseFragment
     private class RefreshXfbTask extends AsyncTask<Void, Void, String> {
         @Override
         protected String doInBackground(Void... params) {
-            taskData = Dbconnect.FetchAllXfbTask();
+            AMapLocation loc = baseA.getCurrentLocation();
+            // 未获取到用户位置时拒绝刷新
+            if(loc == null) {
+                return "";
+            }
+            taskData = Dbconnect.FetchCloseXfbTask(loc.getLatitude(),loc.getLongitude(),30);
             return String.valueOf(taskData.size());
         }
 
         @Override
         protected void onPostExecute(String result) {
-            Toast.makeText(getActivity(), "共刷新" + result + "条记录", Toast.LENGTH_SHORT).show();
+            if(result.isEmpty())
+            {
+                Toast.makeText(getActivity(), "定位失败，暂时无法刷新任务", Toast.LENGTH_SHORT).show();
+                super.onPostExecute(result);
+                return;
+            }
+            Toast.makeText(getActivity(), "在您附近找到" + result + "条任务", Toast.LENGTH_SHORT).show();
             setData();
             mWaveSwipeRefreshLayout.setRefreshing(false);
             super.onPostExecute(result);
@@ -123,7 +135,7 @@ public class ActivitiesFragment extends BaseFragment
     }
 
     private void setData() {
-        mAdapter = new RecyclerAdapter(getActivity(), taskData);
+        mAdapter = new RecyclerAdapter(getActivity(), taskData, baseA.getCurrentLocation());
         SlideInRightAnimationAdapter slideAdapter = new SlideInRightAnimationAdapter(mAdapter);
         slideAdapter.setFirstOnly(true);
         slideAdapter.setDuration(500);

@@ -127,7 +127,6 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     }
 
     private void InitTab() {
-        Random rnd = new Random();
         mSize = getResources().getDimensionPixelSize(R.dimen.xfb_tab_size);
         mVP.setOffscreenPageLimit(VIEW_CAPACITY);
         FragmentAdapter adapter = new FragmentAdapter(getSupportFragmentManager());
@@ -137,8 +136,8 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         mAPSTS.setViewPager(mVP);
         mAPSTS.setOnPageChangeListener(this);
         mVP.setCurrentItem(VIEW_INDEX);
-        mAPSTS.showDot(VIEW_TASK, String.valueOf((411 * rnd.nextInt(50) % 50)));
-        mAPSTS.showDot(VIEW_ACTIVITIES, String.valueOf((411 * rnd.nextInt(50) % 30)));
+        mAPSTS.showDot(VIEW_TASK, "...");
+        mAPSTS.showDot(VIEW_ACTIVITIES, "...");
     }
 
     private long mExitTime;

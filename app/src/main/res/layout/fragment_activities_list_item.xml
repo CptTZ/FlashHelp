@@ -41,7 +41,7 @@
         android:layout_below="@+id/item_desc"
         android:gravity="center|left"
         android:textSize="14sp"
-        android:text="奖励积分：30"/>
+        android:text="奖励积分：10"/>
 
     <TextView
         android:id="@+id/item_distance"
@@ -53,6 +53,6 @@
         android:layout_below="@+id/item_desc"
         android:gravity="center|left"
         android:textSize="14sp"
-        android:text="距离：未定位，无法计算"/>
+        android:text="距离：无法计算"/>
 
 </RelativeLayout>
