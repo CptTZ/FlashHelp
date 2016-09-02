@@ -67,6 +67,7 @@ public class XfbTask extends AVObject
     public XfbTask() {
         put(SENDERID, AVUser.getCurrentUser().getObjectId());
         put(TASKSTATE, 0);
+        put(HAPPENGEOLOCATION, new AVGeoPoint(0,0));
     }
 
     public XfbTask(String title, String desc, String taskType,

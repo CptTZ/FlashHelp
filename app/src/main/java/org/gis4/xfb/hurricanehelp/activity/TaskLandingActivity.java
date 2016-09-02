@@ -161,7 +161,7 @@ public class TaskLandingActivity extends SlidingUpBaseActivity<ObservableScrollV
 
         LatLngBounds latLngBounds = new LatLngBounds(happenLatLng, sendLatLng);
 
-        aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds, 0));
+        aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds, 200));
 
         aMap.addMarker(sendMarkerOptions);
     }

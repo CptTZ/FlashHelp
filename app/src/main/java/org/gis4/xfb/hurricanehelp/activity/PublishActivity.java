@@ -161,22 +161,39 @@ public class PublishActivity extends BaseActivity {
                         xfbTask.setSenderlocationManualDesc(edittextSend.getText().toString());
                         xfbTask.setHappenLocationManualDesc(edittextExecute.getText().toString());
 
-                        xfbTask.saveInBackground(new SaveCallback()
-                        {
-                            @Override
-                            public void done(AVException e)
+                        if(xfbTask.getSenderLat() == 0) {
+                            Toast.makeText(PublishActivity.this, "请选择任务送达地点！", Toast.LENGTH_SHORT).show();
+                        }
+                        else if(xfbTask.getHappenLat() == 0) {
+                            Toast.makeText(PublishActivity.this, "请选择任务执行地点！", Toast.LENGTH_SHORT).show();
+                        }
+                        else if(xfbTask.getStartTime() == null) {
+                            Toast.makeText(PublishActivity.this, "请填写任务开始时间！", Toast.LENGTH_SHORT).show();
+                        }
+                        else if(xfbTask.getEndTime() == null) {
+                            Toast.makeText(PublishActivity.this, "请填写任务截至时间！", Toast.LENGTH_SHORT).show();
+                        }
+                        else if(xfbTask.getDesc() == null || xfbTask.getDesc().equals("")) {
+                            Toast.makeText(PublishActivity.this, "请填写任务描述！", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            xfbTask.saveInBackground(new SaveCallback()
                             {
-                                if(e == null)
+                                @Override
+                                public void done(AVException e)
                                 {
-                                    Toast.makeText(PublishActivity.this, "提交成功", Toast.LENGTH_SHORT).show();
-                                    finish();
-                                    return;
+                                    if(e == null)
+                                    {
+                                        Toast.makeText(PublishActivity.this, "提交成功", Toast.LENGTH_SHORT).show();
+                                        finish();
+                                        return;
+                                    }
+                                    LogUtil.log.e("Xfb_Cloud", e.getMessage(), e);
+                                    AVAnalytics.onEvent(getApplicationContext(), e.getMessage(), "Xfb_Cloud");
+                                    Toast.makeText(PublishActivity.this, "提交失败,请检查网络连接", Toast.LENGTH_SHORT).show();
                                 }
-                                LogUtil.log.e("Xfb_Cloud", e.getMessage(), e);
-                                AVAnalytics.onEvent(getApplicationContext(), e.getMessage(), "Xfb_Cloud");
-                                Toast.makeText(PublishActivity.this, "提交失败,请检查网络连接", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                            });
+                        }
                         break;
                     case R.id.action_clear:
                         Toast.makeText(PublishActivity.this, "您已重置,尚未提交", Toast.LENGTH_SHORT).show();
@@ -333,14 +350,14 @@ public class PublishActivity extends BaseActivity {
             for(int n =0; n<imagePaths.size(); n++){
                 Bitmap bitmap = getLoacalBitmap(imagePaths.get(n));
 
-                //将图片的宽或者高压缩至300像素
+                //将图片的宽或者高压缩至150像素
                 double newWidth = 0, newHeight = 0;
                 if(bitmap.getHeight() > bitmap.getWidth()){
-                    newWidth = 300;
+                    newWidth = 150;
                     newHeight = bitmap.getHeight() * newWidth / bitmap.getWidth();
                 }
                 else {
-                    newHeight = 300;
+                    newHeight = 150;
                     newWidth = bitmap.getWidth() * newHeight / bitmap.getHeight();
                 }
                 Bitmap smallBitmap = compressImage(bitmap, newWidth, newHeight);
@@ -440,10 +457,11 @@ public class PublishActivity extends BaseActivity {
                         selectedDate.getStartDate().get(Calendar.DAY_OF_MONTH),
                         hourOfDay,minute);
 
-                if(endDate.earlierThan(startDate)){
-                    Toast.makeText(PublishActivity.this, "截至时间应迟于开始时间！", Toast.LENGTH_LONG).show();
-                    return;
-                }
+                //比较时间的先后
+//                if(endDate.earlierThan(startDate)){
+//                    Toast.makeText(PublishActivity.this, "截至时间应迟于开始时间！", Toast.LENGTH_LONG).show();
+//                    return;
+//                }
 
                 textViewTimeEnd.setText(endDate.toString());
                 xfbTask.setEndTime(endDate.getDate());
