@@ -67,6 +67,7 @@ public class XfbTask extends AVObject
     public XfbTask() {
         put(SENDERID, AVUser.getCurrentUser().getObjectId());
         put(TASKSTATE, 0);
+        put(HAPPENGEOLOCATION, new AVGeoPoint(0,0));
     }
 
     public XfbTask(String title, String desc, String taskType,
@@ -108,7 +109,13 @@ public class XfbTask extends AVObject
         catch (Exception e) {
             return imageList.get("拿快递");
         }
+    }
 
+    public static int getLogoOfTaskType(int taskState) {
+        if(taskState == 1) return R.mipmap.task_state_ing;
+        if(taskState == 2) return R.mipmap.task_state_ok;
+
+        return R.mipmap.task_state_ok;
     }
 
     /**

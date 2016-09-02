@@ -65,7 +65,7 @@
                     <com.rey.material.widget.Spinner
                         android:id="@+id/task_type"
                         style="@style/Material.Widget.Spinner"
-                        android:layout_width="100dp"
+                        android:layout_width="120dp"
                         android:layout_height="wrap_content"
                         app:rd_style="@style/Material.Drawable.Ripple.Wave"/>
 
@@ -99,7 +99,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:textSize="@dimen/scrollview_title_textsize"
-                    android:text="任务送达地点"
+                    android:text="任务交接地点"
                     android:gravity="center|left"
                     android:layout_toRightOf="@+id/imageview2"
                     android:layout_alignParentTop="true"
@@ -123,7 +123,8 @@
 
                     <ImageView
                         android:id="@+id/task_send_location_imageview"
-                        android:layout_width="match_parent"
+                        android:padding="10dp"
+                        android:layout_width="308dp"
                         android:layout_height="240dp"
                         android:src="@mipmap/publish_list_map_temp"/>
 
@@ -181,7 +182,8 @@
 
                     <ImageView
                         android:id="@+id/task_execute_location_imageview"
-                        android:layout_width="match_parent"
+                        android:padding="10dp"
+                        android:layout_width="308dp"
                         android:layout_height="240dp"
                         android:src="@mipmap/publish_list_map_temp"/>
 
