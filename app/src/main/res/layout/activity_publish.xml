@@ -99,7 +99,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:textSize="@dimen/scrollview_title_textsize"
-                    android:text="任务送达地点"
+                    android:text="任务交接地点"
                     android:gravity="center|left"
                     android:layout_toRightOf="@+id/imageview2"
                     android:layout_alignParentTop="true"

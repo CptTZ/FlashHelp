@@ -94,7 +94,7 @@ public abstract class SlidingUpBaseActivity<S extends Scrollable> extends BaseAc
     private View.OnClickListener fabClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Toast.makeText(SlidingUpBaseActivity.this, "接单成功", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(SlidingUpBaseActivity.this, "接单成功", Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -137,7 +137,7 @@ public abstract class SlidingUpBaseActivity<S extends Scrollable> extends BaseAc
         mScrollable = createScrollable();
 
         mFab = findViewById(R.id.fab);
-        mFab.setOnClickListener(fabClickListener);
+        //mFab.setOnClickListener(fabClickListener);
         mFabMargin = getResources().getDimensionPixelSize(R.dimen.margin_standard);
 
         mInterceptionLayout = (TouchInterceptionFrameLayout) findViewById(R.id.scroll_wrapper);

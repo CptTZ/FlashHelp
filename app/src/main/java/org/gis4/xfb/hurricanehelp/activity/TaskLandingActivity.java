@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +44,7 @@ public class TaskLandingActivity extends SlidingUpBaseActivity<ObservableScrollV
 
     private ObservableScrollView scrollView;
     private SliderLayout mDemoSlider;
+    private View mFab;
 
     public MapView mMapView;
     private AMap aMap;
@@ -118,6 +120,15 @@ public class TaskLandingActivity extends SlidingUpBaseActivity<ObservableScrollV
 
         mMapView = (MapView) findViewById(R.id.showTwoPointsMap);
         InitMap(savedInstanceState);
+
+        mFab = findViewById(R.id.fab);
+        mFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //// TODO: 2016-09-02 接单
+                Toast.makeText(TaskLandingActivity.this, "接单成功", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void InitMap(Bundle s) {
@@ -156,7 +167,7 @@ public class TaskLandingActivity extends SlidingUpBaseActivity<ObservableScrollV
         MarkerOptions sendMarkerOptions = new MarkerOptions();
         sendMarkerOptions.position(sendLatLng);
         Bitmap bitmap2 = BitmapFactory. decodeResource (getResources(), XfbTask.getLogoOfTaskType("送达"));
-        Bitmap smallBitmap2 = bitmap2.createScaledBitmap(bitmap2, bitmap2.getWidth()/2, bitmap2.getHeight()/2, true);
+        Bitmap smallBitmap2 = bitmap2.createScaledBitmap(bitmap2, bitmap2.getWidth()*3/4, bitmap2.getHeight()*3/4, true);
         sendMarkerOptions.icon(BitmapDescriptorFactory.fromBitmap(smallBitmap2));
 
         LatLngBounds latLngBounds = new LatLngBounds(happenLatLng, sendLatLng);

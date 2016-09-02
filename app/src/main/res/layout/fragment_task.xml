@@ -15,11 +15,17 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textviewTest"
+            <jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="任务"/>
+                android:id="@+id/task_swipe">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerView_task"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout>
 
         </LinearLayout>
 
@@ -63,6 +69,7 @@
                     app:met_primaryColor="#982360"
                     app:met_floatingLabel="highlight"
                     app:met_maxCharacters="12"
+                    android:maxLines="1"
                     app:met_clearButton="true"/>
 
                 <com.rengwuxian.materialedittext.MaterialEditText
@@ -75,6 +82,7 @@
                     app:met_primaryColor="#982360"
                     app:met_floatingLabel="highlight"
                     app:met_maxCharacters="16"
+                    android:maxLines="1"
                     app:met_clearButton="true"/>
 
                 <Button

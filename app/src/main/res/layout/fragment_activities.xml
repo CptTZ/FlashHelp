@@ -68,6 +68,7 @@
                     app:met_primaryColor="#982360"
                     app:met_floatingLabel="highlight"
                     app:met_maxCharacters="12"
+                    android:maxLines="1"
                     app:met_clearButton="true"/>
 
                 <com.rengwuxian.materialedittext.MaterialEditText
@@ -80,6 +81,7 @@
                     app:met_primaryColor="#982360"
                     app:met_floatingLabel="highlight"
                     app:met_maxCharacters="16"
+                    android:maxLines="1"
                     app:met_clearButton="true"/>
 
                 <Button

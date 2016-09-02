@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import org.gis4.xfb.hurricanehelp.R;
 import org.gis4.xfb.hurricanehelp.activity.MainActivity;
+import org.gis4.xfb.hurricanehelp.activity.TaskDetailsActivity;
 import org.gis4.xfb.hurricanehelp.activity.TaskLandingActivity;
 import org.gis4.xfb.hurricanehelp.data.XfbTask;
 
@@ -45,14 +46,25 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         //把当前item的index存在RelativeLayout的Tag中，方便点击事件的实现
         holder.itemRelativeLayout.setTag(position);
-        Picasso.with(mContext).load(XfbTask.getLogoOfTaskType(mDataSet.get(position).getTaskType())).into(holder.itemTaskType);
+        if(mDataSet.get(position).getTaskState() == 0) {
+            Picasso.with(mContext).load(XfbTask.getLogoOfTaskType(mDataSet.get(position).getTaskType())).into(holder.itemTaskType);
+        }
+        else {
+            Picasso.with(mContext).load(XfbTask.getLogoOfTaskType(mDataSet.get(position).getTaskState())).into(holder.itemTaskType);
+        }
         holder.itemDesc.setText(mDataSet.get(position).getDesc());
         holder.itemRewardPoint.setText("奖励积分：" + mDataSet.get(position).getRewardPoint());
 
         holder.itemRelativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent =new Intent(mContext,TaskLandingActivity.class);
+                Class targetActivity;
+                if(mDataSet.get((int)v.getTag()).getTaskState() == 0)
+                    targetActivity = TaskLandingActivity.class;
+                else
+                    targetActivity = TaskDetailsActivity.class;
+
+                Intent intent =new Intent(mContext, targetActivity);
                 Bundle bundle=new Bundle();
                 bundle.putParcelable("xfbTask", mDataSet.get((int)v.getTag()));
                 intent.putExtras(bundle);
