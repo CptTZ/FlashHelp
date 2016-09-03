@@ -36,11 +36,13 @@ public class MeFragment extends BaseFragment
         return m;
     }
 
+    private View meView = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
-        return baseF.initLoginUi(this,inflater,container,R.layout.fragment_me_reg_and_norm);
+        meView = baseF.initLoginUi(this,inflater,container,R.layout.fragment_me_reg_and_norm);
+        return meView;
     }
 
     @Override
@@ -48,10 +50,18 @@ public class MeFragment extends BaseFragment
         super.onStart();
 
         //TODO: 2016-09-03 更新用户的信息（邮箱和用户名）
-        if (super.getUserId().isEmpty())
+        if (!super.getUserId().isEmpty())
         {
 
         }
+    }
+
+    /**
+     * 更新用户信息
+     */
+    private void UpdateUserData()
+    {
+
     }
 
     @Override

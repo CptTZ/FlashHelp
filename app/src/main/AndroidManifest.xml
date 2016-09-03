@@ -23,13 +23,13 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <!--<meta-data-->
+            <!--android:name="com.amap.api.v2.apikey"-->
+            <!--android:value="eef9279301445b17372479db6a05816d" />-->
+        <!-- AMAPKey-TonyZ -->
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="eef9279301445b17372479db6a05816d" />
-        <!-- AMAPKey-TonyZ -->
-        <!-- <meta-data -->
-        <!-- android:name="com.amap.api.v2.apikey" -->
-        <!-- android:value="be8faa390c5fcd4ef53c54b14f5acdc4"/> -->
+            android:value="be8faa390c5fcd4ef53c54b14f5acdc4"/>
 
         <service android:name="com.amap.api.location.APSService" />
         <service android:name="com.avos.avoscloud.PushService" />
@@ -89,8 +89,8 @@
         <activity android:name=".activity.TaskLandingActivity" />
         <activity android:name=".test.TestActivity" />
         <activity android:name=".activity.TaskDetailsActivity" />
-        <activity android:name=".activity.ForgetPassActivit"></activity>
-        <activity android:name=".activity.UserInfoEditActivity"></activity>
+        <activity android:name=".activity.ForgetPassActivit" />
+        <activity android:name=".activity.UserInfoEditActivity" />
     </application>
 
 </manifest>
