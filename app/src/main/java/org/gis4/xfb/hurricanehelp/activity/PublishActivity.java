@@ -83,6 +83,9 @@ public class PublishActivity extends BaseActivity {
     @BindView(R.id.task_execute_location_imageview)
     ImageView taskExecuteLocationImageview;
 
+    @BindView(R.id.editText_task_type_qita)
+    EditText editTextTaskTypeQita;
+
     @BindView(R.id.task_desc)
     EditText taskDesc;
 
@@ -140,7 +143,12 @@ public class PublishActivity extends BaseActivity {
         spinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
             @Override
             public void onItemSelected(Spinner parent, View view, int position, long id) {
-                xfbTask.setTaskType((String) spinner.getSelectedItem());
+                if (position == 2) {
+                    editTextTaskTypeQita.setVisibility(View.VISIBLE);
+                }
+                else {
+                    editTextTaskTypeQita.setVisibility(View.GONE);
+                }
             }
         });
     }
@@ -159,6 +167,9 @@ public class PublishActivity extends BaseActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.action_save:
+                        xfbTask.setTaskType(spinner.getSelectedItemPosition() == 2 ? editTextTaskTypeQita.getText().toString() :(String) spinner.getSelectedItem());
+                        if (xfbTask.getTaskType() == "") xfbTask.setTaskType("其他");
+                        
                         xfbTask.setDesc(taskDesc.getText().toString());
                         xfbTask.setSenderlocationManualDesc(edittextSend.getText().toString());
                         xfbTask.setHappenLocationManualDesc(edittextExecute.getText().toString());
@@ -371,16 +382,18 @@ public class PublishActivity extends BaseActivity {
             Bitmap[] highQualityBitmaps = new Bitmap[imagePaths.size()];
 
             for(int n =0; n<imagePaths.size(); n++){
-                Bitmap bitmap = getLoacalBitmap(imagePaths.get(n));
+                BitmapFactory.Options opts = new BitmapFactory.Options();
+                opts.inSampleSize = 4;
+                Bitmap bitmap = BitmapFactory.decodeFile(imagePaths.get(n), opts);
 
                 //将图片的宽或者高压缩至150像素
                 double newWidth = 0, newHeight = 0;
                 if(bitmap.getHeight() > bitmap.getWidth()){
-                    newWidth = 150;
+                    newWidth = 200;
                     newHeight = bitmap.getHeight() * newWidth / bitmap.getWidth();
                 }
                 else {
-                    newHeight = 150;
+                    newHeight = 200;
                     newWidth = bitmap.getWidth() * newHeight / bitmap.getHeight();
                 }
                 Bitmap smallBitmap = compressImage(bitmap, newWidth, newHeight);

@@ -113,7 +113,7 @@ public class XfbTask extends AVObject
             return imageList.get(taskType);
         }
         catch (Exception e) {
-            return imageList.get("拿快递");
+            return imageList.get("其他");
         }
     }
 

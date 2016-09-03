@@ -69,6 +69,15 @@
                         android:layout_height="wrap_content"
                         app:rd_style="@style/Material.Drawable.Ripple.Wave"/>
 
+                    <EditText
+                        android:id="@+id/editText_task_type_qita"
+                        android:layout_marginTop="5dp"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:hint="其他类型"
+                        android:textSize="@dimen/scrollview_context_textsize"
+                        android:visibility="gone"/>
+
                 </LinearLayout>
             </RelativeLayout>
 

@@ -94,6 +94,7 @@ public class ChooseLocationActivity extends BaseActivity implements AMap.OnCamer
 
         AMapLocation location = super.locationOld.getLocation();
         aMap.animateCamera(CameraUpdateFactory.changeLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
+        aMap.moveCamera(CameraUpdateFactory.zoomTo(17));
     }
 
     private void initialMenu(Menu menu) {
