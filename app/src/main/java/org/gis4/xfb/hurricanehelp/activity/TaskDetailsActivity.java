@@ -20,9 +20,12 @@ import com.avos.avoscloud.AVAnalytics;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVGeoPoint;
 import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.AVPush;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.LogUtil;
 import com.avos.avoscloud.SaveCallback;
+import com.avos.avoscloud.SendCallback;
+import com.rengwuxian.materialedittext.MaterialEditText;
 
 import org.gis4.xfb.hurricanehelp.R;
 import org.gis4.xfb.hurricanehelp.data.Dbconnect;
@@ -117,7 +120,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
 
                         LinearLayout linearLayoutStars = (LinearLayout) view.findViewById(R.id.stars);
                         final ImageView[] imageViews = new ImageView[5];
-
+                        final MaterialEditText commit = (MaterialEditText) view.findViewById(R.id.commit);
                         for(int n = 0; n < 5; n++) {
                             final ImageView imageView = new ImageView(view.getContext());
                             imageView.setImageResource(R.mipmap.star);
@@ -140,7 +143,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
                                     for(int n = 0; n <= (int)imageView.getTag(); n++) {
                                         imageViews[n].setImageResource(R.mipmap.star_marked);
                                     }
-                                    taskDesc.setTag((int)imageView.getTag());
+                                    commit.setTag((int)imageView.getTag() + 1);
                                 }
                             });
 
@@ -163,6 +166,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
                                         @Override
                                         public void done(AVException e) {
                                             if(e==null) {
+                                                PushRating((int) commit.getTag(), commit.getText().toString());
                                                 Toast.makeText(getApplicationContext(), "评价成功，订单已完成", Toast.LENGTH_SHORT).show();
                                                 finish();
                                             } else {
@@ -192,6 +196,29 @@ public class TaskDetailsActivity extends AppCompatActivity {
                         return false;
                 }
                 return true;
+            }
+        });
+    }
+
+    /**
+     * TODO
+     * 推送评价到用户
+     */
+    private void PushRating(int s, String desc)
+    {
+        AVPush push = new AVPush();
+        push.setChannel("publicEvent");
+        push.setPushToAndroid(true);
+        String msg = "收到对您的评价：" + desc + " (" + String.valueOf(s)+"星)";
+        push.setMessage(msg);
+        push.sendInBackground(new SendCallback()
+        {
+            @Override
+            public void done(AVException e)
+            {
+                if(e != null) {
+                    AVAnalytics.onEvent(getApplicationContext(), e.getMessage(), "Xfb_Cloud_Push");
+                }
             }
         });
     }

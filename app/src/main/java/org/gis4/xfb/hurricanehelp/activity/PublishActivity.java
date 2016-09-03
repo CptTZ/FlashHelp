@@ -168,7 +168,7 @@ public class PublishActivity extends BaseActivity {
                 switch (item.getItemId()){
                     case R.id.action_save:
                         xfbTask.setTaskType(spinner.getSelectedItemPosition() == 2 ? editTextTaskTypeQita.getText().toString() :(String) spinner.getSelectedItem());
-                        if (xfbTask.getTaskType() == "") xfbTask.setTaskType("其他");
+                        if (xfbTask.getTaskType().isEmpty()) xfbTask.setTaskType("其他");
                         
                         xfbTask.setDesc(taskDesc.getText().toString());
                         xfbTask.setSenderlocationManualDesc(edittextSend.getText().toString());
@@ -195,8 +195,7 @@ public class PublishActivity extends BaseActivity {
                                 @Override
                                 public void done(AVException e)
                                 {
-                                    if(e == null)
-                                    {
+                                    if(e == null) {
                                         Toast.makeText(PublishActivity.this, "提交成功", Toast.LENGTH_SHORT).show();
                                         PushDataToAll(xfbTask);
                                         finish();
