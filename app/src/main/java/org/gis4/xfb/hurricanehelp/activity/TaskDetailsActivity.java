@@ -1,13 +1,18 @@
 package org.gis4.xfb.hurricanehelp.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -100,7 +105,60 @@ public class TaskDetailsActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.action_ok:
-                        //// TODO: 2016-09-03 在这里确认完成
+                        AlertDialog.Builder builder = new AlertDialog.Builder(TaskDetailsActivity.this);
+                        builder.setTitle("对本次任务做个评价吧");
+                        View view = LayoutInflater.from(TaskDetailsActivity.this).inflate(R.layout.rating, null);
+                        builder.setView(view);
+
+                        LinearLayout linearLayoutStars = (LinearLayout) view.findViewById(R.id.stars);
+                        final ImageView[] imageViews = new ImageView[5];
+
+                        for(int n = 0; n < 5; n++) {
+                            final ImageView imageView = new ImageView(view.getContext());
+                            imageView.setImageResource(R.mipmap.star);
+                            linearLayoutStars.addView(imageView);
+
+                            ViewGroup.LayoutParams params = imageView.getLayoutParams();
+                            params.height=150;
+                            params.width =150;
+                            imageView.setLayoutParams(params);
+                            imageView.setPadding(15, 0, 15, 0);
+                            imageView.setTag(n);
+                            imageViews[n] = imageView;
+
+                            imageView.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    for(int n = 0; n < 5; n++) {
+                                        imageViews[n].setImageResource(R.mipmap.star);
+                                    }
+                                    for(int n = 0; n <= (int)imageView.getTag(); n++) {
+                                        imageViews[n].setImageResource(R.mipmap.star_marked);
+                                    }
+                                }
+                            });
+                        }
+
+                        builder.setPositiveButton("确定", new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which)
+                            {
+                                Toast.makeText(TaskDetailsActivity.this, "评价成功", Toast.LENGTH_SHORT).show();
+                                //// TODO: 2016-09-03  评价成功
+                                finish();
+                            }
+                        });
+                        builder.setNegativeButton("取消", new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which)
+                            {
+
+                            }
+                        });
+
+                        builder.show();
                         break;
                 }
                 return false;
