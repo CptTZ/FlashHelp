@@ -167,9 +167,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                     mExitTime = System.currentTimeMillis();
                 }
                 else {
-                    super.locationOld.DestoryLocation();
-                    System.runFinalization();
-                    System.exit(0);
+                    finish();
                 }
             }
             return true;
@@ -313,8 +311,14 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                         break;
 
                     case R.id.action_edit:
+                        if(AVUser.getCurrentUser()==null)
+                        {
+                            showError("您尚未登陆，无法修改用户信息");
+                            break;
+                        }
                         Intent intent = new Intent(MainActivity.this, UserInfoEditActivity.class);
                         startActivity(intent);
+                        break;
                     default:
                         return false;
                 }

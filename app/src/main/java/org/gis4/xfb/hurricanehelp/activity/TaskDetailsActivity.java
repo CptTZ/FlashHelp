@@ -13,10 +13,14 @@ import android.widget.Toast;
 
 import com.avos.avoscloud.AVAnalytics;
 import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVGeoPoint;
+import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.LogUtil;
 import com.avos.avoscloud.SaveCallback;
 
 import org.gis4.xfb.hurricanehelp.R;
+import org.gis4.xfb.hurricanehelp.data.Dbconnect;
 import org.gis4.xfb.hurricanehelp.data.XfbTask;
 
 import java.util.Date;
@@ -68,7 +72,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
         }
 
         taskType.setText(xfbTask.getTaskType());
-        taskSender.setText(xfbTask.getSenderId());
+        Dbconnect.UpdateSenderIdToUserName(xfbTask.getSenderId(), taskSender);
 
         textviewTimeStart.setText(getDateString(xfbTask.getStartTime()));
         textviewTimeEnd.setText(getDateString(xfbTask.getEndTime()));
@@ -100,10 +104,36 @@ public class TaskDetailsActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.action_ok:
-                        //// TODO: 2016-09-03 在这里确认完成
+                        try {
+                            String oriSender = xfbTask.getSenderId();
+                            AVGeoPoint oriLoc = xfbTask.getHappenGeoLocation();
+                            XfbTask xfb = AVObject.createWithoutData(XfbTask.class, xfbTask.getObjectId());
+                            // 实例化的时候会修改这些，有Bug先这样凑合
+                            xfb.put(XfbTask.SENDERID, oriSender);
+                            xfb.setHappenGeoLocation(oriLoc);
+                            xfb.setTaskstate(XfbTask.State_Finished);
+                            xfb.saveInBackground(new SaveCallback() {
+                                @Override
+                                public void done(AVException e) {
+                                    if(e==null) {
+                                        Toast.makeText(getApplicationContext(), "订单已完成", Toast.LENGTH_SHORT).show();
+                                        finish();
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), "网络问题，无法完成订单，请重试", Toast.LENGTH_SHORT).show();
+                                        LogUtil.log.e("Xfb", e.getMessage(), e);
+                                    }
+                                }
+                            });
+                        } catch (AVException e) {
+                            AVAnalytics.onEvent(getApplicationContext(), e.getMessage(), "Xfb_Cloud_TaskAlter");
+                            Toast.makeText(getApplicationContext(), "系统错误，无法完成订单，请重试", Toast.LENGTH_SHORT).show();
+                            return true;
+                        }
                         break;
+                    default:
+                        return false;
                 }
-                return false;
+                return true;
             }
         });
     }

@@ -118,7 +118,7 @@
                         android:id="@+id/task_sender"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="我是发单人"
+                        android:text="正在查询中..."
                         android:textSize="@dimen/scrollview_context_textsize"/>
 
                 </LinearLayout>

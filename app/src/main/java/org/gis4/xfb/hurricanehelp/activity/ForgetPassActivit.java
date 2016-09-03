@@ -1,6 +1,5 @@
 package org.gis4.xfb.hurricanehelp.activity;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -28,7 +27,7 @@ public class ForgetPassActivit extends BaseActivity
     {
         if(AVUser.getCurrentUser() != null) showError("你已成功登陆，无需再次登陆！");
         String email = emailText.getText().toString();
-        if(email==null) {
+        if(email.isEmpty()) {
             showError("邮件地址必填！");
             return;
         }

@@ -1,6 +1,5 @@
 package org.gis4.xfb.hurricanehelp.fragments;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,8 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.view.LayoutInflater;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.avos.avoscloud.AVAnalytics;
@@ -27,6 +26,7 @@ import org.gis4.xfb.hurricanehelp.activity.BaseActivity;
 import org.gis4.xfb.hurricanehelp.activity.ForgetPassActivit;
 import org.gis4.xfb.hurricanehelp.activity.MainActivity;
 import org.gis4.xfb.hurricanehelp.activity.RegistActivity;
+import org.gis4.xfb.hurricanehelp.data.Dbconnect;
 import org.gis4.xfb.hurricanehelp.lbs.location.AmapLocationSource;
 
 /**
@@ -36,6 +36,8 @@ public class BaseFragment extends Fragment
 {
     protected BaseFragment baseF;
     protected BaseActivity baseA;
+
+    protected View meView = null; //Me的Fragment，用于更新用户信息
 
     /**
      * 定位信息
@@ -61,6 +63,24 @@ public class BaseFragment extends Fragment
         prgd=ProgressDialog
                 .show(this.baseF.getContext(),
                         "提示","请等待", true, false);
+    }
+
+    /**
+     * 更新用户信息
+     */
+    protected void UpdateUserData()
+    {
+        TextView userName = (TextView) meView.findViewById(R.id.userid),
+                userMail = (TextView) meView.findViewById(R.id.usermail),
+                userSign = (TextView) meView.findViewById(R.id.userSignature),
+                fdCount = (TextView) meView.findViewById(R.id.fadanCount);
+        if(AVUser.getCurrentUser() == null) return;
+
+        String sign = AVUser.getCurrentUser().getString("sign");
+        userName.setText(AVUser.getCurrentUser().getUsername());
+        userMail.setText(AVUser.getCurrentUser().getEmail());
+        Dbconnect.UpdateMeSentAllXfbTaskCount(AVUser.getCurrentUser().getObjectId(), fdCount);
+        if(sign!=null) userSign.setText(sign);
     }
 
     public void progressDialogDismiss()
@@ -146,6 +166,7 @@ public class BaseFragment extends Fragment
                                                 baseF.UpdateUser();
                                                 baseA.UpdateUser();
                                                 Toast.makeText(baseF.getContext(), "登陆成功！", Toast.LENGTH_SHORT).show();
+                                                UpdateUserData();
                                                 hideLogInWindow();
                                             } else {
                                                 String errDef;

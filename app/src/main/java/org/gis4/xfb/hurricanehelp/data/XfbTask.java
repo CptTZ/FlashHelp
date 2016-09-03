@@ -129,6 +129,7 @@ public class XfbTask extends AVObject
      */
     private void aclSaveSet()
     {
+        if(true) return; //没时间再建表了
         AVACL acl = new AVACL();
         acl.setPublicReadAccess(true);
         acl.setWriteAccess(AVUser.getCurrentUser(), true);

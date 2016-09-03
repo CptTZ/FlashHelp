@@ -1,9 +1,7 @@
 package org.gis4.xfb.hurricanehelp.data;
 
-import android.content.Context;
-import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.avos.avoscloud.AVAnalytics;
 import com.avos.avoscloud.AVCloudQueryResult;
@@ -12,15 +10,15 @@ import com.avos.avoscloud.AVGeoPoint;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.CloudQueryCallback;
+import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.LogUtil;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 /**
- * 获取后台数据的类（均不在后台，所以请保证该类在后台线程中运行
+ * 获取后台数据的类（均不在后台，所以请保证该类在后台线程中运行）
  * @author Tony
  */
 public class Dbconnect
@@ -43,6 +41,42 @@ public class Dbconnect
     }
 
     /**
+     * userId->UserName
+     * @param userId ID
+     * @param text TextView
+     */
+    public static void UpdateSenderIdToUserName(String userId, final TextView text)
+    {
+        if(userId==null||userId.isEmpty()) return;
+        //String sql = "SELECT username FROM `_User` WHERE objectId = '" + userId + "'";
+        AVQuery<AVUser> userQuery = new AVQuery<>("_User");
+        userQuery.whereEqualTo("objectId", userId);
+        userQuery.setLimit(1);
+
+        /*AVQuery.doCloudQueryInBackground(sql, new CloudQueryCallback<AVCloudQueryResult>()
+        {
+            @Override
+            public void done(AVCloudQueryResult a, AVException e) {
+                if(e==null) {
+                    text.setText(a.getResults().get(0).getString("username"));
+                } else {
+                    Log.e("Xfb_Cloud", e.getMessage(), e);
+                }
+            }
+        });*/
+        userQuery.findInBackground(new FindCallback<AVUser>() {
+            @Override
+            public void done(List<AVUser> list, AVException e) {
+                if(e==null) {
+                    text.setText(list.get(0).getUsername());
+                } else {
+                    Log.e("Xfb_Cloud", e.getMessage(), e);
+                }
+            }
+        });
+    }
+
+    /**
      * 获取所有状态为未接收的任务
      * @return 未完成任务
      */
@@ -60,19 +94,26 @@ public class Dbconnect
     }
 
     /**
-     * 获取用户发送的XfbTask的所有数量
+     * 获取用户发送的XfbTask的所有数量,并更新到TextView
      * @param userId 用户ID
-     * @return 数量
+     * @param text TextView
      */
-    public static int FetchMeSentAllXfbTaskCount(String userId)
+    public static void UpdateMeSentAllXfbTaskCount(String userId, final TextView text)
     {
-        if(userId==null||userId.isEmpty()) return -1;
-        String sql = "SELECT count(*) FROM XfbTask WHERE " + XfbTask.SENDERID + " = '" + userId +"'";
+        if(userId==null||userId.isEmpty()) return;
+        String sql = "SELECT count(*) FROM XfbTask WHERE " + XfbTask.SENDERID + " = '" + userId + "'";
         try {
-            return AVQuery.doCloudQuery(sql).getCount();
+            AVQuery.doCloudQueryInBackground(sql, new CloudQueryCallback<AVCloudQueryResult>()
+            {
+                @Override
+                public void done(AVCloudQueryResult a, AVException e)
+                {
+                    if(e==null) { text.setText(String.valueOf(a.getCount())); }
+                    else { Log.e("Xfb_Cloud", e.getMessage(), e); }
+                }
+            });
         } catch (Exception ex) {
             Log.e("Xfb_Cloud", ex.getMessage(), ex);
-            return -1;
         }
     }
 

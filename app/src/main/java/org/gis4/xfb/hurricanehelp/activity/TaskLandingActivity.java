@@ -19,6 +19,12 @@ import com.amap.api.maps2d.model.LatLngBounds;
 import com.amap.api.maps2d.model.MarkerOptions;
 import com.amap.api.maps2d.model.MyLocationStyle;
 import com.avos.avoscloud.AVAnalytics;
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVGeoPoint;
+import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.LogUtil;
+import com.avos.avoscloud.SaveCallback;
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
@@ -125,8 +131,32 @@ public class TaskLandingActivity extends SlidingUpBaseActivity<ObservableScrollV
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //// TODO: 2016-09-02 接单
-                Toast.makeText(TaskLandingActivity.this, "接单成功", Toast.LENGTH_SHORT).show();
+                XfbTask oldTask = xfbTaskList.get(0);
+                try {
+                    String oriSender = oldTask.getSenderId();
+                    AVGeoPoint oriLoc = oldTask.getHappenGeoLocation();
+                    XfbTask xfb = AVObject.createWithoutData(XfbTask.class, oldTask.getObjectId());
+                    // 实例化的时候会修改这些，有Bug先这样凑合
+                    xfb.put(XfbTask.SENDERID, oriSender);
+                    xfb.setHappenGeoLocation(oriLoc);
+                    xfb.setHelperId(AVUser.getCurrentUser().getObjectId());
+                    xfb.setTaskstate(XfbTask.State_Processing);
+                    xfb.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(AVException e) {
+                            if(e==null) {
+                                Toast.makeText(getApplicationContext(), "接单成功", Toast.LENGTH_SHORT).show();
+                                finish();
+                            } else {
+                                Toast.makeText(getApplicationContext(), "网络问题无法接单，请重试", Toast.LENGTH_SHORT).show();
+                                LogUtil.log.e("Xfb", e.getMessage(), e);
+                            }
+                        }
+                    });
+                } catch (AVException e) {
+                    AVAnalytics.onEvent(getApplicationContext(), e.getMessage(), "Xfb_Cloud_TaskAlter");
+                    Toast.makeText(getApplicationContext(), "系统错误，无法完成订单，请重试", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

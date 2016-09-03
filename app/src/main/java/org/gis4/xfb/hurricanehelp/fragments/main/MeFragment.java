@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -21,6 +22,7 @@ import com.avos.avoscloud.LogInCallback;
 
 import org.gis4.xfb.hurricanehelp.R;
 import org.gis4.xfb.hurricanehelp.activity.BaseActivity;
+import org.gis4.xfb.hurricanehelp.data.Dbconnect;
 import org.gis4.xfb.hurricanehelp.fragments.BaseFragment;
 
 import butterknife.BindView;
@@ -36,32 +38,17 @@ public class MeFragment extends BaseFragment
         return m;
     }
 
-    private View meView = null;
-
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
-        meView = baseF.initLoginUi(this,inflater,container,R.layout.fragment_me_reg_and_norm);
-        return meView;
+        super.meView = baseF.initLoginUi(this,inflater,container,R.layout.fragment_me_reg_and_norm);
+        return super.meView;
     }
 
     @Override
     public void onStart() {
         super.onStart();
-
-        //TODO: 2016-09-03 更新用户的信息（邮箱和用户名）
-        if (!super.getUserId().isEmpty())
-        {
-
-        }
-    }
-
-    /**
-     * 更新用户信息
-     */
-    private void UpdateUserData()
-    {
-
+        UpdateUserData();
     }
 
     @Override
