@@ -110,7 +110,7 @@ public class BaseFragment extends Fragment
         if (getUserId().isEmpty()) {
             uName = (EditText) view.findViewById(R.id.editText_login_userName);
             uPass = (EditText) view.findViewById(R.id.editText_login_userPassword);
-            view.findViewById(R.id.button_i_need_register).setOnClickListener(
+            view.findViewById(R.id.textView_i_need_register).setOnClickListener(
                     new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {

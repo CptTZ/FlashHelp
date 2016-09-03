@@ -90,7 +90,8 @@ public class ChooseLocationActivity extends BaseActivity implements AMap.OnCamer
         ButterKnife.bind(this);
         InitMap(savedInstanceState);
 
-        locationManager = super.locationOld;
+        AMapLocation location = super.locationOld.getLocation();
+        aMap.animateCamera(CameraUpdateFactory.changeLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
     }
 
     private void initialMenu(Menu menu) {

@@ -68,8 +68,7 @@
                     app:met_baseColor="@color/colorPrimary"
                     app:met_primaryColor="#982360"
                     app:met_floatingLabel="highlight"
-                    app:met_maxCharacters="12"
-                    android:maxLines="1"
+                    android:singleLine="true"
                     app:met_clearButton="true"/>
 
                 <com.rengwuxian.materialedittext.MaterialEditText
@@ -82,20 +81,34 @@
                     app:met_primaryColor="#982360"
                     app:met_floatingLabel="highlight"
                     app:met_maxCharacters="16"
-                    android:maxLines="1"
+                    android:singleLine="true"
                     app:met_clearButton="true"/>
 
                 <Button
                     android:id="@+id/button_login"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:background="@color/colorPrimary"
+                    android:textColor="@color/white"
                     android:text="@string/login_button_login" />
 
-                <Button
-                    android:id="@+id/button_i_need_register"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/login_button_register"/>
+                    android:layout_margin="10dp"
+                    android:layout_gravity="center"
+                    android:text="找回密码"
+                    android:textColor="#ff999999"/>
+
+                <TextView
+                    android:id="@+id/textView_i_need_register"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_gravity="center"
+                    android:text="@string/login_button_register"
+                    android:textColor="#ff999999"/>
 
             </LinearLayout>
 
