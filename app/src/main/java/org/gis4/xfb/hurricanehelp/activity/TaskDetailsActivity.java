@@ -36,7 +36,7 @@ import java.util.Date;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class TaskDetailsActivity extends AppCompatActivity {
+public class TaskDetailsActivity extends BaseActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -121,6 +121,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
                         LinearLayout linearLayoutStars = (LinearLayout) view.findViewById(R.id.stars);
                         final ImageView[] imageViews = new ImageView[5];
                         final MaterialEditText commit = (MaterialEditText) view.findViewById(R.id.commit);
+
                         for(int n = 0; n < 5; n++) {
                             final ImageView imageView = new ImageView(view.getContext());
                             imageView.setImageResource(R.mipmap.star);

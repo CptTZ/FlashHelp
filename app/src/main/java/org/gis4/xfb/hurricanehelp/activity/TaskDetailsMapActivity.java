@@ -23,7 +23,7 @@ import org.gis4.xfb.hurricanehelp.data.XfbTask;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class TaskDetailsMapActivity extends AppCompatActivity {
+public class TaskDetailsMapActivity extends BaseActivity {
 
     @BindView(R.id.taskLocationMap)
     public MapView mMapView;

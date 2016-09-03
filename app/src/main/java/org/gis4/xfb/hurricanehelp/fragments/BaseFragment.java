@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.view.LayoutInflater;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -75,11 +76,14 @@ public class BaseFragment extends Fragment
                 userMail = (TextView) meView.findViewById(R.id.usermail),
                 userSign = (TextView) meView.findViewById(R.id.userSignature),
                 fdCount = (TextView) meView.findViewById(R.id.fadanCount);
+        ImageView avatarBorder= (ImageView) meView.findViewById(R.id.avatar_border);
+
         if(AVUser.getCurrentUser() == null) return;
 
         String sign = AVUser.getCurrentUser().getString("sign");
         userName.setText(AVUser.getCurrentUser().getUsername());
         userMail.setText(AVUser.getCurrentUser().getEmail());
+        avatarBorder.setImageResource(AVUser.getCurrentUser().getInt("sex") == 0 ? R.mipmap.avatar_border_boy : R.mipmap.avatar_border_girl);
         Dbconnect.UpdateMeSentAllXfbTaskCount(AVUser.getCurrentUser().getObjectId(), fdCount);
         if(sign!=null) userSign.setText(sign);
     }
