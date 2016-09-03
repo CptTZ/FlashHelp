@@ -57,12 +57,7 @@ public class ActivitiesFragment extends BaseFragment
     @Override
     public void onStart() {
         super.onStart();
-
-        //TODO/BUG: 这样的Hack，如果是登录后改布局，会遇到问题。
-        if (!super.getUserId().isEmpty())
-        {
-            initSwipeRefresh();
-        }
+        initSwipeRefresh();
     }
 
     /**
@@ -115,15 +110,15 @@ public class ActivitiesFragment extends BaseFragment
             if(loc == null) {
                 return "";
             }
-            taskData = Dbconnect.FetchCloseXfbTask(loc.getLatitude(),loc.getLongitude(),30);
+            taskData = Dbconnect.FetchCloseUnacceptedXfbTask(loc.getLatitude(),loc.getLongitude(),30);
             return String.valueOf(taskData.size());
         }
 
         @Override
         protected void onPostExecute(String result) {
-            if(result.isEmpty())
+            if(result.isEmpty()|result.equals("0"))
             {
-                Toast.makeText(getActivity(), "定位失败，暂时无法刷新任务", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "刷新任务失败", Toast.LENGTH_SHORT).show();
                 super.onPostExecute(result);
                 return;
             }
@@ -135,6 +130,7 @@ public class ActivitiesFragment extends BaseFragment
     }
 
     private void setData() {
+        if(taskData==null) return;
         mAdapter = new RecyclerAdapter(getActivity(), taskData, baseA.getCurrentLocation());
         SlideInRightAnimationAdapter slideAdapter = new SlideInRightAnimationAdapter(mAdapter);
         slideAdapter.setFirstOnly(true);

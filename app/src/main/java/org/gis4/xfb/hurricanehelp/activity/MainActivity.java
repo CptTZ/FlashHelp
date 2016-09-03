@@ -117,8 +117,8 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         }
         else {
             startActivity(new Intent(this,PublishActivity.class));
-        }
     }
+}
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -309,7 +309,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                         recyclerView.smoothScrollToPosition(0);
                         break;
                     case R.id.action_feedback:
-                        //// TODO: 2016-09-03 “我的”界面上的反馈
+                        baseActivity.feedBackAgent.startDefaultThreadActivity();
                         break;
                     default:
                         return false;

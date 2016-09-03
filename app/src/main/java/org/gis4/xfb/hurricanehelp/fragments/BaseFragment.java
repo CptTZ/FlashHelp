@@ -24,6 +24,7 @@ import com.avos.avoscloud.LogInCallback;
 
 import org.gis4.xfb.hurricanehelp.R;
 import org.gis4.xfb.hurricanehelp.activity.BaseActivity;
+import org.gis4.xfb.hurricanehelp.activity.ForgetPassActivit;
 import org.gis4.xfb.hurricanehelp.activity.MainActivity;
 import org.gis4.xfb.hurricanehelp.activity.RegistActivity;
 import org.gis4.xfb.hurricanehelp.lbs.location.AmapLocationSource;
@@ -118,6 +119,14 @@ public class BaseFragment extends Fragment
                         }
                     }
             );
+            view.findViewById(R.id.button_find_password).setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    startActivity(new Intent(baseF.getContext(), ForgetPassActivit.class));
+                }
+            });
             view.findViewById(R.id.button_login).setOnClickListener(
                     new View.OnClickListener() {
                         @Override

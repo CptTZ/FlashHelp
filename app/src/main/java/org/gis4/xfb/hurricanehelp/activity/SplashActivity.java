@@ -22,7 +22,6 @@ import org.gis4.xfb.hurricanehelp.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-//TODO: Splash_Image从网络上加载
 public class SplashActivity extends Activity {
     @BindView(R.id.AppName_CHN)
     TextView textAppName;

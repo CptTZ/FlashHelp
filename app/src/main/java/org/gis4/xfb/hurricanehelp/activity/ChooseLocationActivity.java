@@ -59,9 +59,9 @@ public class ChooseLocationActivity extends BaseActivity implements AMap.OnCamer
     private RelativeLayout locationTextDescription;
     private TextView locationTextview;
 
+    private ChooseLocationActivity clAct;
     private AMap aMap;
     private GeocodeSearch geocoderSearch;
-    private LocationManager locationManager;
 
     @BindView(R.id.selectLocationMap)
     public MapView mMapView;
@@ -70,11 +70,13 @@ public class ChooseLocationActivity extends BaseActivity implements AMap.OnCamer
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_location);
+        clAct=this;
 
         imageViewPinPin = (ImageView) findViewById(R.id.pinpin_imageview);
         imageViewPinPinShadow = (ImageView) findViewById(R.id.pinpin_shadow_imageview);
 
-        super.locationOld = new LocationManager(this.getApplicationContext());
+        if(super.locationOld==null)
+            super.locationOld = new LocationManager(this.getApplicationContext());
         locationTextDescription = (RelativeLayout) findViewById(R.id.location_text_description);
         locationTextview = (TextView) findViewById(R.id.location_textview);
 
@@ -109,7 +111,8 @@ public class ChooseLocationActivity extends BaseActivity implements AMap.OnCamer
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.action_location:
-                        AMapLocation location = locationManager.getLocation();
+                        AMapLocation location = clAct.locationOld.getLocation();
+                        if(location==null) return false;
                         aMap.animateCamera(CameraUpdateFactory.changeLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
                         break;
                     case R.id.action_ok:
@@ -130,8 +133,10 @@ public class ChooseLocationActivity extends BaseActivity implements AMap.OnCamer
                         setResult(RESULT_OK, intent);
                         finish();
                         break;
+                    default:
+                        return false;
                 }
-                return false;
+                return true;
             }
         });
     }

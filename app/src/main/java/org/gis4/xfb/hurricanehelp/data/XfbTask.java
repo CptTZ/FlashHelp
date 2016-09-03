@@ -39,10 +39,11 @@ public class XfbTask extends AVObject
     public static final String HAPPENLOCATIONAUTODESC = "happenLocationAutoDesc";
     public static final String HAPPENLOCATIONMANUALDESC = "happenLocationManualDesc";
 
-    //任务标题，详细描述，发送人ID，任务类型，完成情况（0未完成，1已完成）
+    //任务标题，详细描述，发送人ID，接单人ID，任务类型，完成情况
     public static final String TITLE = "title";
     public static final String DESC = "desc";
     public static final String SENDERID = "senderId";
+    public static final String HELPERID = "helperId";
     public static final String TASKTYPE = "taskType";
     public static final String TASKSTATE = "taskState";
 
@@ -66,9 +67,14 @@ public class XfbTask extends AVObject
 
     public XfbTask() {
         put(SENDERID, AVUser.getCurrentUser().getObjectId());
-        put(TASKSTATE, 0);
+        put(TASKSTATE, State_NotAccepted);
         put(HAPPENGEOLOCATION, new AVGeoPoint(0,0));
     }
+
+    /**
+     * 任务状态，0: 刚发没人接；1: 执行中；2: 已完成
+     */
+    public static final int State_NotAccepted=0, State_Processing=1, State_Finished=2;
 
     public XfbTask(String title, String desc, String taskType,
                    double senderLat, double senderLng, double happenLat, double happenLng, double dur,
@@ -167,6 +173,7 @@ public class XfbTask extends AVObject
     public String getTitle(){ return getString(TITLE); }
     public String getDesc(){ return getString(DESC); }
     public String getSenderId(){ return getString(SENDERID); }
+    public String getHelperId(){ return getString(HELPERID); }
     public String getTaskType(){ return getString(TASKTYPE); }
     public AVGeoPoint getSenderGeoLocation(){ return this.senderGeoLocation; }
     public AVGeoPoint getHappenGeoLocation(){ return getAVGeoPoint(HAPPENGEOLOCATION); }
@@ -186,7 +193,7 @@ public class XfbTask extends AVObject
     public int getTaskState() { return getInt(TASKSTATE); }
     public void setTitle(String d) { put(TITLE, d); }
     public void setDesc(String d) { put(DESC, d); }
-    public void setSenderId(String d) { put(SENDERID, d); }
+    public void setHelperId(String d) { put(HELPERID, d); }
     public void setTaskType(String d) { put(TASKTYPE, d); }
     public void setSenderGeoLocation(AVGeoPoint d) { this.senderGeoLocation=d; }
     public void setHappenGeoLocation(AVGeoPoint d) { put(HAPPENGEOLOCATION, d); }

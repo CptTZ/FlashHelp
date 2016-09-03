@@ -36,7 +36,6 @@ public class RegistActivity extends BaseActivity
     @OnClick(R.id.button_reg_with_weibo)
     public void RegWB(View v)
     {
-        //TODO: 微博登陆
         try
         {
             SNS.setupPlatform(SNSType.AVOSCloudSNSSinaWeibo, "https://leancloud.cn/1.1/sns/goto/4upfku4dx2h57ib0");
@@ -52,7 +51,6 @@ public class RegistActivity extends BaseActivity
     @OnClick(R.id.button_reg_with_qq)
     public void RegQQ(View v)
     {
-        //TODO: QQ登陆
         try
         {
             SNS.setupPlatform(this, SNSType.AVOSCloudSNSQQ, "1105407778", "",
@@ -211,7 +209,6 @@ public class RegistActivity extends BaseActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        //TODO: 用于QQ或者微博登陆的回调，暂时不用。
 //        super.onActivityResult(requestCode, resultCode, data);
 //        if (loginType == null) return;
 //        SNS.onActivityResult(requestCode, resultCode, data, loginType);

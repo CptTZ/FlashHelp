@@ -47,7 +47,7 @@ public class MeFragment extends BaseFragment
     public void onStart() {
         super.onStart();
 
-        //TODO: 这页干嘛？
+        //TODO: 2016-09-03 更新用户的信息（邮箱和用户名）
         if (super.getUserId().isEmpty())
         {
 

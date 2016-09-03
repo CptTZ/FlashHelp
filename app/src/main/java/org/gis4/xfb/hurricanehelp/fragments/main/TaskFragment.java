@@ -12,6 +12,7 @@ import android.view.animation.OvershootInterpolator;
 import android.widget.Toast;
 
 import com.avos.avoscloud.AVAnalytics;
+import com.avos.avoscloud.AVUser;
 
 import org.gis4.xfb.hurricanehelp.R;
 import org.gis4.xfb.hurricanehelp.activity.BaseActivity;
@@ -97,20 +98,19 @@ public class TaskFragment extends BaseFragment
     private class RefreshXfbTask extends AsyncTask<Void, Void, String> {
         @Override
         protected String doInBackground(Void... params) {
-            //// TODO: 2016-09-03 在这里加获取当前登陆用户的已结的单子,我这里暂时用“发现”界面的数据，用来测试
-            taskData = Dbconnect.FetchAllXfbTask();
-            taskData.get(0).setTaskstate(1);
-            taskData.get(1).setTaskstate(1);
-            taskData.get(2).setTaskstate(1);
-            taskData.get(3).setTaskstate(2);
-            taskData.get(4).setTaskstate(2);
-            taskData.get(5).setTaskstate(2);
+            if(AVUser.getCurrentUser()==null) return "";
+            taskData = Dbconnect.FetchUserRelatedXfbTask(AVUser.getCurrentUser().getObjectId());
             return String.valueOf(taskData.size());
         }
 
         @Override
         protected void onPostExecute(String result) {
-            Toast.makeText(getActivity(), "共刷新" + result + "条记录", Toast.LENGTH_SHORT).show();
+            if(result.isEmpty()|result.equals("0")) {
+                Toast.makeText(getActivity(), "刷新我处理的任务失败", Toast.LENGTH_SHORT).show();
+                super.onPostExecute(result);
+                return;
+            }
+            Toast.makeText(getActivity(), "共刷新" + result + "条我处理的任务", Toast.LENGTH_SHORT).show();
             setData();
             mWaveSwipeRefreshLayout.setRefreshing(false);
             super.onPostExecute(result);
@@ -118,7 +118,8 @@ public class TaskFragment extends BaseFragment
     }
 
     private void setData() {
-        mAdapter = new RecyclerAdapter(getActivity(), taskData);
+        if(taskData==null) return;
+        mAdapter = new RecyclerAdapter(getActivity(), taskData, baseA.getCurrentLocation());
         SlideInRightAnimationAdapter slideAdapter = new SlideInRightAnimationAdapter(mAdapter);
         slideAdapter.setFirstOnly(true);
         slideAdapter.setDuration(500);

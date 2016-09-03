@@ -44,7 +44,7 @@ public class IndexFragment extends BaseFragment
 
     public AMap aMap;
 
-    //TODO: 更优雅的解决地图移动问题，2016-8-19 已经被ZC优雅的解决了。
+    //更优雅的解决地图移动问题，2016-8-19 已经被ZC优雅的解决了。
     @BindView(R.id.indexMap)
     public MapView mMapView;
 
