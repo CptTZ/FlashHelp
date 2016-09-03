@@ -1,13 +1,18 @@
 package org.gis4.xfb.hurricanehelp.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -104,31 +109,85 @@ public class TaskDetailsActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.action_ok:
-                        try {
-                            String oriSender = xfbTask.getSenderId();
-                            AVGeoPoint oriLoc = xfbTask.getHappenGeoLocation();
-                            XfbTask xfb = AVObject.createWithoutData(XfbTask.class, xfbTask.getObjectId());
-                            // 实例化的时候会修改这些，有Bug先这样凑合
-                            xfb.put(XfbTask.SENDERID, oriSender);
-                            xfb.setHappenGeoLocation(oriLoc);
-                            xfb.setTaskstate(XfbTask.State_Finished);
-                            xfb.saveInBackground(new SaveCallback() {
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(TaskDetailsActivity.this);
+                        builder.setTitle("对本次任务做个评价吧");
+                        View view = LayoutInflater.from(TaskDetailsActivity.this).inflate(R.layout.rating, null);
+                        builder.setView(view);
+
+                        LinearLayout linearLayoutStars = (LinearLayout) view.findViewById(R.id.stars);
+                        final ImageView[] imageViews = new ImageView[5];
+
+                        for(int n = 0; n < 5; n++) {
+                            final ImageView imageView = new ImageView(view.getContext());
+                            imageView.setImageResource(R.mipmap.star);
+                            linearLayoutStars.addView(imageView);
+
+                            ViewGroup.LayoutParams params = imageView.getLayoutParams();
+                            params.height=150;
+                            params.width =150;
+                            imageView.setLayoutParams(params);
+                            imageView.setPadding(15, 0, 15, 0);
+                            imageView.setTag(n);
+                            imageViews[n] = imageView;
+
+                            imageView.setOnClickListener(new View.OnClickListener() {
                                 @Override
-                                public void done(AVException e) {
-                                    if(e==null) {
-                                        Toast.makeText(getApplicationContext(), "订单已完成", Toast.LENGTH_SHORT).show();
-                                        finish();
-                                    } else {
-                                        Toast.makeText(getApplicationContext(), "网络问题，无法完成订单，请重试", Toast.LENGTH_SHORT).show();
-                                        LogUtil.log.e("Xfb", e.getMessage(), e);
+                                public void onClick(View v) {
+                                    for(int n = 0; n < 5; n++) {
+                                        imageViews[n].setImageResource(R.mipmap.star);
+                                    }
+                                    for(int n = 0; n <= (int)imageView.getTag(); n++) {
+                                        imageViews[n].setImageResource(R.mipmap.star_marked);
                                     }
                                 }
                             });
-                        } catch (AVException e) {
-                            AVAnalytics.onEvent(getApplicationContext(), e.getMessage(), "Xfb_Cloud_TaskAlter");
-                            Toast.makeText(getApplicationContext(), "系统错误，无法完成订单，请重试", Toast.LENGTH_SHORT).show();
-                            return true;
                         }
+
+                        builder.setPositiveButton("确定", new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which)
+                            {
+                                Toast.makeText(TaskDetailsActivity.this, "评价成功", Toast.LENGTH_SHORT).show();
+                                try {
+                                    String oriSender = xfbTask.getSenderId();
+                                    AVGeoPoint oriLoc = xfbTask.getHappenGeoLocation();
+                                    XfbTask xfb = AVObject.createWithoutData(XfbTask.class, xfbTask.getObjectId());
+                                    // 实例化的时候会修改这些，有Bug先这样凑合
+                                    xfb.put(XfbTask.SENDERID, oriSender);
+                                    xfb.setHappenGeoLocation(oriLoc);
+                                    xfb.setTaskstate(XfbTask.State_Finished);
+                                    xfb.saveInBackground(new SaveCallback() {
+                                        @Override
+                                        public void done(AVException e) {
+                                            if(e==null) {
+                                                Toast.makeText(getApplicationContext(), "订单已完成", Toast.LENGTH_SHORT).show();
+                                                finish();
+                                            } else {
+                                                Toast.makeText(getApplicationContext(), "网络问题，无法完成订单，请重试", Toast.LENGTH_SHORT).show();
+                                                LogUtil.log.e("Xfb", e.getMessage(), e);
+                                            }
+                                        }
+                                    });
+                                } catch (AVException e) {
+                                    AVAnalytics.onEvent(getApplicationContext(), e.getMessage(), "Xfb_Cloud_TaskAlter");
+                                    Toast.makeText(getApplicationContext(), "系统错误，无法完成订单，请重试", Toast.LENGTH_SHORT).show();
+                                    return true;
+                                }
+                                finish();
+                            }
+                        });
+                        builder.setNegativeButton("取消", new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which)
+                            {
+
+                            }
+                        });
+
+                        builder.show();
                         break;
                     default:
                         return false;
