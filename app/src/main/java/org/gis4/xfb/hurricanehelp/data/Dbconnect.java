@@ -55,7 +55,7 @@ public class Dbconnect
         queryUserHelper.whereEqualTo(XfbTask.HELPERID, userId);
         queryNotAccepted.whereNotEqualTo(XfbTask.TASKSTATE, XfbTask.State_NotAccepted);
 
-        AVQuery<XfbTask> queryFinal =AVQuery.or(Arrays.asList(queryNotAccepted, queryUserHelper));
+        AVQuery<XfbTask> queryFinal =AVQuery.and(Arrays.asList(queryNotAccepted, queryUserHelper));
 
         try {
             return queryFinal.find();

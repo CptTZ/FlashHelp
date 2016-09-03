@@ -311,6 +311,10 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                     case R.id.action_feedback:
                         baseActivity.feedBackAgent.startDefaultThreadActivity();
                         break;
+
+                    case R.id.action_edit:
+                        Intent intent = new Intent(MainActivity.this, UserInfoEditActivity.class);
+                        startActivity(intent);
                     default:
                         return false;
                 }

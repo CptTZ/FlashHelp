@@ -6,6 +6,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.avos.avoscloud.AVAnalytics;
@@ -24,6 +25,24 @@ public class TaskDetailsActivity extends AppCompatActivity {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
+    @BindView(R.id.task_type)
+    TextView taskType;
+
+    @BindView(R.id.task_sender)
+    TextView taskSender;
+
+    @BindView(R.id.textview_time_start)
+    TextView textviewTimeStart;
+
+    @BindView(R.id.textview_time_end)
+    TextView textviewTimeEnd;
+
+    @BindView(R.id.textview_my_points)
+    TextView textviewMyPoints;
+
+    @BindView(R.id.task_desc)
+    TextView taskDesc;
+
     //保存数据
     private XfbTask xfbTask;
 
@@ -36,8 +55,13 @@ public class TaskDetailsActivity extends AppCompatActivity {
         Bundle bundle = this.getIntent().getExtras();
         xfbTask = bundle.getParcelable("xfbTask");
 
-        toolbar.inflateMenu(R.menu.activity_task_details_menu);
-        initialMenu(toolbar.getMenu());
+        if(xfbTask.getTaskState() == 1) {
+            toolbar.inflateMenu(R.menu.activity_task_details_menu);
+            initialMenu(toolbar.getMenu());
+        }
+
+
+
     }
 
     private void initialMenu(Menu menu) {

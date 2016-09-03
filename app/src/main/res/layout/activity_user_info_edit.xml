@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="org.gis4.xfb.hurricanehelp.activity.UserInfoEditActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/colorPrimary"
+        android:theme="@style/AppTheme"
+        app:titleTextColor="#ffffff"
+        app:title="编辑用户信息"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
+        android:background="@color/white"
+        android:paddingTop="30dp">
+
+        <ImageView
+            android:id="@+id/avatar"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_margin="15dp"
+            android:layout_centerHorizontal="true"
+            android:src="@mipmap/avatar_sample2"/>
+
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_margin="15dp"
+            android:layout_centerHorizontal="true"
+            android:src="@mipmap/avatar_border"/>
+
+        <LinearLayout
+            android:id="@+id/edit_linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:layout_margin="20dp"
+            android:layout_below="@+id/avatar">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:src="@mipmap/ic_sex"
+                android:layout_marginRight="10dp"/>
+
+            <com.rey.material.widget.CheckBox
+                android:id="@+id/checkbox_boy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:checked="true"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="男"
+                android:layout_gravity="center|left"
+                android:textSize="25sp"/>
+
+            <com.rey.material.widget.CheckBox
+                android:id="@+id/checkbox_girl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_gravity="center_vertical"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="女"
+                android:layout_gravity="center|left"
+                android:textSize="25sp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:orientation="horizontal"
+            android:layout_below="@+id/edit_linearLayout"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:src="@mipmap/ic_introduce"
+                android:layout_marginRight="10dp"/>
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/editText_introduce"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:hint="输入一句话描述自己"
+                app:met_baseColor="@color/colorPrimary"
+                app:met_primaryColor="#982360"
+                app:met_floatingLabel="highlight"
+                app:met_maxCharacters="30"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>
