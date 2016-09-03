@@ -89,8 +89,9 @@
         <activity android:name=".activity.TaskLandingActivity" />
         <activity android:name=".test.TestActivity" />
         <activity android:name=".activity.TaskDetailsActivity" />
-        <activity android:name=".activity.ForgetPassActivit"></activity>
-        <activity android:name=".activity.UserInfoEditActivity"></activity>
+        <activity android:name=".activity.ForgetPassActivit" />
+        <activity android:name=".activity.UserInfoEditActivity" />
+        <activity android:name=".activity.TaskDetailsMapActivity"></activity>
     </application>
 
 </manifest>

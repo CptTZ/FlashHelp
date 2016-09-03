@@ -457,7 +457,7 @@ public class PublishActivity extends BaseActivity {
             if(textViewTimeStartSelected){
                 startDate = new pickedDate(
                         selectedDate.getStartDate().get(Calendar.YEAR),
-                        selectedDate.getStartDate().get(Calendar.MONTH),
+                        selectedDate.getStartDate().get(Calendar.MONTH) + 1,
                         selectedDate.getStartDate().get(Calendar.DAY_OF_MONTH),
                         hourOfDay,minute);
                 textViewTimeStart.setText(startDate.toString());
@@ -466,7 +466,7 @@ public class PublishActivity extends BaseActivity {
             if(textViewTimeEndSelected){
                 endDate = new pickedDate(
                         selectedDate.getStartDate().get(Calendar.YEAR),
-                        selectedDate.getStartDate().get(Calendar.MONTH),
+                        selectedDate.getStartDate().get(Calendar.MONTH) + 1,
                         selectedDate.getStartDate().get(Calendar.DAY_OF_MONTH),
                         hourOfDay,minute);
 
