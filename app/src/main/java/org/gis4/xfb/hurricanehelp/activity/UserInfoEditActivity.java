@@ -31,7 +31,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class UserInfoEditActivity extends AppCompatActivity {
+public class UserInfoEditActivity extends BaseActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;

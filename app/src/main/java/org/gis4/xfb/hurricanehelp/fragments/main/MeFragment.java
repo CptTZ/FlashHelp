@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +23,7 @@ import com.avos.avoscloud.LogInCallback;
 
 import org.gis4.xfb.hurricanehelp.R;
 import org.gis4.xfb.hurricanehelp.activity.BaseActivity;
+import org.gis4.xfb.hurricanehelp.activity.MyPublishActivity;
 import org.gis4.xfb.hurricanehelp.data.Dbconnect;
 import org.gis4.xfb.hurricanehelp.fragments.BaseFragment;
 
@@ -49,6 +51,16 @@ public class MeFragment extends BaseFragment
     public void onStart() {
         super.onStart();
         UpdateUserData();
+
+        LinearLayout alreadyPublish = (LinearLayout) getActivity().findViewById(R.id.already_publish);
+
+        alreadyPublish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), MyPublishActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

@@ -23,6 +23,7 @@ import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.LogUtil;
 import com.avos.avoscloud.SaveCallback;
+import com.rengwuxian.materialedittext.MaterialEditText;
 
 import org.gis4.xfb.hurricanehelp.R;
 import org.gis4.xfb.hurricanehelp.data.Dbconnect;
@@ -33,7 +34,7 @@ import java.util.Date;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class TaskDetailsActivity extends AppCompatActivity {
+public class TaskDetailsActivity extends BaseActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -117,6 +118,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
 
                         LinearLayout linearLayoutStars = (LinearLayout) view.findViewById(R.id.stars);
                         final ImageView[] imageViews = new ImageView[5];
+                        final MaterialEditText commit = (MaterialEditText)view.findViewById(R.id.commit);
 
                         for(int n = 0; n < 5; n++) {
                             final ImageView imageView = new ImageView(view.getContext());
@@ -140,6 +142,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
                                     for(int n = 0; n <= (int)imageView.getTag(); n++) {
                                         imageViews[n].setImageResource(R.mipmap.star_marked);
                                     }
+                                    commit.setTag((int)imageView.getTag()  + 1);
                                 }
                             });
                         }
@@ -162,7 +165,8 @@ public class TaskDetailsActivity extends AppCompatActivity {
                                         @Override
                                         public void done(AVException e) {
                                             if(e==null) {
-                                                Toast.makeText(getApplicationContext(), "订单已完成", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(getApplicationContext(), commit.getText() + "  " + commit.getTag(), Toast.LENGTH_SHORT).show();
+
                                                 finish();
                                             } else {
                                                 Toast.makeText(getApplicationContext(), "网络问题，无法完成订单，请重试", Toast.LENGTH_SHORT).show();
@@ -173,7 +177,6 @@ public class TaskDetailsActivity extends AppCompatActivity {
                                 } catch (AVException e) {
                                     AVAnalytics.onEvent(getApplicationContext(), e.getMessage(), "Xfb_Cloud_TaskAlter");
                                     Toast.makeText(getApplicationContext(), "系统错误，无法完成订单，请重试", Toast.LENGTH_SHORT).show();
-                                    return true;
                                 }
                                 finish();
                             }
