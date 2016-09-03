@@ -70,6 +70,7 @@ public class BaseFragment extends Fragment
      */
     protected void UpdateUserData()
     {
+        if(meView==null) return;
         TextView userName = (TextView) meView.findViewById(R.id.userid),
                 userMail = (TextView) meView.findViewById(R.id.usermail),
                 userSign = (TextView) meView.findViewById(R.id.userSignature),

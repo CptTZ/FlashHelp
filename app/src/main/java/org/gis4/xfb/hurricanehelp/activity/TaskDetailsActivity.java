@@ -140,8 +140,10 @@ public class TaskDetailsActivity extends AppCompatActivity {
                                     for(int n = 0; n <= (int)imageView.getTag(); n++) {
                                         imageViews[n].setImageResource(R.mipmap.star_marked);
                                     }
+                                    taskDesc.setTag((int)imageView.getTag());
                                 }
                             });
+
                         }
 
                         builder.setPositiveButton("确定", new DialogInterface.OnClickListener()
@@ -149,7 +151,6 @@ public class TaskDetailsActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which)
                             {
-                                Toast.makeText(TaskDetailsActivity.this, "评价成功", Toast.LENGTH_SHORT).show();
                                 try {
                                     String oriSender = xfbTask.getSenderId();
                                     AVGeoPoint oriLoc = xfbTask.getHappenGeoLocation();
@@ -162,7 +163,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
                                         @Override
                                         public void done(AVException e) {
                                             if(e==null) {
-                                                Toast.makeText(getApplicationContext(), "订单已完成", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(getApplicationContext(), "评价成功，订单已完成", Toast.LENGTH_SHORT).show();
                                                 finish();
                                             } else {
                                                 Toast.makeText(getApplicationContext(), "网络问题，无法完成订单，请重试", Toast.LENGTH_SHORT).show();
@@ -173,9 +174,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
                                 } catch (AVException e) {
                                     AVAnalytics.onEvent(getApplicationContext(), e.getMessage(), "Xfb_Cloud_TaskAlter");
                                     Toast.makeText(getApplicationContext(), "系统错误，无法完成订单，请重试", Toast.LENGTH_SHORT).show();
-                                    return true;
                                 }
-                                finish();
                             }
                         });
                         builder.setNegativeButton("取消", new DialogInterface.OnClickListener()
