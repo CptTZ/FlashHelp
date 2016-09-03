@@ -20,8 +20,10 @@ import android.widget.EditText;
 
 import com.avos.avoscloud.AVAnalytics;
 import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVPush;
 import com.avos.avoscloud.LogUtil;
 import com.avos.avoscloud.SaveCallback;
+import com.avos.avoscloud.SendCallback;
 import com.rey.material.widget.Button;
 import com.rey.material.widget.Slider;
 import com.rey.material.widget.Spinner;
@@ -185,6 +187,7 @@ public class PublishActivity extends BaseActivity {
                                     if(e == null)
                                     {
                                         Toast.makeText(PublishActivity.this, "提交成功", Toast.LENGTH_SHORT).show();
+                                        PushDataToAll(xfbTask);
                                         finish();
                                         return;
                                     }
@@ -209,6 +212,26 @@ public class PublishActivity extends BaseActivity {
             spanString.setSpan(new ForegroundColorSpan(Color.WHITE), 0, spanString.length(), 0); //fix the color to white
             item.setTitle(spanString);
         }
+    }
+
+    /**
+     * 接收我推送的正义之锤
+     */
+    private void PushDataToAll(XfbTask x)
+    {
+        AVPush push = new AVPush();
+        push.setChannel("publicEvent");
+        push.setPushToAndroid(true);
+        String msg = "收到新的任务：" + x.getDesc();
+        push.setMessage(msg);
+        push.sendInBackground(new SendCallback() {
+            @Override
+            public void done(AVException e) {
+                if (e != null) {
+                    AVAnalytics.onEvent(getApplicationContext(), e.getMessage(), "Xfb_Cloud_Push");
+                }
+            }
+        });
     }
 
     private void initialActivity(){
