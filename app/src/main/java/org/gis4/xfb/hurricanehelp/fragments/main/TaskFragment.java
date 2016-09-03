@@ -99,12 +99,16 @@ public class TaskFragment extends BaseFragment
         @Override
         protected String doInBackground(Void... params) {
             if(AVUser.getCurrentUser()==null) return "";
+            if(baseA.getCurrentLocation() == null) {
+                return "";
+            }
             taskData = Dbconnect.FetchUserRelatedXfbTask(AVUser.getCurrentUser().getObjectId());
             return String.valueOf(taskData.size());
         }
 
         @Override
         protected void onPostExecute(String result) {
+            mWaveSwipeRefreshLayout.setRefreshing(false);
             if(result.isEmpty()|result.equals("0")) {
                 Toast.makeText(getActivity(), "刷新我处理的任务失败", Toast.LENGTH_SHORT).show();
                 super.onPostExecute(result);
@@ -112,7 +116,6 @@ public class TaskFragment extends BaseFragment
             }
             Toast.makeText(getActivity(), "共刷新" + result + "条我处理的任务", Toast.LENGTH_SHORT).show();
             setData();
-            mWaveSwipeRefreshLayout.setRefreshing(false);
             super.onPostExecute(result);
         }
     }

@@ -67,7 +67,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             double dist = mDataSet.get(position).getHappenGeoLocation().
                     distanceInKilometersTo(new AVGeoPoint(
                             userLocation.getLatitude(),userLocation.getLongitude()) );
-            if (dist < 1) {
+            if (dist - 1 < 0) {
                 disTxt = "距离：" + String.format(Locale.CHINA, "%1$.0f", dist*1000) + "米";
             } else {
                 disTxt = "距离：" + String.format(Locale.CHINA, "%1$.1f", dist) + "公里";

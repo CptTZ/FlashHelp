@@ -3,12 +3,16 @@ package org.gis4.xfb.hurricanehelp.data;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.avos.avoscloud.AVAnalytics;
+import com.avos.avoscloud.AVCloudQueryResult;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVGeoPoint;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.CloudQueryCallback;
+import com.avos.avoscloud.LogUtil;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -56,6 +60,43 @@ public class Dbconnect
     }
 
     /**
+     * 获取用户发送的XfbTask的所有数量
+     * @param userId 用户ID
+     * @return 数量
+     */
+    public static int FetchMeSentAllXfbTaskCount(String userId)
+    {
+        if(userId==null||userId.isEmpty()) return -1;
+        String sql = "SELECT count(*) FROM XfbTask WHERE " + XfbTask.SENDERID + " = '" + userId +"'";
+        try {
+            return AVQuery.doCloudQuery(sql).getCount();
+        } catch (Exception ex) {
+            Log.e("Xfb_Cloud", ex.getMessage(), ex);
+            return -1;
+        }
+    }
+
+    /**
+     * 获取用户发送的XfbTask数据，排序按照新旧来
+     * @param userId 用户ID
+     * @return 用户发送的fbTask数据
+     */
+    public static List<XfbTask> FetchMeSentAllXfbTask(String userId)
+    {
+        if(userId==null||userId.isEmpty()) return Collections.emptyList();
+
+        AVQuery<XfbTask> queryMe = AVQuery.getQuery(XfbTask.class);
+        queryMe.whereEqualTo(XfbTask.SENDERID, userId);
+        queryMe.orderByDescending("updatedAt");
+        try {
+            return queryMe.find();
+        } catch (Exception ex) {
+            Log.e("Xfb_Cloud", ex.getMessage(), ex);
+            return Collections.emptyList();
+        }
+    }
+
+    /**
      * 获取和用户有关的XfbTask数据，排序按照新旧来
      * @param userId 用户ID
      * @return 和用户有关的XfbTask数据
@@ -64,7 +105,7 @@ public class Dbconnect
     {
         if(userId==null||userId.isEmpty()) return Collections.emptyList();
 
-        //TODO: 这里只包含我接的或者我完成的，不包括我发的
+        //这里只包含我接的或者我完成的，不包括我发的
         //AVQuery<XfbTask> queryUserSender = AVQuery.getQuery(XfbTask.class);
         AVQuery<XfbTask> queryUserHelper = AVQuery.getQuery(XfbTask.class);
         AVQuery<XfbTask> queryNotAccepted = AVQuery.getQuery(XfbTask.class);
@@ -87,20 +128,19 @@ public class Dbconnect
      * 获取用户位置附近的limit条未完成的XfbTask数据，排序按照距离来
      * @param lat 纬度
      * @param lng 精度
-     * @param limit 返回数据条数（至少20）
+     * @param dist 距离公里（至少1公里）
      * @return 用户附近的Task
      */
-    public static List<XfbTask> FetchCloseUnacceptedXfbTask(double lat, double lng, int limit)
+    public static List<XfbTask> FetchCloseUnacceptedXfbTask(double lat, double lng, double dist)
     {
-        if(limit < 20) limit = 20;
+        if(dist < 1) dist = 1;
         AVGeoPoint geoPoint = new AVGeoPoint(lat,lng);
         AVQuery<XfbTask> queryNear = AVQuery.getQuery(XfbTask.class);
-        queryNear.whereNear(XfbTask.HAPPENGEOLOCATION, geoPoint);
+        queryNear.whereWithinKilometers(XfbTask.HAPPENGEOLOCATION, geoPoint, dist);
         AVQuery<XfbTask> queryUnaccepted = AVQuery.getQuery(XfbTask.class);
         queryUnaccepted.whereEqualTo(XfbTask.TASKSTATE, XfbTask.State_NotAccepted);
 
         AVQuery<XfbTask> query = AVQuery.and(Arrays.asList(queryNear, queryUnaccepted));
-        query.setLimit(limit);
 
         try {
             return query.find();

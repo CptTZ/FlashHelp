@@ -107,15 +107,14 @@ public class ActivitiesFragment extends BaseFragment
         protected String doInBackground(Void... params) {
             AMapLocation loc = baseA.getCurrentLocation();
             // 未获取到用户位置时拒绝刷新
-            if(loc == null) {
-                return "";
-            }
-            taskData = Dbconnect.FetchCloseUnacceptedXfbTask(loc.getLatitude(),loc.getLongitude(),30);
+            if(loc == null) { return ""; }
+            taskData = Dbconnect.FetchCloseUnacceptedXfbTask(loc.getLatitude(),loc.getLongitude(),2);
             return String.valueOf(taskData.size());
         }
 
         @Override
         protected void onPostExecute(String result) {
+            mWaveSwipeRefreshLayout.setRefreshing(false);
             if(result.isEmpty()|result.equals("0"))
             {
                 Toast.makeText(getActivity(), "刷新任务失败", Toast.LENGTH_SHORT).show();
@@ -124,7 +123,6 @@ public class ActivitiesFragment extends BaseFragment
             }
             Toast.makeText(getActivity(), "在您附近找到" + result + "条任务", Toast.LENGTH_SHORT).show();
             setData();
-            mWaveSwipeRefreshLayout.setRefreshing(false);
             super.onPostExecute(result);
         }
     }
