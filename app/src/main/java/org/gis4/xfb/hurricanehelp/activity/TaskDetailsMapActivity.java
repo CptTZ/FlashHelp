@@ -73,8 +73,8 @@ public class TaskDetailsMapActivity extends BaseActivity {
         Bitmap bitmap = BitmapFactory. decodeResource (getResources(), XfbTask.getLogoOfTaskType("执行"));
         Bitmap smallBitmap = bitmap.createScaledBitmap(bitmap, bitmap.getWidth()/2, bitmap.getHeight()/2, true);
         happenMarkerOptions.icon(BitmapDescriptorFactory.fromBitmap(smallBitmap));
-        if(!xfbTask.getHappenLocationDescription().isEmpty()) {
-            happenMarkerOptions.title(xfbTask.getHappenLocationDescription());
+        if(!xfbTask.getHappenLocationManualDesc().isEmpty()) {
+            happenMarkerOptions.title(xfbTask.getHappenLocationManualDesc());
         }
         aMap.addMarker(happenMarkerOptions);
         //送达点

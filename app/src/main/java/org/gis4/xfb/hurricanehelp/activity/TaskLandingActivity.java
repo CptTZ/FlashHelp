@@ -191,6 +191,9 @@ public class TaskLandingActivity extends SlidingUpBaseActivity<ObservableScrollV
         Bitmap bitmap = BitmapFactory. decodeResource (getResources(), XfbTask.getLogoOfTaskType("执行"));
         Bitmap smallBitmap = bitmap.createScaledBitmap(bitmap, bitmap.getWidth()/2, bitmap.getHeight()/2, true);
         happenMarkerOptions.icon(BitmapDescriptorFactory.fromBitmap(smallBitmap));
+        if(!xfbTaskList.get(0).getHappenLocationManualDesc().isEmpty()) {
+            happenMarkerOptions.title(xfbTaskList.get(0).getHappenLocationManualDesc());
+        }
         aMap.addMarker(happenMarkerOptions);
         //送达点
         LatLng sendLatLng =new LatLng(xfbTaskList.get(0).getSenderLat(),xfbTaskList.get(0).getSenderLng());
@@ -203,7 +206,9 @@ public class TaskLandingActivity extends SlidingUpBaseActivity<ObservableScrollV
         LatLngBounds latLngBounds = new LatLngBounds(happenLatLng, sendLatLng);
 
         aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds, 200));
-
+        if(!xfbTaskList.get(0).getSenderLocationManualDesc().isEmpty()) {
+            happenMarkerOptions.title(xfbTaskList.get(0).getSenderLocationManualDesc());
+        }
         aMap.addMarker(sendMarkerOptions);
     }
 

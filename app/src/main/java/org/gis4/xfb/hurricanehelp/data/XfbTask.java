@@ -180,8 +180,8 @@ public class XfbTask extends AVObject
     public AVGeoPoint getHappenGeoLocation(){ return getAVGeoPoint(HAPPENGEOLOCATION); }
     public String getSenderLocationManualDesc(){ return getString(SENDERLOCATIONMANUALDESC); }
     public String getSenderLocationAutoDesc(){ return getString(SENDERLOCATIONAUTODESC); }
-    public String getHappenLocation(){ return getString(HAPPENLOCATIONMANUALDESC); }
-    public String getHappenLocationDescription(){ return getString(HAPPENLOCATIONAUTODESC); }
+    public String getHappenLocationManualDesc(){ return getString(HAPPENLOCATIONMANUALDESC); }
+    public String getHappenLocationAutoDesc(){ return getString(HAPPENLOCATIONAUTODESC); }
     public double getDur(){ return getDouble(DUR); }
     public double getSenderLat(){ return getDouble(SENDERLAT); }
     public double getSenderLng(){ return getDouble(SENDERLNG); }
