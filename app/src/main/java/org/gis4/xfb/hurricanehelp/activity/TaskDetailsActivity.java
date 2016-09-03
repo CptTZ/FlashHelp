@@ -1,11 +1,13 @@
 package org.gis4.xfb.hurricanehelp.activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +19,8 @@ import com.avos.avoscloud.SaveCallback;
 import org.gis4.xfb.hurricanehelp.R;
 import org.gis4.xfb.hurricanehelp.data.XfbTask;
 
+import java.util.Date;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -24,6 +28,9 @@ public class TaskDetailsActivity extends AppCompatActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+
+    @BindView(R.id.task_location_imageview)
+    ImageView taskLocationImageview;
 
     @BindView(R.id.task_type)
     TextView taskType;
@@ -60,8 +67,23 @@ public class TaskDetailsActivity extends AppCompatActivity {
             initialMenu(toolbar.getMenu());
         }
 
+        taskType.setText(xfbTask.getTaskType());
+        taskSender.setText(xfbTask.getSenderId());
 
+        textviewTimeStart.setText(getDateString(xfbTask.getStartTime()));
+        textviewTimeEnd.setText(getDateString(xfbTask.getEndTime()));
+        taskDesc.setText(xfbTask.getDesc());
 
+        taskLocationImageview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent =new Intent(TaskDetailsActivity.this, TaskDetailsMapActivity.class);
+                Bundle bundle=new Bundle();
+                bundle.putParcelable("xfbTask", xfbTask);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
     }
 
     private void initialMenu(Menu menu) {
@@ -84,5 +106,9 @@ public class TaskDetailsActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+    private String getDateString(Date date) {
+        return date.getYear() + "年" + date.getMonth() + "月" + date.getDay() + "日" + date.getHours() + "点" + date.getMinutes() + "分";
     }
 }

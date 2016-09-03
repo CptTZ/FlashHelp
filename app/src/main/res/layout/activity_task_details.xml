@@ -167,7 +167,7 @@
                     android:layout_below="@+id/textview3">
 
                     <ImageView
-                        android:id="@+id/task_execute_location_imageview"
+                        android:id="@+id/task_location_imageview"
                         android:layout_width="match_parent"
                         android:layout_margin="5dp"
                         android:layout_height="160dp"
