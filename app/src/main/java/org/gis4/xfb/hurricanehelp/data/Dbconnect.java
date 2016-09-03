@@ -39,6 +39,23 @@ public class Dbconnect
     }
 
     /**
+     * 获取所有状态为未接收的任务
+     * @return 未完成任务
+     */
+    public static List<XfbTask> FetchNotAccpetedXfbTask()
+    {
+        AVQuery<XfbTask> query = AVQuery.getQuery(XfbTask.class);
+        query.orderByDescending("updatedAt");
+        query.whereEqualTo(XfbTask.TASKSTATE, XfbTask.State_NotAccepted);
+        try {
+            return query.find();
+        } catch (AVException ex) {
+            Log.e("Xfb_Cloud", ex.getMessage(), ex);
+            return Collections.emptyList();
+        }
+    }
+
+    /**
      * 获取和用户有关的XfbTask数据，排序按照新旧来
      * @param userId 用户ID
      * @return 和用户有关的XfbTask数据
@@ -55,7 +72,8 @@ public class Dbconnect
         queryUserHelper.whereEqualTo(XfbTask.HELPERID, userId);
         queryNotAccepted.whereNotEqualTo(XfbTask.TASKSTATE, XfbTask.State_NotAccepted);
 
-        AVQuery<XfbTask> queryFinal =AVQuery.or(Arrays.asList(queryNotAccepted, queryUserHelper));
+        AVQuery<XfbTask> queryFinal = AVQuery.and(Arrays.asList(queryNotAccepted, queryUserHelper));
+        queryFinal.orderByDescending("updatedAt");
 
         try {
             return queryFinal.find();

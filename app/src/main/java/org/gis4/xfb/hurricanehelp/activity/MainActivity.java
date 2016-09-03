@@ -375,14 +375,19 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     private class ShowMarkerOnMapTask extends AsyncTask<Void, Void, String> {
         @Override
         protected String doInBackground(Void... params) {
-            taskData = Dbconnect.FetchAllXfbTask();
+            taskData = Dbconnect.FetchNotAccpetedXfbTask();
             return String.valueOf(taskData.size());
         }
 
         @Override
         protected void onPostExecute(String result) {
-
-            Toast.makeText(MainActivity.this, "共刷新" + result + "条记录", Toast.LENGTH_SHORT).show();
+            if(result.isEmpty()|result.equals("0"))
+            {
+                Toast.makeText(baseActivity, "刷新任务失败", Toast.LENGTH_SHORT).show();
+                super.onPostExecute(result);
+                return;
+            }
+            Toast.makeText(MainActivity.this, "总共有" + result + "条未完成任务", Toast.LENGTH_SHORT).show();
 
             for (XfbTask task : taskData)
             {
