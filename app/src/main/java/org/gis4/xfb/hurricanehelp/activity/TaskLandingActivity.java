@@ -92,10 +92,10 @@ public class TaskLandingActivity extends SlidingUpBaseActivity<ObservableScrollV
         mDemoSlider = (SliderLayout)findViewById(R.id.slider);
 
         HashMap<String,String> url_maps = new HashMap<String, String>();
-        url_maps.put("Hannibal", "http://static2.hypable.com/wp-content/uploads/2013/12/hannibal-season-2-release-date.jpg");
-        url_maps.put("Big Bang Theory", "http://tvfiles.alphacoders.com/100/hdclearart-10.png");
-        url_maps.put("House of Cards", "http://cdn3.nflximg.net/images/3093/2043093.jpg");
-        url_maps.put("Game of Thrones", "http://images.boomsbeat.com/data/images/full/19640/game-of-thrones-season-4-jpg.jpg");
+        url_maps.put("南师大正门", "http://www.njyl.com/admins/attachment/article/attachment/Mon_0910/581094_693ff5da60a.jpg");
+        url_maps.put("南师大地科院", "http://1861.img.pp.sohu.com.cn/images/blog/2010/3/17/22/27/1281d5a8dc2g215.jpg");
+        url_maps.put("南师大北区宿舍楼", "http://ww4.sinaimg.cn/large/9744d8c8jw1dyk6q91xe9j.jpg");
+        url_maps.put("仙林宾馆", "http://img.liketrip.cn/jqphoto/2008-07-08/200807081144454.jpg");
 
         for(String name : url_maps.keySet()){
             TextSliderView textSliderView = new TextSliderView(this);

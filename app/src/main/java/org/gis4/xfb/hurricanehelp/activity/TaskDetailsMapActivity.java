@@ -73,6 +73,9 @@ public class TaskDetailsMapActivity extends BaseActivity {
         Bitmap bitmap = BitmapFactory. decodeResource (getResources(), XfbTask.getLogoOfTaskType("执行"));
         Bitmap smallBitmap = bitmap.createScaledBitmap(bitmap, bitmap.getWidth()/2, bitmap.getHeight()/2, true);
         happenMarkerOptions.icon(BitmapDescriptorFactory.fromBitmap(smallBitmap));
+        if(!xfbTask.getHappenLocationDescription().isEmpty()) {
+            happenMarkerOptions.title(xfbTask.getHappenLocationDescription());
+        }
         aMap.addMarker(happenMarkerOptions);
         //送达点
         LatLng sendLatLng =new LatLng(xfbTask.getSenderLat(),xfbTask.getSenderLng());
@@ -85,7 +88,9 @@ public class TaskDetailsMapActivity extends BaseActivity {
         LatLngBounds latLngBounds = new LatLngBounds(happenLatLng, sendLatLng);
 
         aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds, 200));
-
+        if(!xfbTask.getSenderLocationManualDesc().isEmpty()) {
+            happenMarkerOptions.title(xfbTask.getSenderLocationManualDesc());
+        }
         aMap.addMarker(sendMarkerOptions);
     }
 }

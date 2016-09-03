@@ -28,7 +28,7 @@
          android:name="com.amap.api.v2.apikey"
          android:value="eef9279301445b17372479db6a05816d" /> -->
         <!-- AMAPKey-TonyZ -->
-        <meta-data--
+        <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="be8faa390c5fcd4ef53c54b14f5acdc4" />
 

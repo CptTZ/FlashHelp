@@ -99,6 +99,7 @@ public class TaskFragment extends BaseFragment
         @Override
         protected String doInBackground(Void... params) {
             if(AVUser.getCurrentUser()==null) return "";
+            if(baseA==null) return "";
             if(baseA.getCurrentLocation() == null) {
                 return "";
             }

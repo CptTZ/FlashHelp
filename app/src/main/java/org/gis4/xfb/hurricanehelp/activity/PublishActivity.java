@@ -175,7 +175,7 @@ public class PublishActivity extends BaseActivity {
                         xfbTask.setHappenLocationManualDesc(edittextExecute.getText().toString());
 
                         if(xfbTask.getSenderLat() == 0) {
-                            Toast.makeText(PublishActivity.this, "请选择任务送达地点！", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PublishActivity.this, "请选择任务交接地点！", Toast.LENGTH_SHORT).show();
                         }
                         else if(xfbTask.getHappenLat() == 0) {
                             Toast.makeText(PublishActivity.this, "请选择任务执行地点！", Toast.LENGTH_SHORT).show();
@@ -298,7 +298,7 @@ public class PublishActivity extends BaseActivity {
                 Intent intent =new Intent(PublishActivity.this,ChooseLocationActivity.class);
                 Bundle bundle=new Bundle();
 
-                bundle.putString("title", "选择任务送达地点");
+                bundle.putString("title", "选择任务交接地点");
                 intent.putExtras(bundle);
 
                 startActivityForResult(intent, ChooseLocationActivity.REQUEST_SEND_LOCATION);

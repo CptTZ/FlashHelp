@@ -68,18 +68,16 @@ public class MyPublishActivity extends BaseActivity {
     private class RefreshXfbTask extends AsyncTask<Void, Void, String> {
         @Override
         protected String doInBackground(Void... params) {
-            if(AVUser.getCurrentUser()==null) return "";
-            if(getCurrentLocation() == null) {
-                return "";
-            }
-            taskData = Dbconnect.FetchUserRelatedXfbTask(AVUser.getCurrentUser().getObjectId());
+            if(AVUser.getCurrentUser() == null) return "";
+            //if(getCurrentLocation() == null)  return "";
+            taskData = Dbconnect.FetchMeSentAllXfbTask(AVUser.getCurrentUser().getObjectId());
             return String.valueOf(taskData.size());
         }
 
         @Override
         protected void onPostExecute(String result) {
             mWaveSwipeRefreshLayout.setRefreshing(false);
-            if(result.isEmpty()|result.equals("0")) {
+            if(result.isEmpty()) {
                 Toast.makeText(MyPublishActivity.this, "刷新我处理的任务失败", Toast.LENGTH_SHORT).show();
                 super.onPostExecute(result);
                 return;
@@ -92,7 +90,7 @@ public class MyPublishActivity extends BaseActivity {
 
     private void setData() {
         if(taskData==null) return;
-        mAdapter = new RecyclerAdapter(this, taskData, getCurrentLocation());
+        mAdapter = new RecyclerAdapter(this, taskData, baseActivity.getCurrentLocation());
         SlideInRightAnimationAdapter slideAdapter = new SlideInRightAnimationAdapter(mAdapter);
         slideAdapter.setFirstOnly(true);
         slideAdapter.setDuration(500);
